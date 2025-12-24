@@ -91,13 +91,89 @@ npm run dev
 
 ### Variables de entorno
 
-Crear archivo `.env` en la raíz:
+El proyecto necesita configurar la URL del backend para funcionar correctamente.
 
-```env
-VITE_API_URL=http://localhost:3000/api
+**Paso 1:** Copiar el archivo de ejemplo
+```bash
+# Windows PowerShell
+Copy-Item .env.example .env
+
+# Mac/Linux
+cp .env.example .env
 ```
 
+**Paso 2:** Verificar que `.env` contenga:
+```env
+VITE_API_URL=http://localhost:9000
+```
+
+**Nota:** El archivo `.env` es personal y NO se sube a GitHub (está en `.gitignore`).
+
 ---
+
+## 🔌 Conectar con el Backend
+
+El frontend consume el backend de INDIEC que debe estar corriendo en `http://localhost:9000`.
+
+### Iniciar el Backend
+```bash
+# En el repositorio del backend (jorgeminda-indiec)
+node root/index.js
+```
+
+Deberías ver: `🚀 API escuchando en http://localhost:9000`
+
+### Endpoints Disponibles
+
+El servicio API centralizado (`src/shared/services/api.ts`) permite consumir los siguientes endpoints:
+
+| Módulo | Endpoint | Métodos |
+|--------|----------|---------|
+| Artistas | `/artista` | GET, POST, PUT, DELETE |
+| Canciones | `/cancion` | GET, POST, PUT, DELETE |
+| Álbumes | `/album` | GET, POST, PUT, DELETE |
+| Eventos | `/evento` | GET, POST, PUT, DELETE |
+| Tienda (Ropa) | `/ropa` | GET, POST, PUT, DELETE |
+| Carrito | `/carrito` | GET, POST, PUT, DELETE |
+| Clientes | `/cliente` | GET, POST, PUT, DELETE |
+| Grupos Musicales | `/grupo-musical` | GET, POST, PUT, DELETE |
+| Managers | `/manager` | GET, POST, PUT, DELETE |
+| Autenticación | `/auth` | POST (login, register) |
+| Auxiliares | `/auxiliares` | GET, POST |
+
+### Uso del Servicio API
+```typescript
+import { api } from '@/shared/services/api';
+
+// GET - Obtener todos los registros
+const canciones = await api.get('/cancion');
+
+// GET - Obtener por ID
+const cancion = await api.get('/cancion/123');
+
+// GET - Con parámetros
+const filtradas = await api.get('/cancion', { genero: 'rock' });
+
+// POST - Crear
+const nueva = await api.post('/cancion', {
+  titulo: 'Mi Canción',
+  artista: 'Artista ID',
+  duracion: 180
+});
+
+// PUT - Actualizar
+const actualizada = await api.put('/cancion/123', {
+  titulo: 'Título Actualizado'
+});
+
+// DELETE - Eliminar
+await api.delete('/cancion/123');
+```
+
+**Importante:** Todas las llamadas manejan automáticamente:
+- Headers de `Content-Type: application/json`
+- Tokens de autenticación (si existen en `localStorage`)
+- Manejo de errores centralizado
 
 ## 👥 División de Módulos
 
