@@ -5,9 +5,11 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:9000';
 
 class SongApiRepository implements SongRepository {
   
-  private async fetchWithAuth(url: string, options: RequestInit = {}) {
-    const token = localStorage.getItem('token');
-    
+  //mejor manejo de errores
+private async fetchWithAuth(url: string, options: RequestInit = {}) {
+  const token = localStorage.getItem('token');
+  
+  try {
     const response = await fetch(url, {
       ...options,
       headers: {
@@ -18,12 +20,28 @@ class SongApiRepository implements SongRepository {
     });
 
     if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+      }
+      if (response.status === 404) {
+        throw new Error('Recurso no encontrado.');
+      }
+      if (response.status >= 500) {
+        throw new Error('Error del servidor. Intenta más tarde.');
+      }
+      
       const error = await response.json().catch(() => ({ message: 'Error desconocido' }));
-      throw new Error(error.message || `HTTP ${response.status}`);
+      throw new Error(error.message || `Error HTTP ${response.status}`);
     }
 
     return response.json();
+  } catch (error) {
+    if (error instanceof TypeError) {
+      throw new Error('No se pudo conectar con el servidor. Verifica tu conexión.');
+    }
+    throw error;
   }
+}
 
   async getAll(): Promise<Song[]> {
     try {
@@ -104,6 +122,7 @@ class SongApiRepository implements SongRepository {
       console.error('Error al incrementar streams:', error);
     }
   }
+  
 }
 
 export const songApiRepository = new SongApiRepository();

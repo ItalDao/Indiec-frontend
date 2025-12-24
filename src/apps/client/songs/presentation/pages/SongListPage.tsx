@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSongs } from '../hooks/useSongs';
-import { SongCard } from '../components/SongCard.tsx';
-import { SongFiltersComponent } from '../components/SongFilters.tsx';
+import { SongCard } from '../components/SongCard';
+import { SongFiltersComponent } from '../components/SongFilters';
 import { colors } from '../../../../../shared/theme/colors';
 import type { SongFilters } from '../../domain/models/Song';
 
