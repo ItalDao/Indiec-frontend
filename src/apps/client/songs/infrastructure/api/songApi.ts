@@ -1,7 +1,7 @@
 import type { Song, SongFilters } from '../../domain/models/Song';
 import type { SongRepository } from '../../domain/repositories/SongRepository';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:9000';
 
 class SongApiRepository implements SongRepository {
   
