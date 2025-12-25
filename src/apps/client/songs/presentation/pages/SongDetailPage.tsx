@@ -3,10 +3,13 @@ import { useSong } from '../hooks/useSongs';
 import { Button } from '../../../../../shared/ui';
 import { colors } from '../../../../../shared/theme/colors';
 import { formatStreams } from '../../domain/models/Song';
+import { AudioPlayer } from '../components/AudioPlayer';
+
 
 export const SongDetailPage = () => {
   const { id } = useParams<{ id: string }>();
-  const { song, loading, error, handlePlay } = useSong(Number(id));
+  const { song, loading, error, handlePlay, isFavorite, toggleFavorite } = useSong(Number(id));
+
 
   if (loading) {
     return (
@@ -118,6 +121,11 @@ export const SongDetailPage = () => {
             </div>
           </div>
         </div>
+        <AudioPlayer 
+  audioUrl={song.linkAudio} 
+  songTitle={song.titulo}
+  onPlay={handlePlay}
+/>
 
         <div>
           <h1 
@@ -169,12 +177,14 @@ export const SongDetailPage = () => {
                Reproducir
             </Button>
             <Button 
-              variant="outline" 
-              size="lg"
-              style={{ flex: 1, minWidth: '200px' }}
+             variant={isFavorite ? "primary" : "outline"} 
+             size="lg"
+             onClick={toggleFavorite}
+             style={{ flex: 1, minWidth: '200px' }}
             >
-               Agregar a Favoritos
-            </Button>
+            {isFavorite ? 'COR En Favoritos' : 'FAV Agregar a Favoritos'}
+             </Button>
+            
           </div>
 
           <p style={{ 

@@ -11,6 +11,8 @@ export interface Song {
   artista: string;
   idArtista: number;
   imagen?: string;
+  linkAudio?: string;
+  isFavorite?: boolean;
 }
 
 export interface SongFilters {
