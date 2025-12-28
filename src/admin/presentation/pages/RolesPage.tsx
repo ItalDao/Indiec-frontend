@@ -3,136 +3,292 @@ import { useState } from 'react';
 type Rol = {
   id: string;
   nombre: string;
-  permisos: string;
+  permisos: string[];
   estado: 'activo' | 'inactivo';
 };
+
+const permisosDisponibles = ['crear', 'editar', 'eliminar', 'ver'];
+
+const bg = '#0f172a';
+const card = '#111827';
+const border = '#1f2937';
+const text = '#e5e7eb';
+const muted = '#9ca3af';
+const primary = '#6366f1';
 
 export default function RolesPage() {
   const [roles, setRoles] = useState<Rol[]>([]);
   const [nombre, setNombre] = useState('');
-  const [permisos, setPermisos] = useState('');
+  const [permisos, setPermisos] = useState<string[]>([]);
   const [estado, setEstado] = useState<'activo' | 'inactivo'>('activo');
   const [editandoId, setEditandoId] = useState<string | null>(null);
+  const [soloLectura, setSoloLectura] = useState(false);
 
-  const guardarRol = () => {
-    if (!nombre) {
-      alert('El nombre es obligatorio');
-      return;
-    }
+  const limpiar = () => {
+    setNombre('');
+    setPermisos([]);
+    setEstado('activo');
+    setEditandoId(null);
+    setSoloLectura(false);
+  };
+
+  const guardar = () => {
+    if (!nombre || permisos.length === 0 || soloLectura) return;
 
     if (editandoId) {
-      // ✏️ EDITAR
       setRoles(
         roles.map(r =>
-          r.id === editandoId
-            ? { ...r, nombre, permisos, estado }
-            : r
+          r.id === editandoId ? { ...r, nombre, permisos, estado } : r
         )
       );
-      setEditandoId(null);
     } else {
-      // ➕ CREAR
-      const nuevo: Rol = {
-        id: Date.now().toString(),
-        nombre,
-        permisos,
-        estado,
-      };
-      setRoles([...roles, nuevo]);
+      setRoles([
+        ...roles,
+        { id: Date.now().toString(), nombre, permisos, estado },
+      ]);
     }
 
-    limpiarFormulario();
+    limpiar();
   };
 
-  const editarRol = (rol: Rol) => {
-    setNombre(rol.nombre);
-    setPermisos(rol.permisos);
-    setEstado(rol.estado);
-    setEditandoId(rol.id);
+  const editar = (r: Rol) => {
+    setNombre(r.nombre);
+    setPermisos(r.permisos);
+    setEstado(r.estado);
+    setEditandoId(r.id);
+    setSoloLectura(false);
   };
 
-  const eliminarRol = (id: string) => {
-    if (confirm('¿Eliminar este rol?')) {
-      setRoles(roles.filter(r => r.id !== id));
-    }
+  const toggleEstado = (id: string) => {
+    setRoles(
+      roles.map(r =>
+        r.id === id
+          ? { ...r, estado: r.estado === 'activo' ? 'inactivo' : 'activo' }
+          : r
+      )
+    );
   };
 
-  const limpiarFormulario = () => {
-    setNombre('');
-    setPermisos('');
-    setEstado('activo');
+  const togglePermiso = (p: string) => {
+    if (soloLectura) return;
+    setPermisos(prev =>
+      prev.includes(p) ? prev.filter(x => x !== p) : [...prev, p]
+    );
   };
 
   return (
-    <div style={{ padding: '1rem' }}>
-      <h2>Roles</h2>
-
-      {/* FORMULARIO */}
-      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
-        <input
-          placeholder="Nombre del rol"
-          value={nombre}
-          onChange={e => setNombre(e.target.value)}
-        />
-
-        <input
-          placeholder="Permisos (ej: crear, editar)"
-          value={permisos}
-          onChange={e => setPermisos(e.target.value)}
-        />
-
-        <select
-          value={estado}
-          onChange={e => setEstado(e.target.value as 'activo' | 'inactivo')}
+    <div
+      style={{
+        background: bg,
+        minHeight: '100vh',
+        padding: '2.5rem 3rem',
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
+      <div style={{ width: '100%', maxWidth: '1600px' }}>
+        <h2
+          style={{
+            color: text,
+            marginBottom: '2rem',
+            textAlign: 'center',
+          }}
         >
-          <option value="activo">Activo</option>
-          <option value="inactivo">Inactivo</option>
-        </select>
+          Gestión de Roles
+        </h2>
 
-        <button onClick={guardarRol}>
-          {editandoId ? 'Actualizar' : 'Crear'}
-        </button>
+        {/* ===== FORM HORIZONTAL ===== */}
+        <div
+          style={{
+            background: card,
+            padding: '2rem',
+            borderRadius: 16,
+            border: `1px solid ${border}`,
+            marginBottom: '2.5rem',
+          }}
+        >
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '2fr 3fr 1.2fr auto auto',
+              gap: '1.5rem',
+              alignItems: 'center',
+            }}
+          >
+            <input
+              disabled={soloLectura}
+              style={input(border, text)}
+              placeholder="Nombre del rol"
+              value={nombre}
+              onChange={e => setNombre(e.target.value)}
+            />
 
-        {editandoId && (
-          <button onClick={limpiarFormulario}>Cancelar</button>
-        )}
+            <div style={{ textAlign: 'center' }}>
+              <p
+                style={{
+                  color: muted,
+                  fontSize: '0.75rem',
+                  marginBottom: 6,
+                }}
+              >
+                Permisos
+              </p>
+              <div
+                style={{
+                  display: 'flex',
+                  gap: 8,
+                  justifyContent: 'center',
+                  flexWrap: 'wrap',
+                }}
+              >
+                {permisosDisponibles.map(p => (
+                  <button
+                    key={p}
+                    onClick={() => togglePermiso(p)}
+                    style={{
+                      ...btnGhost(border, text),
+                      background: permisos.includes(p)
+                        ? '#020617'
+                        : 'transparent',
+                      opacity: soloLectura ? 0.5 : 1,
+                    }}
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <select
+              disabled={soloLectura}
+              style={input(border, text)}
+              value={estado}
+              onChange={e => setEstado(e.target.value as any)}
+            >
+              <option value="activo">Activo</option>
+              <option value="inactivo">Inactivo</option>
+            </select>
+
+            {!soloLectura && (
+              <button style={btn(primary)} onClick={guardar}>
+                {editandoId ? 'Actualizar' : 'Crear'}
+              </button>
+            )}
+
+            {(editandoId || soloLectura) && (
+              <button style={btnGhost(border, text)} onClick={limpiar}>
+                Cerrar
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* ===== LISTA ===== */}
+        <div
+          style={{
+            background: card,
+            padding: '2rem',
+            borderRadius: 16,
+            border: `1px solid ${border}`,
+          }}
+        >
+          <table
+            width="100%"
+            cellPadding={18}
+            style={{
+              borderCollapse: 'collapse',
+              color: text,
+              textAlign: 'center',
+            }}
+          >
+            <thead>
+              <tr style={{ color: muted, fontSize: '0.75rem' }}>
+                <th>Rol</th>
+                <th>Permisos</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {roles.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={4}
+                    style={{
+                      color: muted,
+                      padding: '3rem',
+                    }}
+                  >
+                    No hay roles registrados
+                  </td>
+                </tr>
+              )}
+
+              {roles.map(r => (
+                <tr key={r.id} style={{ borderTop: `1px solid ${border}` }}>
+                  <td style={{ fontWeight: 500 }}>{r.nombre}</td>
+                  <td style={{ fontSize: '0.75rem', color: muted }}>
+                    {r.permisos.join(', ')}
+                  </td>
+                  <td>
+                    <span style={badge(r.estado)}>{r.estado}</span>
+                  </td>
+                  <td>
+                    <button
+                      style={btnGhost(border, text)}
+                      onClick={() => editar(r)}
+                    >
+                      ✏️ Editar
+                    </button>{' '}
+                    <button
+                      style={btnGhost(border, text)}
+                      onClick={() => toggleEstado(r.id)}
+                    >
+                      {r.estado === 'activo' ? 'Inactivar' : 'Activar'}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-
-      {/* TABLA */}
-      <table width="100%" border={1} cellPadding={6}>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Permisos</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {roles.length === 0 && (
-            <tr>
-              <td colSpan={4} style={{ textAlign: 'center' }}>
-                No hay roles
-              </td>
-            </tr>
-          )}
-
-          {roles.map(rol => (
-            <tr key={rol.id}>
-              <td>{rol.nombre}</td>
-              <td>{rol.permisos || '-'}</td>
-              <td>{rol.estado}</td>
-              <td>
-                <button onClick={() => editarRol(rol)}>Editar</button>{' '}
-                <button onClick={() => eliminarRol(rol.id)}>
-                  Eliminar
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   );
 }
+
+/* ===== estilos ===== */
+
+const input = (border: string, color: string) => ({
+  background: '#020617',
+  border: `1px solid ${border}`,
+  borderRadius: 10,
+  padding: '0.75rem',
+  color,
+});
+
+const btn = (bg: string) => ({
+  background: bg,
+  color: '#fff',
+  border: 'none',
+  borderRadius: 10,
+  padding: '0.75rem 1.6rem',
+  fontWeight: 600,
+});
+
+const btnGhost = (border: string, color: string) => ({
+  background: 'transparent',
+  border: `1px solid ${border}`,
+  color,
+  borderRadius: 8,
+  padding: '0.45rem 0.9rem',
+  fontSize: '0.75rem',
+});
+
+const badge = (estado: string) => ({
+  padding: '0.35rem 0.75rem',
+  borderRadius: 999,
+  fontSize: '0.7rem',
+  background: estado === 'activo' ? '#022c22' : '#2a0e0e',
+  color: estado === 'activo' ? '#34d399' : '#f87171',
+});
