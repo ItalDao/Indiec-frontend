@@ -2,6 +2,37 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AdminLayout from '../layout/AdminLayout';
 import ClientLayout from '../layout/ClientLayout';
 
+
+
+import { SongFormPage } from '../../../apps/admin/songs/presentation/pages/SongFormPage';
+
+import { SongPage } from '../../../apps/admin/songs/presentation/pages/SongPage'; 
+
+export const AdminRoutes = () => {
+  return (
+    <Routes>
+      {/* Cambiamos el index para que cargue SongPage.
+          Ahora en /admin/songs/ verás el formulario y la lista juntos.
+      */}
+      <Route index element={<SongPage />} />
+
+      {/* Si aún quieres tener páginas por separado para "new" o "edit", 
+          puedes mantenerlas, pero la SongPage ya te resuelve el flujo principal.
+      */}
+      <Route path="new" element={<SongFormPage onSubmit={() => {}} />} />
+      <Route path="edit/:id" element={<SongFormPage onSubmit={() => {}} />} />
+    </Routes>
+    
+  );
+};
+
+
+
+
+
+
+
+
 const TempPage = ({ title }: { title: string }) => (
   <div style={{ padding: '2rem', textAlign: 'center' }}>
     <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>{title}</h1>
@@ -19,7 +50,7 @@ export const AppRouter = () => {
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="dashboard" element={<TempPage title="Dashboard" />} />
           <Route path="artists" element={<TempPage title="Gestión de Artistas" />} />
-          <Route path="songs" element={<TempPage title="Gestión de Canciones" />} />
+          <Route path="songs/*" element={<AdminRoutes />} />
           <Route path="events" element={<TempPage title="Gestión de Eventos" />} />
           <Route path="store" element={<TempPage title="Gestión de Tienda" />} />
           <Route path="catalogs" element={<TempPage title="Catálogos" />} />

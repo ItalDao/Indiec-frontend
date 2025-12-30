@@ -31,6 +31,9 @@ const AdminLayout = () => {
     marginLeft: '260px',
     minHeight: '100vh',
     background: colors.background,
+    flex: 1,           // <--- ESTO obliga a que use todo el ancho sobrante, borrarlo despues
+    display: 'flex',   // <--- ESTO permite que los hijos se alineen mejor, borrarlo despues
+    flexDirection: 'column',   // <---  borrarlo despues
   };
 
   const headerStyles: React.CSSProperties = {
