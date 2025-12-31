@@ -1,3 +1,4 @@
+// src/apps/client/songs/presentation/pages/SongListPage.tsx
 import { useState } from 'react';
 import { useSongs } from '../hooks/useSongs';
 import { SongCard } from '../components/SongCard';

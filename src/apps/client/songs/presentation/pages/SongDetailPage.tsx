@@ -1,3 +1,4 @@
+// src/apps/client/songs/presentation/pages/SongDetailPage.tsx
 import { useParams, Link } from 'react-router-dom';
 import { useSong } from '../hooks/useSongs';
 import { Button } from '../../../../../shared/ui';

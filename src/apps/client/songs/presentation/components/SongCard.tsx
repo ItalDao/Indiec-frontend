@@ -1,3 +1,4 @@
+// src/apps/client/songs/presentation/components/SongCard.tsx
 import { Link } from 'react-router-dom';
 import { colors } from '../../../../../shared/theme/colors';
 import type { Song } from '../../domain/models/Song';

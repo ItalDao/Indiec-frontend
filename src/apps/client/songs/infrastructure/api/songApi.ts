@@ -1,3 +1,4 @@
+// src/apps/client/songs/infrastructure/api/songApi.ts
 import type { Song, SongFilters } from '../../domain/models/Song';
 import type { SongRepository } from '../../domain/repositories/SongRepository';
 
@@ -43,29 +44,31 @@ private async fetchWithAuth(url: string, options: RequestInit = {}) {
   }
 }
 
-  async getAll(): Promise<Song[]> {
-    try {
-      return await this.fetchWithAuth(`${API_URL}/canciones/lista`);
-    } catch (error) {
+ async getAll(): Promise<Song[]> {
+  try {
+    const response = await this.fetchWithAuth(`${API_URL}/api/canciones/lista`);
+    return response.data; // ← Importante: extraer el array del objeto {success, message, data}
+  }catch (error) {
       console.error('Error al obtener canciones:', error);
       throw error;
     }
   }
 
   async getById(id: number): Promise<Song | null> {
-    try {
-      const canciones = await this.getAll();
-      return canciones.find(c => c.id === id) || null;
-    } catch (error) {
-      console.error('Error al obtener canción por ID:', error);
-      throw error;
-    }
+  try {
+    const response = await this.fetchWithAuth(`${API_URL}/api/canciones/${id}`);
+    return response.data || null;
+  } catch (error) {
+    console.error('Error al obtener canción por ID:', error);
+    return null;
+  }
   }
 
   async getByArtist(artistaId: number): Promise<Song[]> {
-    try {
-      return await this.fetchWithAuth(`${API_URL}/canciones/artista/${artistaId}`);
-    } catch (error) {
+  try {
+    const response = await this.fetchWithAuth(`${API_URL}/api/canciones/artista/${artistaId}`);
+    return response.data || [];
+  }catch (error) {
       console.error('Error al obtener canciones del artista:', error);
       throw error;
     }
@@ -114,14 +117,14 @@ private async fetchWithAuth(url: string, options: RequestInit = {}) {
   }
 
   async incrementStreams(id: number): Promise<void> {
-    try {
-      await this.fetchWithAuth(`${API_URL}/canciones/${id}/streams`, {
-        method: 'POST',
-      });
-    } catch (error) {
-      console.error('Error al incrementar streams:', error);
-    }
+  try {
+    await this.fetchWithAuth(`${API_URL}/api/canciones/${id}/streams`, {
+      method: 'POST',
+    });
+  } catch (error) {
+    console.error('Error al incrementar streams:', error);
   }
+}
   
 }
 
