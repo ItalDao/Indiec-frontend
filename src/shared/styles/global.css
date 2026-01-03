@@ -1,9 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  width: '100%';
 }
 
 :root {
@@ -109,4 +113,66 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.eventoimg {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  position: relative;
+}
+
+.imgevent {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.eventoimg:hover .imgevent {
+  transform: scale(1.05);
+}
+
+.no-image-text {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #999;
+  font-weight: bold;
+  font-style: italic;
+  font-size: 14px;
+  text-transform: uppercase;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.eventosc {
+  padding: 20px;
+}
+
+.misGustos{
+  margin: 30px;
+  background-color:#334155;
+  padding: 30px;
+  border-radius: 12px;
+
+}
+
+.hobies{
+  margin: 30px;
+  background-color: #0F172A;
+  padding: 30px;
+  border-radius: 12px;
+}
+
+.favoritos{
+  margin: 30px;
+  background-color:#0F172A;
+  padding: 30px;
+  border-radius: 12px;
 }

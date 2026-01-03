@@ -31,6 +31,8 @@ const AdminLayout = () => {
     marginLeft: '260px',
     minHeight: '100vh',
     background: colors.background,
+    width: '100%',
+    
   };
 
   const headerStyles: React.CSSProperties = {
@@ -105,17 +107,18 @@ const AdminLayout = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontWeight: '600',
+              fontWeight: '800',
             }}>
               A
             </div>
           </div>
         </header>
-        <main style={{ padding: '2rem' }}>
+        <main style={{ padding: 'rem' }}>
           <Outlet />
         </main>
       </div>
     </div>
+    
   );
 };
 
