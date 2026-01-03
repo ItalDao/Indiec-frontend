@@ -1,0 +1,65 @@
+.container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  animation: fadeIn var(--transition-normal);
+}
+
+.title {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.itemsGrid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.couponSection {
+  margin-top: 1.5rem;
+}
+
+.couponInputWrapper {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.errorMessage {
+  color: var(--error);
+  margin-top: 0.5rem;
+}
+
+.successMessage {
+  color: var(--success);
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.summary {
+  margin-top: 1.5rem;
+  text-align: right;
+}
+
+.summaryLine {
+  color: var(--text-secondary);
+}
+
+.summaryDiscount {
+  color: var(--success);
+  margin-top: 0.25rem;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.emptyCart {
+  padding: 2rem;
+  text-align: center;
+}

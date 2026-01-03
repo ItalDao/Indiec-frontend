@@ -1,0 +1,60 @@
+.container {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: fadeIn var(--transition-normal);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.headerInfo {
+  display: flex;
+  gap: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.itemsCard,
+.shippingCard,
+.totalCard {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.itemRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.75rem;
+}
+
+.itemDetails strong {
+  display: block;
+}
+
+.itemDetails p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.itemPrice p {
+  font-size: 0.9rem;
+  margin: 0;
+  text-align: right;
+}
+
+.itemPrice strong {
+  display: block;
+}
+
+.backButton {
+  align-self: flex-start;
+}

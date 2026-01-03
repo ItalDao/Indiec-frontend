@@ -1,0 +1,112 @@
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  animation: fadeIn var(--transition-normal);
+}
+
+/* Card principal del perfil */
+.card {
+  background: linear-gradient(
+    180deg,
+    var(--background-card),
+    var(--background-light)
+  );
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 1.75rem;
+  box-shadow: var(--shadow-lg);
+  transition: transform var(--transition-fast),
+              box-shadow var(--transition-fast),
+              border-color var(--transition-fast);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--primary);
+}
+
+/* Secciones internas */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Títulos de sección */
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Línea decorativa */
+.sectionTitle::before {
+  content: '';
+  width: 4px;
+  height: 1rem;
+  border-radius: 2px;
+  background: linear-gradient(
+    180deg,
+    var(--primary),
+    var(--secondary)
+  );
+}
+
+/* Contenido del perfil */
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  transition: background-color var(--transition-fast),
+              border-color var(--transition-fast);
+}
+
+.infoRow:hover {
+  background-color: rgba(139, 92, 246, 0.08);
+  border-color: var(--primary-light);
+}
+
+.label {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.value {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* Acciones */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Avatar (si lo usas) */
+.avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 999px;
+  border: 3px solid var(--primary);
+  box-shadow: var(--shadow-md);
+  object-fit: cover;
+  align-self: center;
+  margin-bottom: 1rem;
+}
