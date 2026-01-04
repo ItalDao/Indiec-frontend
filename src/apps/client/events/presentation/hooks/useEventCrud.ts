@@ -1,4 +1,45 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
+import type { Event } from '../../domain/models/Event';
+import { MOCK_EVENTS } from '../../data/events.mock'; // Importamos los datos
+
+export const useEventCrud = () => {
+  // Iniciamos con los datos quemados
+  const [events, setEvents] = useState<Event[]>(MOCK_EVENTS);
+
+  const saveEvent = async (formData: FormData) => {
+    // 1. Extraemos los datos del formulario
+    const nuevoEvento: Event = {
+      idEvento: Math.floor(Math.random() * 10000), // Generamos un ID al azar
+      titulo: formData.get('titulo') as string,
+      generoMusical: formData.get('generoMusical') as string,
+      fecha: formData.get('fecha') as string,
+      lugar: formData.get('lugar') as string,
+      capacidad: Number(formData.get('capacidad')),
+      precioEntrada: Number(formData.get('precioEntrada')),
+      descripcion: formData.get('descripcion') as string,
+      // Usamos una imagen por defecto si no hay una real
+      imagen: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=1000", 
+      estado: "programado"
+    };
+
+    // 2. Actualizamos el estado agregando el nuevo evento
+    setEvents([...events, nuevoEvento]);
+    console.log("Evento creado localmente:", nuevoEvento);
+  };
+
+  const removeEvent = (id: number) => {
+    // Esto sí funciona permanentemente en la sesión actual
+    setEvents(prev => prev.filter(e => e.idEvento !== id));
+  };
+
+  const updateExistingEvent = async (id: number, formData: FormData) => {
+    // Opcional: Podrías buscar el evento por ID y actualizar sus campos
+    console.log("Simulando actualización del ID:", id);
+  };
+
+  return { events, saveEvent, removeEvent, updateExistingEvent };
+};
+/*import { useState, useEffect, useCallback } from 'react';
 import type { Event } from '../../domain/models/Event';
 import { EventApi } from '../../infrastructure/api/eventApi';
 import * as UseCases from '../../application/usecases';
@@ -70,3 +111,4 @@ export const useEventCrud = () => {
     updateExistingEvent 
   };
 };
+*/

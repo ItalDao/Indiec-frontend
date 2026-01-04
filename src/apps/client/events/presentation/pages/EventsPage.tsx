@@ -85,15 +85,26 @@ export const EventsPage: React.FC = () => {
             gap: '2rem' 
           }} className="pr-2">
 
-            {/* IMAGEN PRINCIPAL (SIN BORDES) */}
-            <div className=" w-full rounded-[32px] overflow-hidden flex-shrink-0 shadow-xl border border-slate-100 dark:border-slate-800">
+            {/*<div className=" w-full rounded-[32px] overflow-hidden flex-shrink-0 shadow-xl border border-slate-100 dark:border-slate-800">
               <img
                 src={`http://localhost:9000/uploads/eventos/${selectedEvent.imagen}`}
                 alt={selectedEvent.titulo}
                 className="w-full h-full object-cover"
                 crossOrigin="anonymous"
               />
-            </div>
+            </div> */}
+            <img
+              src={
+                selectedEvent?.imagen 
+                  ? (selectedEvent.imagen.startsWith('http') 
+                      ? selectedEvent.imagen 
+                      : `http://localhost:9000/uploads/eventos/${selectedEvent.imagen}`)
+                  : 'https://via.placeholder.com/800x600?text=Sin+Imagen' // Imagen de respaldo
+              }
+              alt={selectedEvent?.titulo || 'Evento'}
+              className="w-full h-full object-cover"
+            />
+            
 
             {/* TÍTULO + PRECIO */}
             <div className="flex justify-between items-start gap-6 px-2">

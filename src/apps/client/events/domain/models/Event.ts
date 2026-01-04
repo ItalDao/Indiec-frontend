@@ -7,6 +7,6 @@ export interface Event {
   descripcion: string;
   precioEntrada: number;
   capacidad: number;
-  imagen: string | null | File;
+  imagen: string | null;
   estado: string;
 }
