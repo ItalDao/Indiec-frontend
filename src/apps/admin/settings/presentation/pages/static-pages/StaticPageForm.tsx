@@ -1,131 +1,142 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUsers } from "../../hooks/useUsers";
 
-export default function StaticPageForm() {
+export default function UserForm() {
   const navigate = useNavigate();
-
-  const [title, setTitle] = useState("");
-  const [url, setUrl] = useState("");
-  const [content, setContent] = useState("");
-  const [visible, setVisible] = useState(true);
+  const { createUser, loading } = useUsers();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("Gestor de Artistas");
+  const [status, setStatus] = useState<"active" | "inactive">("active");
   const [showModal, setShowModal] = useState(false);
 
-  const generateUrl = (text: string) => {
-    return text
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-  };
-
-  const handleTitleChange = (value: string) => {
-    setTitle(value);
-    if (!url) {
-      setUrl(generateUrl(value));
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Simulación de guardado
-    console.log({
-      title,
-      url,
-      content,
-      visible,
+    
+    const success = await createUser({
+      name,
+      email,
+      role,
+      status,
     });
 
-    setShowModal(true);
+    if (success) {
+      setShowModal(true);
+    }
   };
 
   const handleConfirm = () => {
     setShowModal(false);
-    navigate("/admin/settings/static-pages");
+    navigate("/admin/settings/users");
   };
 
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1 className="page-title">Crear página estática</h1>
-        <p className="page-subtitle">
-          Define el contenido estático de tu plataforma
-        </p>
+        <h1 className="page-title">Crear Usuario</h1>
+        <p className="page-subtitle">Agrega un nuevo usuario al sistema</p>
       </div>
 
       <form onSubmit={handleSubmit}>
         <div className="card">
-          <div className="form-group">
-            <label className="form-label">Título</label>
-            <input
-              className="form-input"
-              value={title}
-              onChange={(e) => handleTitleChange(e.target.value)}
-              placeholder="Ej: Sobre INDIEC"
-              required
-            />
+          <h3 style={{ marginBottom: "24px", fontSize: "20px", fontWeight: "600" }}>
+            Información del Usuario
+          </h3>
+
+          <div className="grid grid-2">
+            <div className="form-group">
+              <label className="form-label">Nombre completo</label>
+              <input
+                className="form-input"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Ej: Juan Pérez"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Email</label>
+              <input
+                className="form-input"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="usuario@indiec.com"
+                required
+              />
+            </div>
           </div>
 
-          <div className="form-group">
-            <label className="form-label">URL</label>
-            <input
-              className="form-input"
-              value={url}
-              onChange={(e) => setUrl(generateUrl(e.target.value))}
-              placeholder="sobre-indiec"
-              required
-            />
-            <small style={{ color: "#94a3b8", fontSize: "13px" }}>
-              URL final: /{url || "tu-url"}
-            </small>
-          </div>
+          <div className="grid grid-2">
+            <div className="form-group">
+              <label className="form-label">Contraseña</label>
+              <input
+                className="form-input"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Mínimo 8 caracteres"
+                required
+                minLength={8}
+              />
+            </div>
 
-          <div className="form-group">
-            <label className="form-label">Contenido</label>
-            <textarea
-              className="form-textarea"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              rows={10}
-              placeholder="Escribe el contenido de la página..."
-            />
+            <div className="form-group">
+              <label className="form-label">Rol</label>
+              <select
+                className="form-select"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <option value="Super Admin">Super Admin</option>
+                <option value="Gestor de Artistas">Gestor de Artistas</option>
+                <option value="Gestor de Contenido">Gestor de Contenido</option>
+                <option value="Gestor de Tienda">Gestor de Tienda</option>
+              </select>
+            </div>
           </div>
 
           <div className="form-group">
             <label className="form-checkbox">
               <input
                 type="checkbox"
-                checked={visible}
-                onChange={() => setVisible(!visible)}
+                checked={status === "active"}
+                onChange={() => setStatus(status === "active" ? "inactive" : "active")}
               />
-              <span>Publicar página</span>
+              <span>Usuario activo</span>
             </label>
           </div>
 
-          <div style={{ display: "flex", gap: "12px", marginTop: "24px" }}>
-            <button type="submit" className="btn btn-primary">
-              Guardar página
+          <div style={{ display: "flex", gap: "12px", marginTop: "32px" }}>
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? '⏳ Creando...' : '💾 Crear usuario'}
             </button>
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={() => navigate("/admin/settings/static-pages")}
+              onClick={() => navigate("/admin/settings/users")}
             >
-              Cancelar
+              ← Cancelar
             </button>
           </div>
         </div>
       </form>
 
       {showModal && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <h2>✔ Página creada</h2>
-            <p>La página “{title}” fue creada correctamente.</p>
-            <button className="btn btn-primary" onClick={handleConfirm}>
-              Aceptar
-            </button>
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h2 className="modal-title">✅ ¡Usuario creado!</h2>
+            <div className="modal-content">
+              El usuario "{name}" ha sido creado exitosamente.
+            </div>
+            <div className="modal-actions">
+              <button className="btn btn-primary" onClick={handleConfirm}>
+                Aceptar
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -1,59 +1,60 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUsers } from "../../hooks/useUsers";
 
-interface PaginaEstatica {
-  id: string;
-  titulo: string;
-  slug: string;
-  visible: boolean;
-}
-
-const mockPages: PaginaEstatica[] = [
-  { id: "1", titulo: "Sobre INDIEC", slug: "sobre-indiec", visible: true },
-  { id: "2", titulo: "Términos y Condiciones", slug: "terminos-condiciones", visible: true },
-  { id: "3", titulo: "Política de Privacidad", slug: "politica-privacidad", visible: false },
-];
-
-export default function StaticPagesList() {
+export default function UsersList() {
   const navigate = useNavigate();
-  const [pages, setPages] = useState<PaginaEstatica[]>(mockPages);
+  const { users, loading, error, deleteUser, toggleStatus } = useUsers();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [pageToDelete, setPageToDelete] = useState<string | null>(null);
-
-  const toggleVisibility = (id: string) => {
-    setPages((prev) =>
-      prev.map((page) =>
-        page.id === id ? { ...page, visible: !page.visible } : page
-      )
-    );
-  };
+  const [userToDelete, setUserToDelete] = useState<string | null>(null);
 
   const handleDelete = (id: string) => {
-    setPageToDelete(id);
+    setUserToDelete(id);
     setShowDeleteModal(true);
   };
 
-  const confirmDelete = () => {
-    if (pageToDelete) {
-      setPages((prev) => prev.filter((page) => page.id !== pageToDelete));
+  const confirmDelete = async () => {
+    if (userToDelete) {
+      await deleteUser(userToDelete);
       setShowDeleteModal(false);
-      setPageToDelete(null);
+      setUserToDelete(null);
     }
   };
+
+  if (loading && users.length === 0) {
+    return (
+      <div className="page-container">
+        <div style={{ textAlign: 'center', padding: '48px' }}>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>👥</div>
+          <p style={{ color: '#94a3b8' }}>Cargando usuarios...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="page-container">
+        <div className="card" style={{ background: 'rgba(239, 68, 68, 0.1)', borderColor: 'rgba(239, 68, 68, 0.3)' }}>
+          <p style={{ color: '#fca5a5' }}>❌ {error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="page-container">
       <div className="page-header">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
-            <h1 className="page-title">Páginas Estáticas</h1>
-            <p className="page-subtitle">Gestiona el contenido estático de tu plataforma</p>
+            <h1 className="page-title">Gestión de Usuarios</h1>
+            <p className="page-subtitle">Administra los usuarios y sus permisos</p>
           </div>
           <button
             className="btn btn-primary"
-            onClick={() => navigate("/admin/settings/static-pages/new")}
+            onClick={() => navigate("/admin/settings/users/new")}
           >
-            ➕ Nueva página
+            ➕ Nuevo usuario
           </button>
         </div>
       </div>
@@ -62,39 +63,43 @@ export default function StaticPagesList() {
         <table className="table">
           <thead>
             <tr>
-              <th>Título</th>
-              <th>Slug</th>
-              <th style={{ textAlign: 'center' }}>Estado</th>
-              <th style={{ textAlign: 'center' }}>Acciones</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th style={{ textAlign: "center" }}>Estado</th>
+              <th style={{ textAlign: "center" }}>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {pages.map((page) => (
-              <tr key={page.id}>
-                <td style={{ fontWeight: '500' }}>{page.titulo}</td>
-                <td style={{ color: '#94a3b8', fontSize: '14px' }}>/{page.slug}</td>
-                <td style={{ textAlign: 'center' }}>
-                  <span className={page.visible ? 'badge badge-success' : 'badge badge-danger'}>
-                    {page.visible ? '👁️ Visible' : '🚫 Oculto'}
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td style={{ fontWeight: "500" }}>{user.name}</td>
+                <td style={{ color: "#94a3b8", fontSize: "14px" }}>{user.email}</td>
+                <td>
+                  <span className="badge badge-warning">{user.role}</span>
+                </td>
+                <td style={{ textAlign: "center" }}>
+                  <span className={user.status === "active" ? "badge badge-success" : "badge badge-danger"}>
+                    {user.status === "active" ? "✓ Activo" : "✗ Inactivo"}
                   </span>
                 </td>
                 <td>
-                  <div className="action-buttons" style={{ justifyContent: 'center' }}>
+                  <div className="action-buttons" style={{ justifyContent: "center" }}>
                     <button
                       className="btn btn-sm btn-secondary"
-                      onClick={() => navigate(`/admin/settings/static-pages/edit/${page.id}`)}
+                      onClick={() => navigate(`/admin/settings/users/edit/${user.id}`)}
                     >
                       ✏️ Editar
                     </button>
                     <button
                       className="btn btn-sm btn-success"
-                      onClick={() => toggleVisibility(page.id)}
+                      onClick={() => toggleStatus(user.id)}
                     >
-                      {page.visible ? '👁️ Ocultar' : '👁️ Mostrar'}
+                      {user.status === "active" ? "🔒 Desactivar" : "🔓 Activar"}
                     </button>
                     <button
                       className="btn btn-sm btn-danger"
-                      onClick={() => handleDelete(page.id)}
+                      onClick={() => handleDelete(user.id)}
                     >
                       🗑️ Eliminar
                     </button>
@@ -111,7 +116,7 @@ export default function StaticPagesList() {
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <h2 className="modal-title">⚠️ Confirmar eliminación</h2>
             <div className="modal-content">
-              ¿Estás seguro de eliminar esta página? Esta acción no se puede deshacer.
+              ¿Estás seguro de eliminar este usuario? Esta acción no se puede deshacer.
             </div>
             <div className="modal-actions">
               <button className="btn btn-secondary" onClick={() => setShowDeleteModal(false)}>

@@ -1,10 +1,10 @@
-import { PaginaEstatica } from "../entities/PaginaEstatica";
-
+import type { PaginaEstatica } from "../entities/PaginaEstatica";
 
 export interface PaginaEstaticaRepository {
   getAll(): Promise<PaginaEstatica[]>;
   getById(id: string): Promise<PaginaEstatica | null>;
-  create(page: PaginaEstatica): Promise<void>;
+  create(page: Omit<PaginaEstatica, 'id'>): Promise<PaginaEstatica>;
   update(page: PaginaEstatica): Promise<void>;
-  delete(id: string): Promise<void>; // eliminación lógica después
+  delete(id: string): Promise<void>;
+  toggleVisibility(id: string): Promise<void>;
 }

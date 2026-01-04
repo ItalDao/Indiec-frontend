@@ -1,19 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useGeneralSettings } from "../../hooks/useGeneralSettings";
 
 export default function GeneralSettingsPage() {
-  const [platformName, setPlatformName] = useState("INDIEC");
-  const [primaryColor, setPrimaryColor] = useState("#8B5CF6");
-  const [secondaryColor, setSecondaryColor] = useState("#06b6d4");
-  const [instagram, setInstagram] = useState("@indiec_oficial");
-  const [facebook, setFacebook] = useState("");
-  const [twitter, setTwitter] = useState("");
-  const [footerText, setFooterText] = useState("© 2025 INDIEC. Todos los derechos reservados.");
-  const [logo, setLogo] = useState<string | null>(null);
+  const { settings, loading, error, saveSettings } = useGeneralSettings();
   const [showModal, setShowModal] = useState(false);
 
-  const handleSave = (e: React.FormEvent) => {
+  // Estados locales del formulario
+  const [platformName, setPlatformName] = useState("");
+  const [primaryColor, setPrimaryColor] = useState("");
+  const [secondaryColor, setSecondaryColor] = useState("");
+  const [instagram, setInstagram] = useState("");
+  const [facebook, setFacebook] = useState("");
+  const [twitter, setTwitter] = useState("");
+  const [footerText, setFooterText] = useState("");
+  const [logo, setLogo] = useState<string | null>(null);
+
+  // Cargar datos cuando settings cambie
+  useEffect(() => {
+    if (settings) {
+      setPlatformName(settings.platformName);
+      setPrimaryColor(settings.primaryColor);
+      setSecondaryColor(settings.secondaryColor);
+      setInstagram(settings.instagram);
+      setFacebook(settings.facebook);
+      setTwitter(settings.twitter);
+      setFooterText(settings.footerText);
+      setLogo(settings.logo);
+    }
+  }, [settings]);
+
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({
+    
+    const success = await saveSettings({
+      id: settings?.id || '1',
       platformName,
       primaryColor,
       secondaryColor,
@@ -23,7 +43,10 @@ export default function GeneralSettingsPage() {
       footerText,
       logo,
     });
-    setShowModal(true);
+
+    if (success) {
+      setShowModal(true);
+    }
   };
 
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,6 +63,27 @@ export default function GeneralSettingsPage() {
   const removeLogo = () => {
     setLogo(null);
   };
+
+  if (loading && !settings) {
+    return (
+      <div className="page-container">
+        <div style={{ textAlign: 'center', padding: '48px' }}>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>⚙️</div>
+          <p style={{ color: '#94a3b8' }}>Cargando configuración...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="page-container">
+        <div className="card" style={{ background: 'rgba(239, 68, 68, 0.1)', borderColor: 'rgba(239, 68, 68, 0.3)' }}>
+          <p style={{ color: '#fca5a5' }}>❌ {error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="page-container">
@@ -216,8 +260,8 @@ export default function GeneralSettingsPage() {
           </div>
 
           <div style={{ marginTop: '32px', display: 'flex', gap: '12px' }}>
-            <button type="submit" className="btn btn-primary">
-              💾 Guardar configuración
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? '⏳ Guardando...' : '💾 Guardar configuración'}
             </button>
             <button 
               type="button" 
