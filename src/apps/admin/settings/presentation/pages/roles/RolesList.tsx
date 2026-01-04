@@ -1,11 +1,5 @@
 import { useState } from "react";
-
-interface Role {
-  id: string;
-  name: string;
-  permissions: string[];
-  usersCount: number;
-}
+import { useRoles } from "../../hooks/useRoles";
 
 const allPermissions = [
   "Gestionar artistas",
@@ -19,38 +13,11 @@ const allPermissions = [
   "Moderar contenido",
 ];
 
-const mockRoles: Role[] = [
-  { 
-    id: "1", 
-    name: "Super Admin", 
-    permissions: allPermissions, 
-    usersCount: 1 
-  },
-  { 
-    id: "2", 
-    name: "Gestor de Artistas", 
-    permissions: ["Gestionar artistas", "Ver reportes"], 
-    usersCount: 3 
-  },
-  { 
-    id: "3", 
-    name: "Gestor de Contenido", 
-    permissions: ["Gestionar canciones", "Gestionar eventos", "Moderar contenido", "Ver reportes"], 
-    usersCount: 5 
-  },
-  { 
-    id: "4", 
-    name: "Gestor de Tienda", 
-    permissions: ["Gestionar productos", "Ver reportes"], 
-    usersCount: 2 
-  },
-];
-
 export default function RolesList() {
-  const [roles, setRoles] = useState<Role[]>(mockRoles);
+  const { roles, loading, error, createRole, updateRole, deleteRole } = useRoles();
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState<"add" | "edit" | "delete">("add");
-  const [currentRole, setCurrentRole] = useState<Role>({ id: "", name: "", permissions: [], usersCount: 0 });
+  const [currentRole, setCurrentRole] = useState({ id: "", name: "", permissions: [] as string[], usersCount: 0 });
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [roleToDelete, setRoleToDelete] = useState<string | null>(null);
 
@@ -60,7 +27,7 @@ export default function RolesList() {
     setShowModal(true);
   };
 
-  const handleEdit = (role: Role) => {
+  const handleEdit = (role: typeof currentRole) => {
     setCurrentRole({ ...role });
     setModalType("edit");
     setShowModal(true);
@@ -71,19 +38,19 @@ export default function RolesList() {
     setShowDeleteModal(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (roleToDelete) {
-      setRoles((prev) => prev.filter((role) => role.id !== roleToDelete));
+      await deleteRole(roleToDelete);
       setShowDeleteModal(false);
       setRoleToDelete(null);
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (modalType === "add") {
-      setRoles([...roles, { ...currentRole, id: Date.now().toString() }]);
+      await createRole({ name: currentRole.name, permissions: currentRole.permissions, usersCount: 0 });
     } else if (modalType === "edit") {
-      setRoles(roles.map((role) => (role.id === currentRole.id ? currentRole : role)));
+      await updateRole(currentRole);
     }
     setShowModal(false);
   };
@@ -101,6 +68,27 @@ export default function RolesList() {
       });
     }
   };
+
+  if (loading && roles.length === 0) {
+    return (
+      <div className="page-container">
+        <div style={{ textAlign: 'center', padding: '48px' }}>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔐</div>
+          <p style={{ color: '#94a3b8' }}>Cargando roles...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="page-container">
+        <div className="card" style={{ background: 'rgba(239, 68, 68, 0.1)', borderColor: 'rgba(239, 68, 68, 0.3)' }}>
+          <p style={{ color: '#fca5a5' }}>❌ {error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="page-container">
@@ -180,8 +168,8 @@ export default function RolesList() {
               <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
                 Cancelar
               </button>
-              <button className="btn btn-primary" onClick={handleSave}>
-                Guardar
+              <button className="btn btn-primary" onClick={handleSave} disabled={loading}>
+                {loading ? '⏳ Guardando...' : 'Guardar'}
               </button>
             </div>
           </div>
@@ -197,8 +185,8 @@ export default function RolesList() {
               <button className="btn btn-secondary" onClick={() => setShowDeleteModal(false)}>
                 Cancelar
               </button>
-              <button className="btn btn-danger" onClick={confirmDelete}>
-                Eliminar
+              <button className="btn btn-danger" onClick={confirmDelete} disabled={loading}>
+                {loading ? '⏳ Eliminando...' : 'Eliminar'}
               </button>
             </div>
           </div>

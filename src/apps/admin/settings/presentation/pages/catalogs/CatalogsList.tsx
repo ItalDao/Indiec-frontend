@@ -1,54 +1,15 @@
 import { useState } from "react";
-
-interface CatalogItem {
-  id: string;
-  name: string;
-  code?: string;
-}
-
-const mockGenres: CatalogItem[] = [
-  { id: "1", name: "Rock", code: "ROCK" },
-  { id: "2", name: "Pop", code: "POP" },
-  { id: "3", name: "Jazz", code: "JAZZ" },
-];
-
-const mockCountries: CatalogItem[] = [
-  { id: "1", name: "Ecuador", code: "EC" },
-  { id: "2", name: "Colombia", code: "CO" },
-  { id: "3", name: "Perú", code: "PE" },
-];
-
-const mockCategories: CatalogItem[] = [
-  { id: "1", name: "Camisetas" },
-  { id: "2", name: "Accesorios" },
-  { id: "3", name: "Vinilos" },
-];
-
-const mockSizes: CatalogItem[] = [
-  { id: "1", name: "S", code: "S" },
-  { id: "2", name: "M", code: "M" },
-  { id: "3", name: "L", code: "L" },
-  { id: "4", name: "XL", code: "XL" },
-];
+import { useCatalogs } from "../../hooks/useCatalogs";
+import type { CatalogType } from "../../domain/entities/Catalog";
 
 export default function CatalogsList() {
-  const [activeTab, setActiveTab] = useState<"genres" | "countries" | "categories" | "sizes">("genres");
-  const [genres, setGenres] = useState(mockGenres);
-  const [countries, setCountries] = useState(mockCountries);
-  const [categories, setCategories] = useState(mockCategories);
-  const [sizes, setSizes] = useState(mockSizes);
+  const [activeTab, setActiveTab] = useState<CatalogType>("genres");
+  const { items, loading, error, createItem, updateItem, deleteItem } = useCatalogs(activeTab);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState<"add" | "edit" | "delete">("add");
   const [currentItem, setCurrentItem] = useState({ id: "", name: "", code: "" });
-
-  const getCurrentData = () => {
-    switch (activeTab) {
-      case "genres": return genres;
-      case "countries": return countries;
-      case "categories": return categories;
-      case "sizes": return sizes;
-    }
-  };
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
   const handleAdd = () => {
     setCurrentItem({ id: "", name: "", code: "" });
@@ -56,37 +17,31 @@ export default function CatalogsList() {
     setShowModal(true);
   };
 
-  const handleEdit = (item: CatalogItem) => {
-    setCurrentItem({ id: item.id, name: item.name, code: item.code || "" });
+  const handleEdit = (item: typeof currentItem) => {
+    setCurrentItem({ ...item });
     setModalType("edit");
     setShowModal(true);
   };
 
-  const handleDelete = (item: CatalogItem) => {
-    setCurrentItem({ id: item.id, name: item.name, code: item.code || "" });
-    setModalType("delete");
-    setShowModal(true);
+  const handleDelete = (id: string) => {
+    setItemToDelete(id);
+    setShowDeleteModal(true);
   };
 
-  const handleSave = () => {
-    const updateData = (data: CatalogItem[]) => {
-      if (modalType === "add") {
-        return [...data, { ...currentItem, id: Date.now().toString() }];
-      }
-      if (modalType === "edit") {
-        return data.map(item => item.id === currentItem.id ? currentItem : item);
-      }
-      if (modalType === "delete") {
-        return data.filter(item => item.id !== currentItem.id);
-      }
-      return data;
-    };
+  const confirmDelete = async () => {
+    if (itemToDelete) {
+      await deleteItem(itemToDelete);
+      setShowDeleteModal(false);
+      setItemToDelete(null);
+    }
+  };
 
-    switch (activeTab) {
-      case "genres": setGenres(updateData(genres)); break;
-      case "countries": setCountries(updateData(countries)); break;
-      case "categories": setCategories(updateData(categories)); break;
-      case "sizes": setSizes(updateData(sizes)); break;
+  const handleSave = async () => {
+    if (modalType === "add") {
+      const { id, ...itemData } = currentItem;
+      await createItem(itemData);
+    } else if (modalType === "edit") {
+      await updateItem(currentItem);
     }
     setShowModal(false);
   };
@@ -97,6 +52,27 @@ export default function CatalogsList() {
     { id: "categories", label: "📦 Categorías" },
     { id: "sizes", label: "📏 Tallas" },
   ];
+
+  if (loading && items.length === 0) {
+    return (
+      <div className="page-container">
+        <div style={{ textAlign: 'center', padding: '48px' }}>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>📚</div>
+          <p style={{ color: '#94a3b8' }}>Cargando catálogos...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="page-container">
+        <div className="card" style={{ background: 'rgba(239, 68, 68, 0.1)', borderColor: 'rgba(239, 68, 68, 0.3)' }}>
+          <p style={{ color: '#fca5a5' }}>❌ {error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="page-container">
@@ -110,7 +86,7 @@ export default function CatalogsList() {
           <button
             key={tab.id}
             className={`btn ${activeTab === tab.id ? "btn-primary" : "btn-secondary"}`}
-            onClick={() => setActiveTab(tab.id as any)}
+            onClick={() => setActiveTab(tab.id as CatalogType)}
           >
             {tab.label}
           </button>
@@ -137,7 +113,7 @@ export default function CatalogsList() {
               </tr>
             </thead>
             <tbody>
-              {getCurrentData().map((item) => (
+              {items.map((item) => (
                 <tr key={item.id}>
                   <td style={{ fontWeight: "500" }}>{item.name}</td>
                   {(activeTab === "genres" || activeTab === "countries" || activeTab === "sizes") && (
@@ -148,7 +124,7 @@ export default function CatalogsList() {
                       <button className="btn btn-sm btn-secondary" onClick={() => handleEdit(item)}>
                         ✏️ Editar
                       </button>
-                      <button className="btn btn-sm btn-danger" onClick={() => handleDelete(item)}>
+                      <button className="btn btn-sm btn-danger" onClick={() => handleDelete(item.id)}>
                         🗑️ Eliminar
                       </button>
                     </div>
@@ -164,45 +140,53 @@ export default function CatalogsList() {
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <h2 className="modal-title">
-              {modalType === "delete" ? "⚠️ Confirmar eliminación" : modalType === "add" ? "➕ Agregar item" : "✏️ Editar item"}
+              {modalType === "add" ? "➕ Agregar item" : "✏️ Editar item"}
             </h2>
             <div className="modal-content">
-              {modalType === "delete" ? (
-                <p>¿Estás seguro de eliminar "{currentItem.name}"?</p>
-              ) : (
-                <>
-                  <div className="form-group">
-                    <label className="form-label">Nombre</label>
-                    <input
-                      className="form-input"
-                      value={currentItem.name}
-                      onChange={(e) => setCurrentItem({ ...currentItem, name: e.target.value })}
-                      placeholder="Nombre"
-                    />
-                  </div>
-                  {(activeTab === "genres" || activeTab === "countries" || activeTab === "sizes") && (
-                    <div className="form-group">
-                      <label className="form-label">Código</label>
-                      <input
-                        className="form-input"
-                        value={currentItem.code}
-                        onChange={(e) => setCurrentItem({ ...currentItem, code: e.target.value.toUpperCase() })}
-                        placeholder="Código"
-                      />
-                    </div>
-                  )}
-                </>
+              <div className="form-group">
+                <label className="form-label">Nombre</label>
+                <input
+                  className="form-input"
+                  value={currentItem.name}
+                  onChange={(e) => setCurrentItem({ ...currentItem, name: e.target.value })}
+                  placeholder="Nombre"
+                />
+              </div>
+              {(activeTab === "genres" || activeTab === "countries" || activeTab === "sizes") && (
+                <div className="form-group">
+                  <label className="form-label">Código</label>
+                  <input
+                    className="form-input"
+                    value={currentItem.code}
+                    onChange={(e) => setCurrentItem({ ...currentItem, code: e.target.value.toUpperCase() })}
+                    placeholder="Código"
+                  />
+                </div>
               )}
             </div>
             <div className="modal-actions">
               <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
                 Cancelar
               </button>
-              <button
-                className={`btn ${modalType === "delete" ? "btn-danger" : "btn-primary"}`}
-                onClick={handleSave}
-              >
-                {modalType === "delete" ? "Eliminar" : "Guardar"}
+              <button className="btn btn-primary" onClick={handleSave} disabled={loading}>
+                {loading ? '⏳ Guardando...' : 'Guardar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showDeleteModal && (
+        <div className="modal-overlay" onClick={() => setShowDeleteModal(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h2 className="modal-title">⚠️ Confirmar eliminación</h2>
+            <div className="modal-content">¿Estás seguro de eliminar este elemento?</div>
+            <div className="modal-actions">
+              <button className="btn btn-secondary" onClick={() => setShowDeleteModal(false)}>
+                Cancelar
+              </button>
+              <button className="btn btn-danger" onClick={confirmDelete} disabled={loading}>
+                {loading ? '⏳ Eliminando...' : 'Eliminar'}
               </button>
             </div>
           </div>
