@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AdminLayout from '../layout/AdminLayout';
 import ClientLayout from '../layout/ClientLayout';
+import HomePage from "../../client/home/presentation/pages/HomePage";
 
 // Importaciones de ambas features
 import UsuariosPage from '../../../admin/presentation/pages/UsuariosPage';
@@ -45,7 +46,8 @@ export const AppRouter = () => {
         {/* ===== CLIENT ===== */}
         <Route path="/client" element={<ClientLayout />}>
           <Route index element={<Navigate to="/client/home" replace />} />
-          <Route path="home" element={<TempPage title="Inicio" />} />
+          <Route path="home" element={<HomePage />} />
+        
           <Route path="search" element={<TempPage title="Búsqueda" />} />
           <Route path="artists" element={<TempPage title="Artistas" />} />
           <Route path="artists/:id" element={<TempPage title="Detalle de Artista" />} />
