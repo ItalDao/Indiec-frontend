@@ -1,5 +1,6 @@
 import type { Product } from '../../domain/models/Product';
 import { useFavorites } from '../../../account/presentation/hooks/useFavorites';
+import { Icons } from '../../../songs/presentation/components/Icons';
 
 interface Props {
   product: Product;
@@ -107,7 +108,11 @@ export const ProductCard = ({ product, onClick }: Props) => {
             e.currentTarget.style.transform = 'scale(1)';
           }}
         >
-          {isFavorite ? '❤️' : '🤍'}
+          {isFavorite ? (
+            <span style={{ color: '#ec4899', fontSize: '20px' }}><Icons.HeartFilled /></span>
+          ) : (
+            <span style={{ color: '#cbd5e1', fontSize: '20px' }}><Icons.Heart /></span>
+          )}
         </button>
       </div>
 

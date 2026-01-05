@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { HomeRepository } from "../../domain/repositories/HomeRepository";
 import { HomeMockRepository } from "../../mocks/HomeMockRepository";
+import { Icons } from '../../../songs/presentation/components/Icons';
 
 import ArtistCard from "./ArtistCard";
 import SongCard from "./SongCard";
@@ -28,7 +29,7 @@ export default function GlobalSearchBar({
     setResults(data);
   };
 
-  // 🔍 búsqueda automática al escribir
+  // Búsqueda automática al escribir
   useEffect(() => {
     executeSearch();
   }, [query]);
@@ -49,7 +50,7 @@ export default function GlobalSearchBar({
           style={styles.searchButton}
           title="Buscar"
         >
-          🔍
+          <Icons.Search />
         </button>
       </div>
 
@@ -149,13 +150,15 @@ const styles = {
   },
   input: {
     width: "100%",
-    padding: "0.65rem 2.5rem 0.65rem 1rem",
-    borderRadius: "999px",
-    border: "1px solid #334155",
-    background: "#0F172A",
+    padding: "0.7rem 2.5rem 0.7rem 1.2rem",
+    borderRadius: "10px",
+    border: "1px solid rgba(139, 92, 246, 0.3)",
+    background: "rgba(30, 27, 75, 0.5)",
+    backdropFilter: "blur(10px)",
     color: "#F1F5F9",
     outline: "none",
-  },
+    transition: "all 0.2s ease",
+  } as React.CSSProperties,
   searchButton: {
     position: "absolute" as const,
     right: "10px",
@@ -165,7 +168,13 @@ const styles = {
     border: "none",
     cursor: "pointer",
     fontSize: "1.1rem",
-    color: "#94A3B8",
+    color: "#8b5cf6",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "24px",
+    height: "24px",
+    transition: "all 0.2s ease",
   },
   dropdown: {
     position: "absolute" as const,

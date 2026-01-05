@@ -3,6 +3,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { colors } from '../../../shared/theme/colors';
 import GlobalSearchBar from '../../client/home/presentation/components/GlobalSearchBar';
 import { HomeMockRepository } from "../../client/home/mocks/HomeMockRepository";
+import { Icons } from '../../client/songs/presentation/components/Icons';
 
 
 
@@ -21,23 +22,24 @@ const ClientLayout = () => {
   ];
 
   const headerStyles: React.CSSProperties = {
-    height: '80px',
-    background: `${colors.backgroundLight}CC`,
-    backdropFilter: 'blur(10px)',
-    borderBottom: `1px solid ${colors.border}`,
+    height: '72px',
+    background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.9) 50%, rgba(15, 23, 42, 0.95) 100%)',
+    backdropFilter: 'blur(20px)',
+    borderBottom: `1px solid rgba(139, 92, 246, 0.2)`,
     position: 'sticky',
     top: 0,
     zIndex: 100,
+    boxShadow: '0 4px 20px rgba(139, 92, 246, 0.15)',
   };
 
   const containerStyles: React.CSSProperties = {
-    maxWidth: '1280px',
+    maxWidth: '1400px',
     margin: '0 auto',
     padding: '0 2rem',
     height: '100%',
     display: 'flex',
     alignItems: 'center',
-    gap: '2rem',
+    gap: '1.5rem',
   };
 
   return (
@@ -45,13 +47,14 @@ const ClientLayout = () => {
       <header style={headerStyles}>
         <div style={containerStyles}>
           {/* LOGO */}
-          <Link to="/client/home" style={{ textDecoration: 'none' }}>
-            <h1 style={{ fontSize: '1.75rem', fontWeight: '800' }}>
+          <Link to="/client/home" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+            <h1 style={{ fontSize: '1.5rem', fontWeight: '900', margin: 0, letterSpacing: '-1px' }}>
               <span
                 style={{
-                  background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
+                  background: `linear-gradient(135deg, #fff 0%, ${colors.primary} 100%)`,
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
                 }}
               >
                 INDIEC
@@ -59,13 +62,13 @@ const ClientLayout = () => {
             </h1>
           </Link>
 
-          {/* 🔍 BUSCADOR GLOBAL */}
-          <div style={{ flex: 1, maxWidth: '520px' }}>
+          {/* BUSCADOR GLOBAL */}
+          <div style={{ flex: 1, maxWidth: '500px' }}>
             <GlobalSearchBar repository={repo} />
           </div>
 
           {/* NAV */}
-          <nav style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+          <nav style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
 
@@ -75,9 +78,25 @@ const ClientLayout = () => {
                   to={item.path}
                   style={{
                     textDecoration: 'none',
-                    color: isActive ? colors.primary : colors.textSecondary,
-                    fontWeight: isActive ? '600' : '400',
-                    fontSize: '0.95rem',
+                    color: isActive ? colors.primary : '#cbd5e1',
+                    fontWeight: isActive ? '600' : '500',
+                    fontSize: '0.9rem',
+                    padding: '8px 12px',
+                    borderRadius: '6px',
+                    transition: 'all 0.2s ease',
+                    borderBottom: isActive ? `2px solid ${colors.primary}` : 'none',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isActive) {
+                      e.currentTarget.style.color = colors.primary;
+                      e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive) {
+                      e.currentTarget.style.color = '#cbd5e1';
+                      e.currentTarget.style.background = 'transparent';
+                    }
                   }}
                 >
                   {item.label}
@@ -86,25 +105,33 @@ const ClientLayout = () => {
             })}
             
             {/* Botón de FAQ */}
-            <Link to="/client/faq" title="Preguntas Frecuentes">
+            <Link to="/client/faq" title="Preguntas Frecuentes" style={{ textDecoration: 'none' }}>
               <div style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '50%',
-                background: colors.backgroundCard,
-                border: `1px solid ${colors.border}`,
+                width: '40px',
+                height: '40px',
+                borderRadius: '8px',
+                background: 'rgba(139, 92, 246, 0.15)',
+                border: `1px solid rgba(139, 92, 246, 0.3)`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '1.2rem',
+                fontSize: '1.1rem',
                 cursor: 'pointer',
-                transition: 'all 0.2s',
+                transition: 'all 0.2s ease',
+                color: '#cbd5e1',
+                fontWeight: '600',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = colors.primary;
+                e.currentTarget.style.background = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.borderColor = colors.primary;
+                e.currentTarget.style.color = colors.primary;
+                e.currentTarget.style.boxShadow = `0 4px 12px rgba(139, 92, 246, 0.2)`;
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = colors.backgroundCard;
+                e.currentTarget.style.background = 'rgba(139, 92, 246, 0.15)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.color = '#cbd5e1';
+                e.currentTarget.style.boxShadow = 'none';
               }}
               >
                 ?
@@ -112,55 +139,73 @@ const ClientLayout = () => {
             </Link>
 
             {/* Botón de Configuración */}
-            <Link to="/client/settings" title="Configuración">
+            <Link to="/client/settings" title="Configuración" style={{ textDecoration: 'none' }}>
               <div style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '50%',
-                background: colors.backgroundCard,
-                border: `1px solid ${colors.border}`,
+                width: '40px',
+                height: '40px',
+                borderRadius: '8px',
+                background: 'rgba(139, 92, 246, 0.15)',
+                border: `1px solid rgba(139, 92, 246, 0.3)`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '1.2rem',
+                fontSize: '1.1rem',
                 cursor: 'pointer',
-                transition: 'all 0.2s',
+                transition: 'all 0.2s ease',
+                color: '#cbd5e1',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = colors.primary;
+                e.currentTarget.style.background = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.borderColor = colors.primary;
+                e.currentTarget.style.color = colors.primary;
+                e.currentTarget.style.boxShadow = `0 4px 12px rgba(139, 92, 246, 0.2)`;
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = colors.backgroundCard;
+                e.currentTarget.style.background = 'rgba(139, 92, 246, 0.15)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.color = '#cbd5e1';
+                e.currentTarget.style.boxShadow = 'none';
               }}
               >
-                ⚙️
+                <Icons.Settings />
               </div>
             </Link>
 
             {/* Avatar de Usuario */}
             <div style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '50%',
+              width: '40px',
+              height: '40px',
+              borderRadius: '8px',
               background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontWeight: '600',
-              fontSize: '0.875rem',
+              fontWeight: '700',
+              fontSize: '0.85rem',
               cursor: 'pointer',
-            }}>
+              transition: 'all 0.2s ease',
+              color: '#fff',
+              boxShadow: `0 4px 12px ${colors.primary}30`,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.08)';
+              e.currentTarget.style.boxShadow = `0 8px 16px ${colors.primary}50`;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = `0 4px 12px ${colors.primary}30`;
+            }}
+            >
               U
             </div>
           </nav>
         </div>
       </header>
-
-      {/* ⬇️ AQUÍ ESTABA EL PROBLEMA */}
+      {/* Main content */}
       <main
         style={{
           color: colors.textPrimary,
-          minHeight: 'calc(100vh - 80px)',
+          minHeight: 'calc(100vh - 72px)',
         }}
       >
         <Outlet />
@@ -168,30 +213,31 @@ const ClientLayout = () => {
 
       <footer style={{
         marginTop: '4rem',
-        padding: '3rem 2rem',
-        background: colors.backgroundLight,
-        borderTop: `1px solid ${colors.border}`,
+        padding: '4rem 2rem',
+        background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 12%, #2d1b69 25%, #1a1f3a 40%, #0f172a 60%, #1a0033 75%, #0f172a 100%)',
+        borderTop: '1px solid rgba(139, 92, 246, 0.2)',
+        backdropFilter: 'blur(10px)',
       }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
           <div style={{ 
             display: 'grid', 
             gridTemplateColumns: window.innerWidth > 768 ? 'repeat(4, 1fr)' : '1fr',
-            gap: '2rem',
-            marginBottom: '2rem'
+            gap: '3rem',
+            marginBottom: '3rem'
           }}>
             {/* Columna 1: Sobre INDIEC */}
             <div>
-              <h4 style={{ marginBottom: '1rem', color: colors.text, fontWeight: '600' }}>
+              <h4 style={{ marginBottom: '1rem', color: '#E5E7EB', fontWeight: '700', fontSize: '1rem' }}>
                 INDIEC
               </h4>
-              <p style={{ fontSize: '0.875rem', color: colors.textMuted, lineHeight: '1.6' }}>
+              <p style={{ fontSize: '0.875rem', color: '#A78BFA', lineHeight: '1.6' }}>
                 Plataforma de música independiente que conecta artistas con su público.
               </p>
             </div>
             
             {/* Columna 2: Enlaces Rápidos */}
             <div>
-              <h4 style={{ marginBottom: '1rem', color: colors.text, fontWeight: '600' }}>
+              <h4 style={{ marginBottom: '1rem', color: '#E5E7EB', fontWeight: '700', fontSize: '1rem' }}>
                 Enlaces
               </h4>
               <Link 
@@ -200,12 +246,12 @@ const ClientLayout = () => {
                   display: 'block', 
                   marginBottom: '0.5rem', 
                   fontSize: '0.875rem', 
-                  color: colors.textSecondary, 
+                  color: '#CBD5E1', 
                   textDecoration: 'none',
-                  transition: 'color 0.2s'
+                  transition: 'color 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.color = colors.primary}
-                onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#A78BFA'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#CBD5E1'}
               >
                 Sobre INDIEC
               </Link>
@@ -215,12 +261,12 @@ const ClientLayout = () => {
                   display: 'block', 
                   marginBottom: '0.5rem', 
                   fontSize: '0.875rem', 
-                  color: colors.textSecondary, 
+                  color: '#CBD5E1', 
                   textDecoration: 'none',
-                  transition: 'color 0.2s'
+                  transition: 'color 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.color = colors.primary}
-                onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#A78BFA'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#CBD5E1'}
               >
                 Preguntas Frecuentes
               </Link>
@@ -229,12 +275,12 @@ const ClientLayout = () => {
                 style={{ 
                   display: 'block', 
                   fontSize: '0.875rem', 
-                  color: colors.textSecondary, 
+                  color: '#CBD5E1', 
                   textDecoration: 'none',
-                  transition: 'color 0.2s'
+                  transition: 'color 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.color = colors.primary}
-                onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#A78BFA'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#CBD5E1'}
               >
                 Contacto
               </Link>
@@ -242,7 +288,7 @@ const ClientLayout = () => {
             
             {/* Columna 3: Legal */}
             <div>
-              <h4 style={{ marginBottom: '1rem', color: colors.text, fontWeight: '600' }}>
+              <h4 style={{ marginBottom: '1rem', color: '#E5E7EB', fontWeight: '700', fontSize: '1rem' }}>
                 Legal
               </h4>
               <Link 
@@ -251,12 +297,12 @@ const ClientLayout = () => {
                   display: 'block', 
                   marginBottom: '0.5rem', 
                   fontSize: '0.875rem', 
-                  color: colors.textSecondary, 
+                  color: '#CBD5E1', 
                   textDecoration: 'none',
-                  transition: 'color 0.2s'
+                  transition: 'color 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.color = colors.primary}
-                onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#A78BFA'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#CBD5E1'}
               >
                 Términos y Condiciones
               </Link>
@@ -265,12 +311,12 @@ const ClientLayout = () => {
                 style={{ 
                   display: 'block', 
                   fontSize: '0.875rem', 
-                  color: colors.textSecondary, 
+                  color: '#CBD5E1', 
                   textDecoration: 'none',
-                  transition: 'color 0.2s'
+                  transition: 'color 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.color = colors.primary}
-                onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#A78BFA'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#CBD5E1'}
               >
                 Política de Privacidad
               </Link>
@@ -278,7 +324,7 @@ const ClientLayout = () => {
 
             {/* Columna 4: Cuenta */}
             <div>
-              <h4 style={{ marginBottom: '1rem', color: colors.text, fontWeight: '600' }}>
+              <h4 style={{ marginBottom: '1rem', color: '#E5E7EB', fontWeight: '700', fontSize: '1rem' }}>
                 Cuenta
               </h4>
               <Link 
@@ -287,12 +333,12 @@ const ClientLayout = () => {
                   display: 'block', 
                   marginBottom: '0.5rem', 
                   fontSize: '0.875rem', 
-                  color: colors.textSecondary, 
+                  color: '#CBD5E1', 
                   textDecoration: 'none',
-                  transition: 'color 0.2s'
+                  transition: 'color 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.color = colors.primary}
-                onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#A78BFA'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#CBD5E1'}
               >
                 Configuración
               </Link>
@@ -300,7 +346,7 @@ const ClientLayout = () => {
                 style={{ 
                   display: 'block', 
                   fontSize: '0.875rem', 
-                  color: colors.textMuted,
+                  color: '#6B7280',
                   cursor: 'not-allowed'
                 }}
               >
@@ -312,14 +358,14 @@ const ClientLayout = () => {
           {/* Copyright */}
           <div style={{ 
             paddingTop: '2rem', 
-            borderTop: `1px solid ${colors.border}`,
+            borderTop: '1px solid rgba(139, 92, 246, 0.2)',
             textAlign: 'center' 
           }}>
-            <p style={{ color: colors.textMuted, fontSize: '0.875rem' }}>
-              © 2024 INDIEC. Todos los derechos reservados.
+            <p style={{ color: '#CBD5E1', fontSize: '0.875rem', margin: 0 }}>
+              © 2025 INDIEC. Todos los derechos reservados.
             </p>
-            <p style={{ color: colors.textMuted, fontSize: '0.75rem', marginTop: '0.5rem' }}>
-              Hecho con 💜 para la comunidad indie
+            <p style={{ color: '#A78BFA', fontSize: '0.75rem', marginTop: '0.5rem', margin: '0.5rem 0 0 0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+              Hecho con <span style={{ color: '#ec4899', fontSize: '1rem' }}><Icons.HeartFilled /></span> para la comunidad indie
             </p>
           </div>
         </div>

@@ -58,7 +58,7 @@ export const SongListPage = () => {
         border: `1px solid rgba(239, 68, 68, 0.3)`,
         backdropFilter: 'blur(10px)',
       }}>
-        <div style={{ fontSize: '48px', marginBottom: '16px', color: colors.error }}>⚠️</div>
+        <div style={{ fontSize: '48px', marginBottom: '16px', color: colors.error, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icons.AlertCircle /></div>
         <h2 style={{ fontSize: '20px', marginBottom: '12px', color: '#fff', fontWeight: '700', margin: 0 }}>Error al cargar</h2>
         <p style={{ color: '#cbd5e1', marginBottom: '24px', margin: '12px 0 24px 0' }}>{error}</p>
         <button

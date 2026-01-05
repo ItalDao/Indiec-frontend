@@ -1,6 +1,5 @@
 // src/apps/client/support/presentation/pages/FAQPage.tsx
 import { useState } from 'react';
-import { Card } from '../../../../../shared/ui';
 import { colors } from '../../../../../shared/theme/colors';
 
 interface FAQItem {
@@ -63,10 +62,10 @@ const faqs: FAQItem[] = [
 ];
 
 const categories = [
-  { id: 'general', label: ' General', icon: '' },
-  { id: 'compras', label: ' Compras', icon: '' },
-  { id: 'eventos', label: ' Eventos', icon: '' },
-  { id: 'tecnico', label: ' Técnico', icon: '' }
+  { id: 'general', label: 'General' },
+  { id: 'compras', label: 'Compras' },
+  { id: 'eventos', label: 'Eventos' },
+  { id: 'tecnico', label: 'Técnico' }
 ];
 
 export const FAQPage = () => {
@@ -76,127 +75,195 @@ export const FAQPage = () => {
   const filteredFAQs = faqs.filter(faq => faq.category === selectedCategory);
 
   return (
-    <div style={{ maxWidth: '900px', margin: '0 auto', padding: '3rem 2rem' }}>
-      <h1 style={{ 
-        fontSize: '2.5rem', 
-        fontWeight: '800',
-        marginBottom: '0.5rem',
-        background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-      }}>
-        Preguntas Frecuentes
-      </h1>
-      <p style={{ color: colors.textMuted, marginBottom: '2rem' }}>
-        Encuentra respuestas a las preguntas más comunes
-      </p>
+    <div style={{ 
+      background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 12%, #2d1b69 25%, #1a1f3a 40%, #0f172a 60%, #1a0033 75%, #0f172a 100%)',
+      backgroundAttachment: 'fixed',
+      minHeight: '100vh',
+      paddingBottom: '60px',
+    }}>
+      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '60px 2rem' }}>
+        <div style={{ marginBottom: '60px' }}>
+          <h1 style={{ 
+            fontSize: 'clamp(42px, 7vw, 64px)', 
+            fontWeight: '900',
+            marginBottom: '16px',
+            background: 'linear-gradient(135deg, #fff 0%, #8b5cf6 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            margin: 0,
+            letterSpacing: '-2px',
+          }}>
+            Preguntas Frecuentes
+          </h1>
+          <p style={{ 
+            fontSize: '18px', 
+            color: '#cbd5e1', 
+            fontWeight: '400', 
+            lineHeight: '1.6',
+            maxWidth: '600px',
+          }}>
+            Encuentra respuestas a las preguntas más comunes sobre INDIEC
+          </p>
+        </div>
 
-      {/* Categorías */}
-      <div style={{ 
-        display: 'flex', 
-        gap: '1rem', 
-        marginBottom: '2rem',
-        flexWrap: 'wrap'
-      }}>
-        {categories.map(cat => (
-          <button
-            key={cat.id}
-            onClick={() => setSelectedCategory(cat.id)}
-            style={{
-              padding: '0.75rem 1.5rem',
-              borderRadius: '8px',
-              border: 'none',
-              background: selectedCategory === cat.id 
-                ? colors.primary 
-                : colors.backgroundCard,
-              color: selectedCategory === cat.id 
-                ? colors.text 
-                : colors.textSecondary,
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              fontSize: '1rem',
-              fontWeight: selectedCategory === cat.id ? '600' : '400'
-            }}
-          >
-            {cat.label}
-          </button>
-        ))}
-      </div>
+        {/* Categorías */}
+        <div style={{ 
+          display: 'flex', 
+          gap: '12px', 
+          marginBottom: '40px',
+          flexWrap: 'wrap'
+        }}>
+          {categories.map(cat => (
+            <button
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
+              style={{
+                padding: '12px 20px',
+                borderRadius: '10px',
+                border: selectedCategory === cat.id 
+                  ? '1px solid #8b5cf6' 
+                  : '1px solid rgba(139, 92, 246, 0.3)',
+                background: selectedCategory === cat.id 
+                  ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(99, 102, 241, 0.2))'
+                  : 'rgba(30, 27, 75, 0.5)',
+                color: selectedCategory === cat.id 
+                  ? '#8b5cf6' 
+                  : '#cbd5e1',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                fontSize: '16px',
+                fontWeight: selectedCategory === cat.id ? '600' : '500'
+              }}
+              onMouseEnter={(e) => {
+                if (selectedCategory !== cat.id) {
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.6)';
+                  e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (selectedCategory !== cat.id) {
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                  e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                }
+              }}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
 
-      {/* FAQs */}
-      <div style={{ display: 'grid', gap: '1rem' }}>
-        {filteredFAQs.map((faq, index) => (
-          <Card 
-            key={index}
-            style={{ 
-              cursor: 'pointer',
-              transition: 'all 0.2s'
-            }}
-            onClick={() => setOpenItem(openItem === index ? null : index)}
-          >
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              alignItems: 'center' 
-            }}>
-              <h3 style={{ 
-                fontSize: '1.1rem', 
-                color: colors.text,
-                fontWeight: '600',
-                margin: 0
+        {/* FAQs */}
+        <div style={{ display: 'grid', gap: '16px', marginBottom: '40px' }}>
+          {filteredFAQs.map((faq, index) => (
+            <div 
+              key={index}
+              onClick={() => setOpenItem(openItem === index ? null : index)}
+              style={{
+                background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.8), rgba(45, 27, 105, 0.6))',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '12px',
+                border: '1px solid rgba(139, 92, 246, 0.2)',
+                padding: '24px',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.5)';
+                e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 92, 246, 0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+                gap: '20px'
               }}>
-                {faq.question}
-              </h3>
-              <span style={{ 
-                fontSize: '1.5rem',
-                transition: 'transform 0.2s',
-                transform: openItem === index ? 'rotate(180deg)' : 'rotate(0deg)'
-              }}>
-                ▼
-              </span>
+                <h3 style={{ 
+                  fontSize: '18px', 
+                  color: '#fff',
+                  fontWeight: '600',
+                  margin: 0,
+                  flex: 1
+                }}>
+                  {faq.question}
+                </h3>
+                <span style={{ 
+                  fontSize: '20px',
+                  color: '#8b5cf6',
+                  transition: 'transform 0.2s ease',
+                  transform: openItem === index ? 'rotate(180deg)' : 'rotate(0deg)',
+                  display: 'flex',
+                  flexShrink: 0,
+                }}>
+                  ▼
+                </span>
+              </div>
+              
+              {openItem === index && (
+                <p style={{ 
+                  marginTop: '20px',
+                  paddingTop: '20px',
+                  borderTop: '1px solid rgba(139, 92, 246, 0.2)',
+                  color: '#cbd5e1',
+                  lineHeight: '1.6',
+                  fontSize: '16px',
+                  margin: 0,
+                }}>
+                  {faq.answer}
+                </p>
+              )}
             </div>
-            
-            {openItem === index && (
-              <p style={{ 
-                marginTop: '1rem',
-                paddingTop: '1rem',
-                borderTop: `1px solid ${colors.border}`,
-                color: colors.textSecondary,
-                lineHeight: '1.6'
-              }}>
-                {faq.answer}
-              </p>
-            )}
-          </Card>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      {/* Contacto adicional */}
-      <Card style={{ marginTop: '3rem', textAlign: 'center' }}>
-        <h3 style={{ fontSize: '1.3rem', marginBottom: '1rem', color: colors.text }}>
-          ¿No encontraste lo que buscabas?
-        </h3>
-        <p style={{ color: colors.textSecondary, marginBottom: '1.5rem' }}>
-          Nuestro equipo de soporte está aquí para ayudarte
-        </p>
-        <a 
-          href="/client/contact"
-          style={{
-            display: 'inline-block',
-            padding: '0.75rem 2rem',
-            background: colors.primary,
-            color: colors.text,
-            borderRadius: '8px',
-            textDecoration: 'none',
-            fontWeight: '600',
-            transition: 'opacity 0.2s'
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
-          onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
-        >
-          Contactar Soporte
-        </a>
-      </Card>
+        {/* Contacto adicional */}
+        <div style={{
+          background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.8), rgba(45, 27, 105, 0.6))',
+          backdropFilter: 'blur(10px)',
+          borderRadius: '16px',
+          border: '1px solid rgba(139, 92, 246, 0.2)',
+          padding: '40px',
+          textAlign: 'center',
+          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
+        }}>
+          <h3 style={{ fontSize: '24px', marginBottom: '16px', color: '#fff', fontWeight: '700', margin: 0 }}>
+            ¿No encontraste lo que buscabas?
+          </h3>
+          <p style={{ color: '#cbd5e1', marginBottom: '24px', fontSize: '16px', margin: '16px 0 24px 0' }}>
+            Nuestro equipo de soporte está aquí para ayudarte
+          </p>
+          <a 
+            href="/client/contact"
+            style={{
+              display: 'inline-block',
+              padding: '12px 28px',
+              background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
+              color: '#fff',
+              borderRadius: '10px',
+              textDecoration: 'none',
+              fontWeight: '600',
+              fontSize: '16px',
+              transition: 'all 0.2s ease',
+              boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 8px 20px rgba(139, 92, 246, 0.5)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(139, 92, 246, 0.3)';
+            }}
+          >
+            Contactar Soporte
+          </a>
+        </div>
+      </div>
     </div>
   );
 };

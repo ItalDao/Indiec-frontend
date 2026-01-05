@@ -59,7 +59,7 @@ export const SongDetailPage = () => {
         border: `1px solid rgba(239, 68, 68, 0.3)`,
         backdropFilter: 'blur(10px)',
       }}>
-        <div style={{ fontSize: '48px', marginBottom: '16px', color: colors.error }}>⚠️</div>
+        <div style={{ fontSize: '48px', marginBottom: '16px', color: colors.error, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icons.AlertCircle /></div>
         <h2 style={{ fontSize: '20px', marginBottom: '12px', color: '#fff', fontWeight: '700', margin: 0 }}>Canción no encontrada</h2>
         <p style={{ color: '#cbd5e1', marginBottom: '24px', margin: '12px 0 24px 0' }}>No pudimos encontrar la canción que buscas.</p>
         <Link to="/client/songs">

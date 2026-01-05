@@ -9,15 +9,15 @@ export const StorePage = () => {
   const { products, loading } = useProducts();
   const navigate = useNavigate();
 
-  // 🔹 productos filtrados
+  // Productos filtrados
   const [filtered, setFiltered] = useState(products);
 
-  // 🔹 sincroniza cuando llegan los productos
+  // Sincroniza cuando llegan los productos
   useEffect(() => {
     setFiltered(products);
   }, [products]);
 
-  // 🔹 lógica de filtros (100% typesafe)
+  // Lógica de filtros (100% typesafe)
   const handleFilters = (filters: ProductFiltersValue) => {
     let result = products;
 
@@ -142,10 +142,10 @@ export const StorePage = () => {
           </p>
         </div>
 
-        {/* 🔹 filtros */}
+        {/* Filtros */}
         <ProductFilters onChange={handleFilters} />
 
-        {/* 🔹 grilla */}
+        {/* Grilla */}
         <div
           style={{
             display: 'grid',
