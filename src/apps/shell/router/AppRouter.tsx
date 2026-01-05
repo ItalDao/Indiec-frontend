@@ -1,11 +1,4 @@
-import GeneralSettingsPage from "../../admin/settings/presentation/pages/general/GeneralSettingsPage";
-import StaticPageForm from "../../admin/settings/presentation/pages/static-pages/StaticPageForm";
-import StaticPagesList from "../../admin/settings/presentation/pages/static-pages/StaticPagesList";
-import UsersList from "../../admin/settings/presentation/pages/users/UsersList";
-import UserForm from "../../admin/settings/presentation/pages/users/UserForm";
-import CatalogsList from "../../admin/settings/presentation/pages/catalogs/CatalogsList";
-import RolesList from "../../admin/settings/presentation/pages/roles/RolesList";
-import { Outlet } from "react-router-dom";
+// src/apps/shell/router/AppRouter.tsx
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AdminLayout from '../layout/AdminLayout';
 import ClientLayout from '../layout/ClientLayout';
@@ -29,6 +22,19 @@ import { ProfilePage } from '../../client/account/presentation/pages/ProfilePage
 import { OrderDetailPage } from '../../client/account/presentation/pages/OrderDetailPage/OrderDetailPage';
 import { FavoritesPage } from '../../client/account/presentation/pages/FavoritesPage/FavoritesPage';
 import { OrdersPage } from '../../client/account/presentation/pages/OrdersPage/OrdersPage';
+
+//  IMPORTAR LOS COMPONENTES REALES
+import { SongListPage } from '../../client/songs/presentation/pages/SongListPage';
+import { SongDetailPage } from '../../client/songs/presentation/pages/SongDetailPage';
+// src/apps/shell/router/AppRouter.tsx
+import { AboutPage } from '../../client/static/presentation/pages/AboutPage';
+import { TermsPage } from '../../client/static/presentation/pages/TermsPage';
+import { PrivacyPage } from '../../client/static/presentation/pages/PrivacyPage';
+import { ContactPage } from '../../client/static/presentation/pages/ContactPage';
+import { FAQPage } from '../../client/support/presentation/pages/FAQPage';
+import { UserSettingsPage } from '../../client/settings/presentation/pages/UserSettingsPage';
+
+import { PreferencesPage } from '../../client/preferences/pages/PreferencesPage';
 
 const TempPage = ({ title }: { title: string }) => (
   <div style={{ padding: '2rem', textAlign: 'center' }}>
@@ -74,12 +80,22 @@ export const AppRouter = () => {
           <Route index element={<Navigate to="/client/home" replace />} />
           <Route path="home" element={<HomePage />} />
           <Route path="search" element={<TempPage title="Búsqueda" />} />
+          <Route path="artists" element={<TempPage title="Artistas" />} />
+          <Route path="artists/:id" element={<TempPage title="Detalle de Artista" />} />
+          <Route path="about" element={<AboutPage />} />
+<Route path="terms" element={<TermsPage />} />
+<Route path="privacy" element={<PrivacyPage />} />
+<Route path="contact" element={<ContactPage />} />
+          <Route path="faq" element={<FAQPage />} />
+          <Route path="settings" element={<UserSettingsPage />} />
+          <Route path="preferences" element={<PreferencesPage />} />
 
-          <Route path="artists" element={<ArtistListPage />} />
-          <Route path="artists/:id" element={<ArtistDetailPage />} />
 
-          <Route path="songs" element={<TempPage title="Canciones" />} />
-          <Route path="songs/:id" element={<TempPage title="Detalle de Canción" />} />
+
+          {/*  RUTAS REALES */}
+          <Route path="songs" element={<SongListPage />} />
+          <Route path="songs/:id" element={<SongDetailPage />} />
+          
           <Route path="events" element={<TempPage title="Eventos" />} />
 
           {/* ======== TIENDA ======== */}
