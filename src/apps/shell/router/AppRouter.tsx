@@ -79,6 +79,7 @@ export const AppRouter = () => {
             <Route path="users/new" element={<SettingsUserForm />} />
             <Route path="users/edit/:id" element={<SettingsUserForm />} />
             <Route path="roles" element={<RolesList />} />
+            <Route path="catalogs" element={<CatalogsList />} />
           </Route>
         </Route>
 

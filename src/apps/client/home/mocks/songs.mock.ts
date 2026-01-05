@@ -13,7 +13,8 @@ export const songsMock: Song[] = [
     precio: 0.99,
     activo: true,
     esReproducible: true,
-    imagen: "https://images.unsplash.com/photo-1533174072545-7a6b6ad7b6c3?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&referrer=grok.com"  // Noche oscura, luna, indie aesthetic
+    imagen: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500&h=600&fit=crop",
+    portada: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500&h=600&fit=crop"
   },
   {
     id: "song-2",
@@ -27,6 +28,37 @@ export const songsMock: Song[] = [
     precio: 0.99,
     activo: true,
     esReproducible: true,
-    imagen: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b8/98/f3/b898f313-5f20-3ccf-9c13-9b9e0ee040a0/artwork.jpg/1200x630bf-60.jpg"  // Olas, mar, vibe indie acuática
+    imagen: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop",
+    portada: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop"
+  },
+  {
+    id: "song-3",
+    titulo: "Midnight Dreams",
+    duracion: 210,
+    artistaId: "art-1",
+    artista: {
+      id: "art-1",
+      nombre: "Luna Negra"
+    },
+    precio: 0.99,
+    activo: true,
+    esReproducible: true,
+    imagen: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=300&h=300&fit=crop",
+    portada: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=300&h=300&fit=crop"
+  },
+  {
+    id: "song-4",
+    titulo: "Electric Soul",
+    duracion: 185,
+    artistaId: "art-2",
+    artista: {
+      id: "art-2",
+      nombre: "Indie Waves"
+    },
+    precio: 0.99,
+    activo: true,
+    esReproducible: true,
+    imagen: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300&h=300&fit=crop",
+    portada: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300&h=300&fit=crop"
   }
 ];

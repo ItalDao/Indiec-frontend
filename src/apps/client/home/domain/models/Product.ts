@@ -5,6 +5,8 @@ export interface Product {
   // Información básica
   nombre: string;
   precio: number;
+  imagen?: string;      // URL de la imagen del producto
+
   // Relaciones
   artista: string;      // ID del artista
   tipo: string;         // Ej: camiseta, hoodie, gorra
