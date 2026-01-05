@@ -1,17 +1,22 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AdminLayout from '../layout/AdminLayout';
 import ClientLayout from '../layout/ClientLayout';
-import HomePage from "../../client/home/presentation/pages/HomePage";
+import HomePage from '../../client/home/presentation/pages/HomePage';
 
-// Importaciones de ambas features
 import UsuariosPage from '../../../admin/presentation/pages/UsuariosPage';
 import RolesPage from '../../../admin/presentation/pages/RolesPage';
 import { NuevaVista } from '../../client/events/presentation/pages/nuevaVista';
 import { EventsPage } from '../../client/events';
 
+import { ArtistListPage } from '../../client/artists/presentation/pages/ArtistListPage';
+import { ArtistDetailPage } from '../../client/artists/presentation/pages/ArtistDetailPage';
+import { MisGustos } from '../../client/artists/presentation/components/MisGustos';
+
 const TempPage = ({ title }: { title: string }) => (
   <div style={{ padding: '2rem', textAlign: 'center' }}>
-    <h1 style={{ fontSize: '2rem', marginBottom: '1rem', color: '#F1F5F9' }}>{title}</h1>
+    <h1 style={{ fontSize: '2rem', marginBottom: '1rem', color: '#F1F5F9' }}>
+      {title}
+    </h1>
     <p style={{ color: '#94A3B8' }}>Este módulo está en desarrollo</p>
   </div>
 );
@@ -26,20 +31,15 @@ export const AppRouter = () => {
         {/* ===== ADMIN ===== */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
-          
-          {/* Rutas principales */}
           <Route path="dashboard" element={<TempPage title="Dashboard" />} />
           <Route path="artists" element={<TempPage title="Gestión de Artistas" />} />
           <Route path="songs" element={<TempPage title="Gestión de Canciones" />} />
           <Route path="events" element={<EventsPage />} />
           <Route path="store" element={<TempPage title="Gestión de Tienda" />} />
           <Route path="catalogs" element={<TempPage title="Catálogos" />} />
-          
-          {/* 🔥 FUNCIONALES de ambas features */}
           <Route path="users" element={<UsuariosPage />} />
           <Route path="roles" element={<RolesPage />} />
           <Route path="nuevavista" element={<NuevaVista />} />
-          
           <Route path="settings" element={<TempPage title="Configuraciones" />} />
         </Route>
 
@@ -47,15 +47,19 @@ export const AppRouter = () => {
         <Route path="/client" element={<ClientLayout />}>
           <Route index element={<Navigate to="/client/home" replace />} />
           <Route path="home" element={<HomePage />} />
-        
           <Route path="search" element={<TempPage title="Búsqueda" />} />
-          <Route path="artists" element={<TempPage title="Artistas" />} />
-          <Route path="artists/:id" element={<TempPage title="Detalle de Artista" />} />
+
+          <Route path="artists" element={<ArtistListPage />} />
+          <Route path="artists/:id" element={<ArtistDetailPage />} />
+
           <Route path="songs" element={<TempPage title="Canciones" />} />
           <Route path="songs/:id" element={<TempPage title="Detalle de Canción" />} />
           <Route path="events" element={<TempPage title="Eventos (Catálogo)" />} />
           <Route path="store" element={<TempPage title="Tienda" />} />
         </Route>
+
+        {/* RUTA SUELTA */}
+        <Route path="/masterclass" element={<MisGustos />} />
 
         {/* 404 */}
         <Route path="*" element={<TempPage title="404 - Página no encontrada" />} />
