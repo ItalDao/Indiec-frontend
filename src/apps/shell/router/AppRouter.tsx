@@ -11,9 +11,9 @@ import AdminLayout from '../layout/AdminLayout';
 import ClientLayout from '../layout/ClientLayout';
 import HomePage from '../../client/home/presentation/pages/HomePage';
 
-import UsuariosPage from '../../../admin/presentation/pages/UsuariosPage';
-import RolesPage from '../../../admin/presentation/pages/RolesPage';
-import { NuevaVista } from '../../client/events/presentation/pages/nuevaVista';
+//import UsuariosPage from '../../../admin/presentation/pages/UsuariosPage';
+//import RolesPage from '../../../admin/presentation/pages/RolesPage';
+//import { NuevaVista } from '../../client/events/presentation/pages/nuevaVista';
 import { EventsPage } from '../../client/events';
 
 import { ArtistListPage } from '../../client/artists/presentation/pages/ArtistListPage';
