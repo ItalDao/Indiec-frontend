@@ -36,6 +36,9 @@ export const colors = {
   
   // Overlay
   overlay: 'rgba(15, 23, 42, 0.8)',
+
+  //boton cancelar
+  cancelar: 'transparent',
 };
 
 export type ColorKey = keyof typeof colors;

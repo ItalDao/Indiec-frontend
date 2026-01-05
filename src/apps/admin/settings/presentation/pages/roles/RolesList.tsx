@@ -1,0 +1,197 @@
+import { useState } from "react";
+import { useRoles } from "../../hooks/useRoles";
+
+const allPermissions = [
+  "Gestionar artistas",
+  "Gestionar canciones",
+  "Gestionar eventos",
+  "Gestionar productos",
+  "Gestionar usuarios",
+  "Gestionar roles",
+  "Configurar sistema",
+  "Ver reportes",
+  "Moderar contenido",
+];
+
+export default function RolesList() {
+  const { roles, loading, error, createRole, updateRole, deleteRole } = useRoles();
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState<"add" | "edit" | "delete">("add");
+  const [currentRole, setCurrentRole] = useState({ id: "", name: "", permissions: [] as string[], usersCount: 0 });
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [roleToDelete, setRoleToDelete] = useState<string | null>(null);
+
+  const handleAdd = () => {
+    setCurrentRole({ id: "", name: "", permissions: [], usersCount: 0 });
+    setModalType("add");
+    setShowModal(true);
+  };
+
+  const handleEdit = (role: typeof currentRole) => {
+    setCurrentRole({ ...role });
+    setModalType("edit");
+    setShowModal(true);
+  };
+
+  const handleDelete = (id: string) => {
+    setRoleToDelete(id);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
+    if (roleToDelete) {
+      await deleteRole(roleToDelete);
+      setShowDeleteModal(false);
+      setRoleToDelete(null);
+    }
+  };
+
+  const handleSave = async () => {
+    if (modalType === "add") {
+      await createRole({ name: currentRole.name, permissions: currentRole.permissions, usersCount: 0 });
+    } else if (modalType === "edit") {
+      await updateRole(currentRole);
+    }
+    setShowModal(false);
+  };
+
+  const togglePermission = (permission: string) => {
+    if (currentRole.permissions.includes(permission)) {
+      setCurrentRole({
+        ...currentRole,
+        permissions: currentRole.permissions.filter((p) => p !== permission),
+      });
+    } else {
+      setCurrentRole({
+        ...currentRole,
+        permissions: [...currentRole.permissions, permission],
+      });
+    }
+  };
+
+  if (loading && roles.length === 0) {
+    return (
+      <div className="page-container">
+        <div style={{ textAlign: 'center', padding: '48px' }}>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔐</div>
+          <p style={{ color: '#94a3b8' }}>Cargando roles...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="page-container">
+        <div className="card" style={{ background: 'rgba(239, 68, 68, 0.1)', borderColor: 'rgba(239, 68, 68, 0.3)' }}>
+          <p style={{ color: '#fca5a5' }}>❌ {error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="page-container">
+      <div className="page-header">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div>
+            <h1 className="page-title">Roles y Permisos</h1>
+            <p className="page-subtitle">Define roles y sus permisos en el sistema</p>
+          </div>
+          <button className="btn btn-primary" onClick={handleAdd}>
+            ➕ Nuevo rol
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-2">
+        {roles.map((role) => (
+          <div key={role.id} className="card">
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", marginBottom: "16px" }}>
+              <div>
+                <h3 style={{ fontSize: "20px", fontWeight: "600", marginBottom: "4px" }}>{role.name}</h3>
+                <p style={{ color: "#94a3b8", fontSize: "14px" }}>{role.usersCount} usuarios con este rol</p>
+              </div>
+              <div className="action-buttons">
+                <button className="btn btn-sm btn-secondary" onClick={() => handleEdit(role)}>
+                  ✏️
+                </button>
+                <button className="btn btn-sm btn-danger" onClick={() => handleDelete(role.id)}>
+                  🗑️
+                </button>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+              {role.permissions.map((perm) => (
+                <span key={perm} className="badge badge-success" style={{ fontSize: "12px" }}>
+                  ✓ {perm}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {showModal && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "600px" }}>
+            <h2 className="modal-title">{modalType === "add" ? "➕ Crear rol" : "✏️ Editar rol"}</h2>
+            <div className="modal-content">
+              <div className="form-group">
+                <label className="form-label">Nombre del rol</label>
+                <input
+                  className="form-input"
+                  value={currentRole.name}
+                  onChange={(e) => setCurrentRole({ ...currentRole, name: e.target.value })}
+                  placeholder="Ej: Gestor de Artistas"
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Permisos</label>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginTop: "12px" }}>
+                  {allPermissions.map((perm) => (
+                    <label key={perm} className="form-checkbox">
+                      <input
+                        type="checkbox"
+                        checked={currentRole.permissions.includes(perm)}
+                        onChange={() => togglePermission(perm)}
+                      />
+                      <span>{perm}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="modal-actions">
+              <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
+                Cancelar
+              </button>
+              <button className="btn btn-primary" onClick={handleSave} disabled={loading}>
+                {loading ? '⏳ Guardando...' : 'Guardar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showDeleteModal && (
+        <div className="modal-overlay" onClick={() => setShowDeleteModal(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h2 className="modal-title">⚠️ Confirmar eliminación</h2>
+            <div className="modal-content">¿Estás seguro de eliminar este rol?</div>
+            <div className="modal-actions">
+              <button className="btn btn-secondary" onClick={() => setShowDeleteModal(false)}>
+                Cancelar
+              </button>
+              <button className="btn btn-danger" onClick={confirmDelete} disabled={loading}>
+                {loading ? '⏳ Eliminando...' : 'Eliminar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
