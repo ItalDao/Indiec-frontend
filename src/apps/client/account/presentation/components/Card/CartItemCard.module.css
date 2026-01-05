@@ -1,0 +1,35 @@
+.card {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+}
+
+.image {
+  width: 80px;
+  border-radius: 0.5rem;
+  object-fit: cover;
+}
+
+.details {
+  flex: 1;
+}
+
+.details h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.details p {
+  font-size: 0.85rem;
+  color: #94A3B8;
+  margin: 0.25rem 0;
+}
+
+.price {
+  font-weight: bold;
+}
+
+.quantityInput {
+  width: 60px;
+}
