@@ -20,6 +20,16 @@ import { ArtistListPage } from '../../client/artists/presentation/pages/ArtistLi
 import { ArtistDetailPage } from '../../client/artists/presentation/pages/ArtistDetailPage';
 import { MisGustos } from '../../client/artists/presentation/components/MisGustos';
 
+/* 👉 IMPORTS DE TU MÓDULO STORE (CLIENT) */
+import { StorePage } from '../../../apps/client/store/presentation/pages/StorePage';
+import { ProductDetailPage } from '../../../apps/client/store/presentation/pages/ProductDetailPage';
+import { CartPage } from '../../client/account/presentation/pages/CartPage/CartPage';
+import { CheckoutPage } from '../../client/account/presentation/pages/CheckoutPage/CheckoutPage';
+import { ProfilePage } from '../../client/account/presentation/pages/ProfilePage/ProfilePage';
+import { OrderDetailPage } from '../../client/account/presentation/pages/OrderDetailPage/OrderDetailPage';
+import { FavoritesPage } from '../../client/account/presentation/pages/FavoritesPage/FavoritesPage';
+import { OrdersPage } from '../../client/account/presentation/pages/OrdersPage/OrdersPage';
+
 const TempPage = ({ title }: { title: string }) => (
   <div style={{ padding: '2rem', textAlign: 'center' }}>
     <h1 style={{ fontSize: '2rem', marginBottom: '1rem', color: '#F1F5F9' }}>
@@ -36,7 +46,7 @@ export const AppRouter = () => {
         {/* REDIRECCIÓN INICIAL */}
         <Route path="/" element={<Navigate to="/client/home" replace />} />
 
-        {/* ===== ADMIN ===== */}
+        {/* ================= ADMIN ================= */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="dashboard" element={<TempPage title="Dashboard" />} />
@@ -59,7 +69,7 @@ export const AppRouter = () => {
           </Route>
         </Route>
 
-        {/* ===== CLIENT ===== */}
+        {/* ================= CLIENT ================= */}
         <Route path="/client" element={<ClientLayout />}>
           <Route index element={<Navigate to="/client/home" replace />} />
           <Route path="home" element={<HomePage />} />
@@ -70,14 +80,25 @@ export const AppRouter = () => {
 
           <Route path="songs" element={<TempPage title="Canciones" />} />
           <Route path="songs/:id" element={<TempPage title="Detalle de Canción" />} />
-          <Route path="events" element={<TempPage title="Eventos (Catálogo)" />} />
-          <Route path="store" element={<TempPage title="Tienda" />} />
+          <Route path="events" element={<TempPage title="Eventos" />} />
+
+          {/* ======== TIENDA ======== */}
+          <Route path="store" element={<StorePage />} />
+          <Route path="store/:id" element={<ProductDetailPage />} />
+          <Route path="cart" element={<CartPage />} />
+          <Route path="checkout" element={<CheckoutPage />} />
+
+          {/* ✅ NUEVA RUTA (LISTADO DE PEDIDOS) */}
+          <Route path="orders" element={<OrdersPage />} />
+
+          {/* 📄 DETALLE DE PEDIDO */}
+          <Route path="orders/:id" element={<OrderDetailPage />} />
+
+          <Route path="favorites" element={<FavoritesPage />} />
+          <Route path="profile" element={<ProfilePage />} />
         </Route>
 
-        {/* RUTA SUELTA */}
-        <Route path="/masterclass" element={<MisGustos />} />
-
-        {/* 404 */}
+        {/* ================= 404 ================= */}
         <Route path="*" element={<TempPage title="404 - Página no encontrada" />} />
       </Routes>
     </BrowserRouter>

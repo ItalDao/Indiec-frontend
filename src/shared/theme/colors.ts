@@ -22,6 +22,7 @@ export const colors = {
   text: '#F1F5F9',          // Texto principal (claro)
   textSecondary: '#94A3B8',
   textMuted: '#64748B',
+  textPrimary: '#FFFFFF', // 👈 AGREGA ESTO
   
   // Bordes
   border: '#334155',

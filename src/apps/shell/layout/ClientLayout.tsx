@@ -67,6 +67,7 @@ const ClientLayout = () => {
           <nav style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
+
               return (
                 <Link
                   key={item.path}
@@ -83,27 +84,38 @@ const ClientLayout = () => {
               );
             })}
 
-            {/* AVATAR */}
-            <div
-              style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '50%',
-                background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: '600',
-                fontSize: '0.875rem',
-              }}
-            >
-              U
-            </div>
+            {/* PERFIL */}
+            <Link to="/client/profile" style={{ textDecoration: 'none' }}>
+              <div
+                title="Mi perfil"
+                style={{
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '50%',
+                  background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#fff',
+                  fontWeight: '700',
+                  fontSize: '0.9rem',
+                  cursor: 'pointer',
+                }}
+              >
+                SA
+              </div>
+            </Link>
           </nav>
         </div>
       </header>
 
-      <main>
+      {/* ⬇️ AQUÍ ESTABA EL PROBLEMA */}
+      <main
+        style={{
+          color: colors.textPrimary,
+          minHeight: 'calc(100vh - 80px)',
+        }}
+      >
         <Outlet />
       </main>
 
