@@ -1,3 +1,11 @@
+import GeneralSettingsPage from "../../admin/settings/presentation/pages/general/GeneralSettingsPage";
+import StaticPageForm from "../../admin/settings/presentation/pages/static-pages/StaticPageForm";
+import StaticPagesList from "../../admin/settings/presentation/pages/static-pages/StaticPagesList";
+import UsersList from "../../admin/settings/presentation/pages/users/UsersList";
+import UserForm from "../../admin/settings/presentation/pages/users/UserForm";
+import CatalogsList from "../../admin/settings/presentation/pages/catalogs/CatalogsList";
+import RolesList from "../../admin/settings/presentation/pages/roles/RolesList";
+import { Outlet } from "react-router-dom";
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AdminLayout from '../layout/AdminLayout';
 import ClientLayout from '../layout/ClientLayout';
@@ -36,11 +44,19 @@ export const AppRouter = () => {
           <Route path="songs" element={<TempPage title="Gestión de Canciones" />} />
           <Route path="events" element={<EventsPage />} />
           <Route path="store" element={<TempPage title="Gestión de Tienda" />} />
-          <Route path="catalogs" element={<TempPage title="Catálogos" />} />
-          <Route path="users" element={<UsuariosPage />} />
-          <Route path="roles" element={<RolesPage />} />
-          <Route path="nuevavista" element={<NuevaVista />} />
-          <Route path="settings" element={<TempPage title="Configuraciones" />} />
+          
+          <Route path="settings" element={<Outlet />}>
+            <Route index element={<Navigate to="general" replace />} />
+            <Route path="general" element={<GeneralSettingsPage />} />
+            <Route path="static-pages" element={<StaticPagesList />} />
+            <Route path="static-pages/new" element={<StaticPageForm />} />
+            <Route path="static-pages/edit/:id" element={<StaticPageForm />} />
+            <Route path="users" element={<UsersList />} />
+            <Route path="users/new" element={<UserForm />} />
+            <Route path="users/edit/:id" element={<UserForm />} />
+            <Route path="roles" element={<RolesList />} />
+            <Route path="catalogs" element={<CatalogsList />} />
+          </Route>
         </Route>
 
         {/* ===== CLIENT ===== */}
