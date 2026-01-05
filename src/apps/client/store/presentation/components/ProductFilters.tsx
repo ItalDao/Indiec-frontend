@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { Icons } from '../../../songs/presentation/components/Icons';
 
 export interface ProductFiltersValue {
   category?: string;
@@ -61,7 +62,12 @@ export const ProductFilters = ({ onChange }: Props) => {
         boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.3)',
       }}
     >
-      <h3 style={{ marginBottom: '1.25rem', color: '#E5E7EB', fontSize: 'clamp(1rem, 4vw, 1.25rem)', fontWeight: 600 }}>🔍 Filtrar productos</h3>
+      <h3 style={{ marginBottom: '1.25rem', color: '#E5E7EB', fontSize: 'clamp(1rem, 4vw, 1.25rem)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <span style={{ color: '#A78BFA', fontSize: '1.3rem' }}>
+          <Icons.Search />
+        </span>
+        Filtrar productos
+      </h3>
 
       <div
         style={{
