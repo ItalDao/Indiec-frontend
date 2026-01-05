@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { Card, Button } from '../../../../../shared/ui';
 
 export interface ProductFiltersValue {
   category?: string;
@@ -51,13 +50,18 @@ export const ProductFilters = ({ onChange }: Props) => {
   };
 
   return (
-    <Card
+    <div
       style={{
         marginBottom: '2rem',
         padding: '1.5rem',
+        borderRadius: '16px',
+        background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.8) 0%, rgba(45, 27, 105, 0.6) 100%)',
+        backdropFilter: 'blur(20px)',
+        border: '1px solid rgba(139, 92, 246, 0.2)',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.3)',
       }}
     >
-      <h3 style={{ marginBottom: '1.25rem' }}>🔍 Filtrar productos</h3>
+      <h3 style={{ marginBottom: '1.25rem', color: '#E5E7EB', fontSize: 'clamp(1rem, 4vw, 1.25rem)', fontWeight: 600 }}>🔍 Filtrar productos</h3>
 
       <div
         style={{
@@ -76,6 +80,18 @@ export const ProductFilters = ({ onChange }: Props) => {
             onChange={e =>
               updateFilters({ category: e.target.value || undefined })
             }
+            onFocus={e => {
+              const target = e.currentTarget;
+              target.style.borderColor = 'rgba(139, 92, 246, 0.6)';
+              target.style.background = 'rgba(15, 23, 42, 0.9)';
+              target.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
+            }}
+            onBlur={e => {
+              const target = e.currentTarget;
+              target.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+              target.style.background = 'rgba(15, 23, 42, 0.7)';
+              target.style.boxShadow = 'none';
+            }}
           >
             <option value="">Todas</option>
             <option value="camiseta">Camiseta</option>
@@ -93,6 +109,18 @@ export const ProductFilters = ({ onChange }: Props) => {
             onChange={e =>
               updateFilters({ size: e.target.value || undefined })
             }
+            onFocus={e => {
+              const target = e.currentTarget;
+              target.style.borderColor = 'rgba(139, 92, 246, 0.6)';
+              target.style.background = 'rgba(15, 23, 42, 0.9)';
+              target.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
+            }}
+            onBlur={e => {
+              const target = e.currentTarget;
+              target.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+              target.style.background = 'rgba(15, 23, 42, 0.7)';
+              target.style.boxShadow = 'none';
+            }}
           >
             <option value="">Todas</option>
             <option value="S">S</option>
@@ -113,6 +141,18 @@ export const ProductFilters = ({ onChange }: Props) => {
             onChange={e =>
               updateFilters({ artist: e.target.value || undefined })
             }
+            onFocus={e => {
+              const target = e.currentTarget;
+              target.style.borderColor = 'rgba(139, 92, 246, 0.6)';
+              target.style.background = 'rgba(15, 23, 42, 0.9)';
+              target.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
+            }}
+            onBlur={e => {
+              const target = e.currentTarget;
+              target.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+              target.style.background = 'rgba(15, 23, 42, 0.7)';
+              target.style.boxShadow = 'none';
+            }}
           />
         </div>
 
@@ -132,6 +172,18 @@ export const ProductFilters = ({ onChange }: Props) => {
                   : undefined,
               })
             }
+            onFocus={e => {
+              const target = e.currentTarget;
+              target.style.borderColor = 'rgba(139, 92, 246, 0.6)';
+              target.style.background = 'rgba(15, 23, 42, 0.9)';
+              target.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
+            }}
+            onBlur={e => {
+              const target = e.currentTarget;
+              target.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+              target.style.background = 'rgba(15, 23, 42, 0.7)';
+              target.style.boxShadow = 'none';
+            }}
           />
         </div>
 
@@ -151,22 +203,55 @@ export const ProductFilters = ({ onChange }: Props) => {
                   : undefined,
               })
             }
+            onFocus={e => {
+              const target = e.currentTarget;
+              target.style.borderColor = 'rgba(139, 92, 246, 0.6)';
+              target.style.background = 'rgba(15, 23, 42, 0.9)';
+              target.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
+            }}
+            onBlur={e => {
+              const target = e.currentTarget;
+              target.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+              target.style.background = 'rgba(15, 23, 42, 0.7)';
+              target.style.boxShadow = 'none';
+            }}
           />
         </div>
 
         {/* Botón */}
         <div>
-          <Button
-            variant="secondary"
-            size="sm"
-            style={{ width: '100%' }}
+          <button
+            style={{
+              width: '100%',
+              padding: '0.6rem 1rem',
+              borderRadius: '8px',
+              border: '1px solid rgba(139, 92, 246, 0.4)',
+              background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%)',
+              color: '#A78BFA',
+              fontSize: '0.9rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
+            onMouseEnter={e => {
+              const target = e.currentTarget;
+              target.style.background = 'linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(99, 102, 241, 0.25) 100%)';
+              target.style.boxShadow = '0 4px 12px rgba(139, 92, 246, 0.25)';
+              target.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={e => {
+              const target = e.currentTarget;
+              target.style.background = 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%)';
+              target.style.boxShadow = 'none';
+              target.style.transform = 'translateY(0)';
+            }}
             onClick={handleClear}
           >
             Limpiar filtros
-          </Button>
+          </button>
         </div>
       </div>
-    </Card>
+    </div>
   );
 };
 
@@ -179,7 +264,7 @@ const labelStyle: React.CSSProperties = {
   fontWeight: 500,
   marginBottom: '0.35rem',
   display: 'block',
-  color: '#CBD5E1',
+  color: '#A78BFA',
 };
 
 const inputStyle: React.CSSProperties = {
@@ -187,7 +272,10 @@ const inputStyle: React.CSSProperties = {
   height: '38px',
   padding: '0.45rem 0.6rem',
   borderRadius: '8px',
-  border: '1px solid #334155',
-  background: '#020617',
+  border: '1px solid rgba(139, 92, 246, 0.3)',
+  background: 'rgba(15, 23, 42, 0.7)',
   color: '#E5E7EB',
+  fontSize: '0.9rem',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  backdropFilter: 'blur(10px)',
 };

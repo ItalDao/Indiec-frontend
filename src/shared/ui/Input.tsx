@@ -19,7 +19,7 @@ export const Input: React.FC<InputProps> = ({
     background: colors.backgroundLight,
     border: `1px solid ${error ? colors.error : colors.border}`,
     borderRadius: '8px',
-    color: colors.text,
+    color: '#fff',
     outline: 'none',
     transition: 'border-color 0.2s ease',
     ...style,
