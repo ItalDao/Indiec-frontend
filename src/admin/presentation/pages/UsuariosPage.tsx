@@ -111,7 +111,8 @@ export default function UsuariosPage() {
             {rolesDisponibles.map(r => <option key={r}>{r}</option>)}
           </select>
 
-          <select style={input(border, text)} value={estado} onChange={e => setEstado(e.target.value as any)}>
+          <select style={input(border, text)} value={estado} onChange={e => setEstado(e.target.value as 'activo' | 'inactivo')}>
+
             <option value="activo">Activo</option>
             <option value="inactivo">Inactivo</option>
           </select>
@@ -177,7 +178,7 @@ export default function UsuariosPage() {
                 </td>
               </tr>
             )}
-
+                  
             {users.map(u => (
               <tr
                 key={u.id}

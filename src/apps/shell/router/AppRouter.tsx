@@ -6,6 +6,7 @@ import ClientLayout from '../layout/ClientLayout';
 import UsuariosPage from '../../../admin/presentation/pages/UsuariosPage';
 import RolesPage from '../../../admin/presentation/pages/RolesPage';
 
+import DashboardPage from '../../../admin/Reportes/presentation/pages/Dashboard';
 
 const TempPage = ({ title }: { title: string }) => (
   <div style={{ padding: '2rem', textAlign: 'center' }}>
@@ -25,7 +26,8 @@ export const AppRouter = () => {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
 
-          <Route path="dashboard" element={<TempPage title="Dashboard" />} />
+          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="home" element={<TempPage title="Dashboard" />} />
           <Route path="artists" element={<TempPage title="Gestión de Artistas" />} />
           <Route path="songs" element={<TempPage title="Gestión de Canciones" />} />
           <Route path="events" element={<TempPage title="Gestión de Eventos" />} />
