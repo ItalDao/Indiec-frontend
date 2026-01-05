@@ -1,5 +1,11 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { colors } from '../../../shared/theme/colors';
+import GlobalSearchBar from '../../client/home/presentation/components/GlobalSearchBar';
+import { HomeMockRepository } from "../../client/home/mocks/HomeMockRepository";
+
+
+
+const repo = new HomeMockRepository();
 
 const ClientLayout = () => {
   const location = useLocation();
@@ -10,6 +16,7 @@ const ClientLayout = () => {
     { path: '/client/songs', label: 'Canciones' },
     { path: '/client/events', label: 'Eventos' },
     { path: '/client/store', label: 'Tienda' },
+  
   ];
 
   const headerStyles: React.CSSProperties = {
@@ -29,25 +36,34 @@ const ClientLayout = () => {
     height: '100%',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    gap: '2rem',
   };
 
   return (
     <div style={{ minHeight: '100vh', background: colors.background }}>
       <header style={headerStyles}>
         <div style={containerStyles}>
+          {/* LOGO */}
           <Link to="/client/home" style={{ textDecoration: 'none' }}>
             <h1 style={{ fontSize: '1.75rem', fontWeight: '800' }}>
-              <span style={{
-                background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}>
+              <span
+                style={{
+                  background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
                 INDIEC
               </span>
             </h1>
           </Link>
 
+          {/* 🔍 BUSCADOR GLOBAL */}
+          <div style={{ flex: 1, maxWidth: '520px' }}>
+            <GlobalSearchBar repository={repo} />
+          </div>
+
+          {/* NAV */}
           <nav style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
@@ -60,24 +76,27 @@ const ClientLayout = () => {
                     color: isActive ? colors.primary : colors.textSecondary,
                     fontWeight: isActive ? '600' : '400',
                     fontSize: '0.95rem',
-                    transition: 'color 0.2s ease',
                   }}
                 >
                   {item.label}
                 </Link>
               );
             })}
-            <div style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '50%',
-              background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: '600',
-              fontSize: '0.875rem',
-            }}>
+
+            {/* AVATAR */}
+            <div
+              style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: '50%',
+                background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: '600',
+                fontSize: '0.875rem',
+              }}
+            >
               U
             </div>
           </nav>
@@ -88,13 +107,15 @@ const ClientLayout = () => {
         <Outlet />
       </main>
 
-      <footer style={{
-        marginTop: '4rem',
-        padding: '3rem 2rem',
-        background: colors.backgroundLight,
-        borderTop: `1px solid ${colors.border}`,
-        textAlign: 'center',
-      }}>
+      <footer
+        style={{
+          marginTop: '4rem',
+          padding: '3rem 2rem',
+          background: colors.backgroundLight,
+          borderTop: `1px solid ${colors.border}`,
+          textAlign: 'center',
+        }}
+      >
         <p style={{ color: colors.textMuted, fontSize: '0.875rem' }}>
           © 2024 INDIEC. Plataforma de música independiente.
         </p>

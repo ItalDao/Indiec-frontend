@@ -1,9 +1,20 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+@import 'swiper/css/effect-fade';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  width: '100%';
 }
 
 :root {
@@ -109,4 +120,169 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+.page {
+  padding: 2.5rem 3rem;
+  animation: fadeIn var(--transition-normal);
+}
+
+.section {
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+/* === GRID === */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+/* === CARD === */
+
+.card {
+  background: var(--background-card);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+}
+
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.card-muted {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.badge {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 600;
+} .artist-card {
+  background: var(--background-card);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.artist-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-xl);
+}
+
+.artist-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.artist-info {
+  padding: 1rem;
+}
+
+.artist-info h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.artist-info p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.verified {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+
+.eventoimg {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  position: relative;
+}
+
+.imgevent {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.eventoimg:hover .imgevent {
+  transform: scale(1.05);
+}
+
+.no-image-text {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #999;
+  font-weight: bold;
+  font-style: italic;
+  font-size: 14px;
+  text-transform: uppercase;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.eventosc {
+  padding: 20px;
+}
+
+.misGustos{
+  margin: 30px;
+  background-color:#334155;
+  padding: 30px;
+  border-radius: 12px;
+
+}
+
+.hobies{
+  margin: 30px;
+  background-color: #0F172A;
+  padding: 30px;
+  border-radius: 12px;
+}
+
+.favoritos{
+  margin: 30px;
+  background-color:#0F172A;
+  padding: 30px;
+  border-radius: 12px;
 }

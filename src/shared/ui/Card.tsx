@@ -15,6 +15,9 @@ export const Card: React.FC<CardProps> = ({ children, className, style, onClick 
     padding: '1.5rem',
     border: `1px solid ${colors.border}`,
     transition: 'all 0.3s ease',
+    margin:'20px',
+    maxWidth:'650px',
+    width: '600px',
     ...style,
   };
 
