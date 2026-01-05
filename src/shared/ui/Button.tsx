@@ -2,7 +2,7 @@ import React from 'react';
 import { colors } from '../theme/colors';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'eliminar' | 'cancelar';
   size?: 'sm' | 'md' | 'lg';
   children: React.ReactNode;
 }
@@ -16,6 +16,7 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   const baseStyles: React.CSSProperties = {
     border: 'none',
+    margin: '5px',
     borderRadius: '8px',
     fontWeight: '600',
     cursor: 'pointer',
@@ -23,25 +24,34 @@ export const Button: React.FC<ButtonProps> = ({
     fontFamily: 'inherit',
   };
 
-  const variants = {
-    primary: {
-      background: colors.primary,
-      color: colors.text,
-    },
-    secondary: {
-      background: colors.secondary,
-      color: colors.text,
-    },
-    outline: {
-      background: 'transparent',
-      color: colors.primary,
-      border: `2px solid ${colors.primary}`,
-    },
-    ghost: {
-      background: 'transparent',
-      color: colors.textSecondary,
-    },
-  };
+const variants = {
+  primary: {
+    background: colors.primary,
+    color: colors.text,
+  },
+  secondary: {
+    background: colors.secondary,
+    color: colors.text,
+  },
+  eliminar: {                    // Nueva variante para botón rojo
+    background: colors.error,
+    color: colors.text,
+  },
+  outline: {
+    background: 'transparent',
+    color: colors.primary,
+    border: `2px solid ${colors.primary}`,
+  },
+  ghost: {
+    background: 'transparent',
+    color: colors.textSecondary,
+  },
+  cancelar: {
+    background: 'transparent',
+    color: colors.text,
+  },
+};
+
 
   const sizes = {
     sm: { padding: '0.5rem 1rem', fontSize: '0.875rem' },

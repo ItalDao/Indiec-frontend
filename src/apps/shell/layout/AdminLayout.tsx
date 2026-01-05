@@ -234,6 +234,7 @@ const AdminLayout = () => {
         </main>
       </div>
     </div>
+    
   );
 };
 
