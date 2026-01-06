@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom
 import AdminLayout from '../layout/AdminLayout';
 import { UsersList, UserForm } from '../../admin/users';
 import { ArtistsList } from '../../admin/artists';
+import { SongsList } from '../../admin/songs';
 import GeneralSettingsPage from "../../admin/settings/presentation/pages/general/GeneralSettingsPage";
 import StaticPageForm from "../../admin/settings/presentation/pages/static-pages/StaticPageForm";
 import StaticPagesList from "../../admin/settings/presentation/pages/static-pages/StaticPagesList";
@@ -58,7 +59,7 @@ export const AppRouter = () => {
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="dashboard" element={<TempPage title="Dashboard" />} />
           <Route path="artists" element={<ArtistsList />} />
-          <Route path="songs" element={<TempPage title="Gestión de Canciones" />} />
+          <Route path="songs" element={<SongsList />} />
           <Route path="events" element={<EventsPage />} />
           <Route path="store" element={<TempPage title="Gestión de Tienda" />} />
           

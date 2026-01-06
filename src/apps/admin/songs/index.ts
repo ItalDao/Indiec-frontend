@@ -1,13 +1,9 @@
-// En tu src/apps/admin/songs/index.ts
+// Mock Data
+export { MOCK_SONGS } from './data/songs.mock';
+export type { Song } from './data/songs.mock';
 
-// Dominio (Usa 'type' para interfaces)
-export type { Song } from './domain/models/Song';
-export type { SongRepository } from './domain/repositories/SongRepository';
-
-// Aplicación e Infraestructura (Clases)
-export * from './application/usecases/createSong.usecase';
-// ... el resto de tus usecases
-export * from './infrastructure/api/ApiSongRepository';
+// Presentation
+export { default as SongsList } from './presentation/pages/SongsList';
 
 // Presentación
 export * from './presentation/pages/SongListPage';
