@@ -10,7 +10,7 @@ import SettingsUsersList from "../../admin/settings/presentation/pages/users/Use
 import SettingsUserForm from "../../admin/settings/presentation/pages/users/UserForm";
 import RolesList from "../../admin/settings/presentation/pages/roles/RolesList";
 import CatalogsList from "../../admin/settings/presentation/pages/catalogs/CatalogsList";
-import { EventsPage } from '../../client/events';
+import { EventsPage } from '../../admin/events';
 
 // Client Pages
 import ClientLayout from '../layout/ClientLayout';

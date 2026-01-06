@@ -27,7 +27,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
   });
 
   return (
-    <Link to={`/client/events/${event.id}`} style={{ textDecoration: 'none' }}>
+    <div style={{ textDecoration: 'none' }}>
       <motion.div
       
 whileHover={{
@@ -147,7 +147,7 @@ whileHover={{
           </div>
         </div>
       </motion.div>
-    </Link>
+    </div>
   );
 };
 

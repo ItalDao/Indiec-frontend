@@ -26,8 +26,8 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ data }) => {
       action: () => navigate('/client/songs'),
     },
     event: {
-      label: 'Comprar entradas',
-      action: () => navigate('/client/events'),
+      label: 'Ir al inicio',
+      action: () => navigate('/client/home'),
     },
     product: {
       label: 'Ver producto',
