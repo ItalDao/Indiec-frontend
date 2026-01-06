@@ -22,9 +22,10 @@ export const ArtistDetailPage = () => {
       
       setLoading(true);
       try {
+        // Backend calls - using mock data fallback
         const artistData = await artistApi.getArtistById(id);
         setArtist(artistData);
-        await artistApi.incrementPopularity(id);
+        // await artistApi.incrementPopularity(id);
 
         const [songsData, eventsData, merchData] = await Promise.all([
           artistApi.getArtistSongs(id),
@@ -36,7 +37,7 @@ export const ArtistDetailPage = () => {
         setEvents(eventsData);
         setMerch(merchData);
       } catch (error) {
-        console.error('Error cargando datos del artista:', error);
+        console.error('[ARTIST_DETAIL] Error loading artist data:', error);
       } finally {
         setLoading(false);
       }
@@ -102,7 +103,7 @@ export const ArtistDetailPage = () => {
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center gap-3 mb-4">
               <span className="px-4 py-2 bg-[#EC4899] text-white rounded-full text-xs font-black flex items-center gap-2">
-                <span>⭐</span>
+                <span>★</span>
                 <span>{artist.popularidad || 5}</span>
               </span>
               <span className="px-4 py-2 bg-white/10 backdrop-blur-md text-white rounded-full text-xs font-bold">
@@ -157,26 +158,26 @@ export const ArtistDetailPage = () => {
       <div className="max-w-7xl mx-auto px-8 py-12">
         <div className="mb-12 bg-[#1E293B]/40 backdrop-blur-xl border border-white/5 rounded-3xl p-8">
           <h2 className="text-2xl font-black text-white uppercase italic tracking-tight mb-4 flex items-center gap-3">
-            <span className="text-[#EC4899]">📖</span>
-            Biografía
+            <span style={{ fontSize: '24px' }}>📖</span>
+            Biography
           </h2>
           <p className="text-gray-300 leading-relaxed text-lg">
-            {artist.biografia || 'No hay biografía disponible para este artista.'}
+            {artist.biografia || 'No biography available for this artist.'}
           </p>
         </div>
 
         <div className="mb-8">
           <div className="flex gap-4 border-b border-white/10">
             <button onClick={() => setActiveTab('canciones')} className={`pb-4 px-6 font-black text-sm uppercase tracking-wider transition-all relative ${activeTab === 'canciones' ? 'text-[#8B5CF6]' : 'text-gray-400 hover:text-white'}`}>
-              🎵 Canciones
+              Songs
               {activeTab === 'canciones' && <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] rounded-t-full"></div>}
             </button>
             <button onClick={() => setActiveTab('eventos')} className={`pb-4 px-6 font-black text-sm uppercase tracking-wider transition-all relative ${activeTab === 'eventos' ? 'text-[#8B5CF6]' : 'text-gray-400 hover:text-white'}`}>
-              🎤 Eventos
+              Events
               {activeTab === 'eventos' && <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] rounded-t-full"></div>}
             </button>
             <button onClick={() => setActiveTab('merch')} className={`pb-4 px-6 font-black text-sm uppercase tracking-wider transition-all relative ${activeTab === 'merch' ? 'text-[#8B5CF6]' : 'text-gray-400 hover:text-white'}`}>
-              🛍️ Merch
+              Merch
               {activeTab === 'merch' && <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] rounded-t-full"></div>}
             </button>
           </div>
@@ -187,8 +188,8 @@ export const ArtistDetailPage = () => {
             <div className="space-y-4 animate-fade-in">
               {songs.length === 0 ? (
                 <div className="text-center py-20 bg-[#1E293B]/20 rounded-3xl border border-white/5">
-                  <div className="text-5xl mb-4">🎵</div>
-                  <p className="text-gray-400 text-lg">No hay canciones disponibles</p>
+                  <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎵</div>
+                  <p className="text-gray-400 text-lg">No songs available</p>
                 </div>
               ) : (
                 songs.map((song, index) => (
@@ -236,8 +237,8 @@ export const ArtistDetailPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
               {events.length === 0 ? (
                 <div className="col-span-2 text-center py-20 bg-[#1E293B]/20 rounded-3xl border border-white/5">
-                  <div className="text-5xl mb-4">🎤</div>
-                  <p className="text-gray-400 text-lg">No hay eventos próximos</p>
+                  <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎤</div>
+                  <p className="text-gray-400 text-lg">No upcoming events</p>
                 </div>
               ) : (
                 events.map((event) => (
@@ -256,7 +257,7 @@ export const ArtistDetailPage = () => {
                         {event.precio && <div className="bg-[#EC4899] text-white px-4 py-2 rounded-full font-black text-sm">${event.precio}</div>}
                       </div>
                       <p className="text-gray-300 mb-4">📍 {event.lugar}, {event.ciudad}, {event.pais}</p>
-                      {event.urlTickets && <a href={event.urlTickets} target="_blank" rel="noopener noreferrer" className="block w-full bg-[#8B5CF6] hover:bg-[#7C3AED] text-white py-3 rounded-xl font-black text-sm uppercase tracking-wider text-center transition-all">Comprar Tickets →</a>}
+                      {event.urlTickets && <a href={event.urlTickets} target="_blank" rel="noopener noreferrer" className="block w-full bg-[#8B5CF6] hover:bg-[#7C3AED] text-white py-3 rounded-xl font-black text-sm uppercase tracking-wider text-center transition-all">Buy Tickets →</a>}
                     </div>
                   </div>
                 ))
@@ -268,8 +269,8 @@ export const ArtistDetailPage = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
               {merch.length === 0 ? (
                 <div className="col-span-full text-center py-20 bg-[#1E293B]/20 rounded-3xl border border-white/5">
-                  <div className="text-5xl mb-4">🛍️</div>
-                  <p className="text-gray-400 text-lg">No hay productos de merchandise disponibles</p>
+                  <div style={{ fontSize: '48px', marginBottom: '16px' }}>🛍️</div>
+                  <p className="text-gray-400 text-lg">No merchandise products available</p>
                 </div>
               ) : (
                 merch.map((product) => (
@@ -285,7 +286,7 @@ export const ArtistDetailPage = () => {
                       </div>
                       {product.descripcion && <p className="text-sm text-gray-400 mb-4 line-clamp-2">{product.descripcion}</p>}
                       <button disabled={product.stock === 0} className="w-full bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] hover:from-[#7C3AED] hover:to-[#DB2777] disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed text-white py-3 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95">
-                        {product.stock === 0 ? 'Agotado' : 'Agregar al Carrito'}
+                        {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
                       </button>
                     </div>
                   </div>
