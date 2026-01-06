@@ -21,14 +21,14 @@ const ClientLayout = () => {
   ];
 
   const headerStyles: React.CSSProperties = {
-    height: '72px',
-    background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.9) 50%, rgba(15, 23, 42, 0.95) 100%)',
-    backdropFilter: 'blur(20px)',
-    borderBottom: `1px solid rgba(139, 92, 246, 0.2)`,
+    height: '80px',
+    background: 'linear-gradient(90deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 27, 75, 0.4) 100%)',
+    backdropFilter: 'blur(30px)',
+    borderBottom: `1px solid rgba(139, 92, 246, 0.15)`,
     position: 'sticky',
     top: 0,
     zIndex: 100,
-    boxShadow: '0 4px 20px rgba(139, 92, 246, 0.15)',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
   };
 
   const containerStyles: React.CSSProperties = {
@@ -38,7 +38,7 @@ const ClientLayout = () => {
     height: '100%',
     display: 'flex',
     alignItems: 'center',
-    gap: '1.5rem',
+    gap: '2rem',
   };
 
   return (
@@ -46,11 +46,11 @@ const ClientLayout = () => {
       <header style={headerStyles}>
         <div style={containerStyles}>
           {/* LOGO */}
-          <Link to="/client/home" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-            <h1 style={{ fontSize: '1.5rem', fontWeight: '900', margin: 0, letterSpacing: '-1px' }}>
+          <Link to="/client/home" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', flex: '0 0 auto' }}>
+            <h1 style={{ fontSize: '1.7rem', fontWeight: '900', margin: 0, letterSpacing: '-1.5px' }}>
               <span
                 style={{
-                  background: `linear-gradient(135deg, #fff 0%, ${colors.primary} 100%)`,
+                  background: `linear-gradient(135deg, #fff 0%, ${colors.primary} 50%, ${colors.secondary} 100%)`,
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
@@ -62,12 +62,12 @@ const ClientLayout = () => {
           </Link>
 
           {/* BUSCADOR GLOBAL */}
-          <div style={{ flex: 1, maxWidth: '500px' }}>
+          <div style={{ flex: 1, maxWidth: '600px', minWidth: '300px' }}>
             <GlobalSearchBar repository={repo} />
           </div>
 
           {/* NAV */}
-          <nav style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+          <nav style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flex: '0 0 auto' }}>
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
 
@@ -79,22 +79,26 @@ const ClientLayout = () => {
                     textDecoration: 'none',
                     color: isActive ? colors.primary : '#cbd5e1',
                     fontWeight: isActive ? '600' : '500',
-                    fontSize: '0.9rem',
-                    padding: '8px 12px',
-                    borderRadius: '6px',
-                    transition: 'all 0.2s ease',
-                    borderBottom: isActive ? `2px solid ${colors.primary}` : 'none',
+                    fontSize: '0.95rem',
+                    padding: '10px 16px',
+                    borderRadius: '8px',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    background: isActive ? 'rgba(139, 92, 246, 0.15)' : 'transparent',
+                    border: isActive ? '1px solid rgba(139, 92, 246, 0.3)' : '1px solid transparent',
+                    letterSpacing: '-0.3px',
                   }}
                   onMouseEnter={(e) => {
                     if (!isActive) {
                       e.currentTarget.style.color = colors.primary;
                       e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!isActive) {
                       e.currentTarget.style.color = '#cbd5e1';
                       e.currentTarget.style.background = 'transparent';
+                      e.currentTarget.style.transform = 'translateY(0)';
                     }
                   }}
                 >
@@ -106,31 +110,33 @@ const ClientLayout = () => {
             {/* Botón de FAQ */}
             <Link to="/client/faq" title="Preguntas Frecuentes" style={{ textDecoration: 'none' }}>
               <div style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '8px',
-                background: 'rgba(139, 92, 246, 0.15)',
-                border: `1px solid rgba(139, 92, 246, 0.3)`,
+                width: '44px',
+                height: '44px',
+                borderRadius: '10px',
+                background: 'rgba(139, 92, 246, 0.12)',
+                border: `1px solid rgba(139, 92, 246, 0.25)`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '1.1rem',
+                fontSize: '1.2rem',
                 cursor: 'pointer',
-                transition: 'all 0.2s ease',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 color: '#cbd5e1',
-                fontWeight: '600',
+                fontWeight: '700',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.background = 'rgba(139, 92, 246, 0.25)';
                 e.currentTarget.style.borderColor = colors.primary;
                 e.currentTarget.style.color = colors.primary;
-                e.currentTarget.style.boxShadow = `0 4px 12px rgba(139, 92, 246, 0.2)`;
+                e.currentTarget.style.boxShadow = `0 8px 24px rgba(139, 92, 246, 0.3)`;
+                e.currentTarget.style.transform = 'translateY(-2px)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(139, 92, 246, 0.15)';
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.background = 'rgba(139, 92, 246, 0.12)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.25)';
                 e.currentTarget.style.color = '#cbd5e1';
                 e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.transform = 'translateY(0)';
               }}
               >
                 ?
@@ -140,30 +146,32 @@ const ClientLayout = () => {
             {/* Botón de Configuración */}
             <Link to="/client/settings" title="Configuración" style={{ textDecoration: 'none' }}>
               <div style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '8px',
-                background: 'rgba(139, 92, 246, 0.15)',
-                border: `1px solid rgba(139, 92, 246, 0.3)`,
+                width: '44px',
+                height: '44px',
+                borderRadius: '10px',
+                background: 'rgba(139, 92, 246, 0.12)',
+                border: `1px solid rgba(139, 92, 246, 0.25)`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '1.1rem',
+                fontSize: '1.2rem',
                 cursor: 'pointer',
-                transition: 'all 0.2s ease',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 color: '#cbd5e1',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.background = 'rgba(139, 92, 246, 0.25)';
                 e.currentTarget.style.borderColor = colors.primary;
                 e.currentTarget.style.color = colors.primary;
-                e.currentTarget.style.boxShadow = `0 4px 12px rgba(139, 92, 246, 0.2)`;
+                e.currentTarget.style.boxShadow = `0 8px 24px rgba(139, 92, 246, 0.3)`;
+                e.currentTarget.style.transform = 'translateY(-2px)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(139, 92, 246, 0.15)';
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.background = 'rgba(139, 92, 246, 0.12)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.25)';
                 e.currentTarget.style.color = '#cbd5e1';
                 e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.transform = 'translateY(0)';
               }}
               >
                 <Icons.Settings />
@@ -172,27 +180,28 @@ const ClientLayout = () => {
 
             {/* Avatar de Usuario */}
             <div style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '8px',
+              width: '44px',
+              height: '44px',
+              borderRadius: '10px',
               background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontWeight: '700',
-              fontSize: '0.85rem',
+              fontSize: '1rem',
               cursor: 'pointer',
-              transition: 'all 0.2s ease',
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               color: '#fff',
-              boxShadow: `0 4px 12px ${colors.primary}30`,
+              boxShadow: `0 4px 16px rgba(139, 92, 246, 0.4)`,
+              border: '2px solid rgba(255, 255, 255, 0.1)',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.08)';
-              e.currentTarget.style.boxShadow = `0 8px 16px ${colors.primary}50`;
+              e.currentTarget.style.transform = 'scale(1.12) translateY(-2px)';
+              e.currentTarget.style.boxShadow = `0 12px 32px rgba(139, 92, 246, 0.5)`;
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1)';
-              e.currentTarget.style.boxShadow = `0 4px 12px ${colors.primary}30`;
+              e.currentTarget.style.transform = 'scale(1) translateY(0)';
+              e.currentTarget.style.boxShadow = `0 4px 16px rgba(139, 92, 246, 0.4)`;
             }}
             >
               U
@@ -204,7 +213,7 @@ const ClientLayout = () => {
       <main
         style={{
           color: colors.textPrimary,
-          minHeight: 'calc(100vh - 72px)',
+          minHeight: 'calc(100vh - 80px)',
         }}
       >
         <Outlet />
