@@ -117,7 +117,7 @@ export default function UserForm() {
       {showModal && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <h2 className="modal-title">✅ ¡Usuario creado!</h2>
+            <h2 className="modal-title">¡Usuario creado!</h2>
             <div className="modal-content">
               El usuario "{name}" ha sido creado exitosamente.
             </div>
