@@ -1,5 +1,4 @@
 // src/apps/client/static/presentation/pages/AboutPage.tsx
-import { colors } from '../../../../../shared/theme/colors';
 
 export const AboutPage = () => {
   return (

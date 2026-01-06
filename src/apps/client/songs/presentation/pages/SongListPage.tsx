@@ -177,7 +177,7 @@ export const SongListPage = () => {
             display: 'flex',
             justifyContent: 'center',
           }}>
-            <Icons.Search style={{ width: '48px', height: '48px' }} />
+            <Icons.Search />
           </div>
           <h3 style={{ 
             fontSize: '24px', 

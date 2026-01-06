@@ -7,6 +7,20 @@ export const useEventCrud = () => {
   const [events, setEvents] = useState<Event[]>(MOCK_EVENTS);
 
   const saveEvent = async (formData: FormData) => {
+    // Convertir imagen a base64 si existe
+    const imageFile = formData.get('imagen') as File;
+    let imagenUrl = "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=1000";
+
+    if (imageFile && imageFile.size > 0) {
+      imagenUrl = await new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          resolve(e.target?.result as string);
+        };
+        reader.readAsDataURL(imageFile);
+      });
+    }
+
     // 1. Extraemos los datos del formulario
     const nuevoEvento: Event = {
       idEvento: Math.floor(Math.random() * 10000), // Generamos un ID al azar
@@ -17,8 +31,7 @@ export const useEventCrud = () => {
       capacidad: Number(formData.get('capacidad')),
       precioEntrada: Number(formData.get('precioEntrada')),
       descripcion: formData.get('descripcion') as string,
-      // Usamos una imagen por defecto si no hay una real
-      imagen: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=1000", 
+      imagen: imagenUrl, // Usamos la imagen convertida a base64 o default
       estado: "programado"
     };
 
@@ -33,8 +46,38 @@ export const useEventCrud = () => {
   };
 
   const updateExistingEvent = async (id: number, formData: FormData) => {
-    // Opcional: Podrías buscar el evento por ID y actualizar sus campos
-    console.log("Simulando actualización del ID:", id);
+    // Convertir imagen a base64 si existe
+    const imageFile = formData.get('imagen') as File;
+    let imagenUrl = null;
+
+    if (imageFile && imageFile.size > 0) {
+      imagenUrl = await new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          resolve(e.target?.result as string);
+        };
+        reader.readAsDataURL(imageFile);
+      });
+    }
+
+    // Actualizar evento
+    setEvents(prev => prev.map(event => {
+      if (event.idEvento === id) {
+        return {
+          ...event,
+          titulo: formData.get('titulo') as string,
+          generoMusical: formData.get('generoMusical') as string,
+          fecha: formData.get('fecha') as string,
+          lugar: formData.get('lugar') as string,
+          capacidad: Number(formData.get('capacidad')),
+          precioEntrada: Number(formData.get('precioEntrada')),
+          descripcion: formData.get('descripcion') as string,
+          imagen: imagenUrl || event.imagen, // Mantener imagen anterior si no hay nueva
+        };
+      }
+      return event;
+    }));
+    console.log("Evento actualizado:", id);
   };
 
   return { events, saveEvent, removeEvent, updateExistingEvent };

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useEventCrud } from '../hooks/useEventCrud';
 import { EventForm } from '../components/EventForm';
-import { Button, Modal } from '../../../../../shared/ui';
+import { Modal } from '../../../../../shared/ui';
 import { EventTable } from '../components/EventTable';
 import type { Event } from '../../domain/models/Event';
-import { colors } from '../../../../../shared/theme/colors';
+import { Icons } from '../../../../client/songs/presentation/components/Icons';
+
 export const EventsPage: React.FC = () => {
   const { events, saveEvent, removeEvent, updateExistingEvent } = useEventCrud();
 
@@ -35,30 +36,82 @@ export const EventsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0F172A] text-slate-900 dark:text-slate-100 pb-20">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        
+    <div style={{ 
+      background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 12%, #2d1b69 25%, #1a1f3a 40%, #0f172a 60%, #1a0033 75%, #0f172a 100%)',
+      backgroundAttachment: 'fixed',
+      minHeight: '100vh',
+      paddingBottom: '60px',
+    }}>
+      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '60px 2rem' }}>
         {/* HEADER */}
-        <header className="flex items-center justify-between py-10 eventosc">
-          <div>
-            <h1 className="text-4xl font-black tracking-tight">
-              Gestión de Eventos
-            </h1>
-            <p className="text-slate-500 dark:text-slate-400 text-sm mt-2">
-              Administra, edita y controla los eventos publicados
-            </p>
-          </div>
+        <div style={{ marginBottom: '60px' }}>
+          <h1 style={{ 
+            fontSize: 'clamp(42px, 7vw, 64px)', 
+            fontWeight: '900',
+            marginBottom: '16px',
+            background: 'linear-gradient(135deg, #fff 0%, #8b5cf6 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            margin: 0,
+            letterSpacing: '-2px',
+          }}>
+            Gestión de Eventos
+          </h1>
+          <p style={{ 
+            fontSize: '18px', 
+            color: '#cbd5e1', 
+            fontWeight: '400', 
+            lineHeight: '1.6',
+            maxWidth: '600px',
+          }}>
+            Administra, edita y controla todos tus eventos
+          </p>
+        </div>
 
-          <Button
+        {/* BOTÓN CREAR */}
+        <div style={{ marginBottom: '40px' }}>
+          <button
             onClick={handleOpenCreate}
-            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-md transition-all"
+            style={{
+              padding: '14px 28px',
+              background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '10px',
+              cursor: 'pointer',
+              fontWeight: '600',
+              fontSize: '16px',
+              transition: 'all 0.2s ease',
+              boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 8px 20px rgba(139, 92, 246, 0.5)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(139, 92, 246, 0.3)';
+            }}
           >
-            + Crear Evento
-          </Button>
-        </header>
+            <Icons.Plus />
+            Crear Evento
+          </button>
+        </div>
 
         {/* TABLA DE EVENTOS */}
-        <div className="w-full">
+        <div style={{
+          background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.8), rgba(45, 27, 105, 0.6))',
+          backdropFilter: 'blur(10px)',
+          borderRadius: '16px',
+          border: '1px solid rgba(139, 92, 246, 0.2)',
+          padding: '32px',
+          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
+          width: '100%',
+        }}>
           <EventTable
             events={events}
             onViewDetails={(event) => {
@@ -84,139 +137,229 @@ export const EventsPage: React.FC = () => {
             flexDirection: 'column', 
             gap: '2rem' 
           }} className="pr-2">
-
-            {/*<div className=" w-full rounded-[32px] overflow-hidden flex-shrink-0 shadow-xl border border-slate-100 dark:border-slate-800">
-              <img
-                src={`http://localhost:9000/uploads/eventos/${selectedEvent.imagen}`}
-                alt={selectedEvent.titulo}
-                className="w-full h-full object-cover"
-                crossOrigin="anonymous"
-              />
-            </div> */}
             <img
               src={
                 selectedEvent?.imagen 
                   ? (selectedEvent.imagen.startsWith('http') 
                       ? selectedEvent.imagen 
                       : `http://localhost:9000/uploads/eventos/${selectedEvent.imagen}`)
-                  : 'https://via.placeholder.com/800x600?text=Sin+Imagen' // Imagen de respaldo
+                  : 'https://via.placeholder.com/800x600?text=Sin+Imagen'
               }
               alt={selectedEvent?.titulo || 'Evento'}
-              className="w-full h-full object-cover"
+              style={{
+                width: '100%',
+                height: '300px',
+                objectFit: 'cover',
+                borderRadius: '16px',
+              }}
             />
             
-
             {/* TÍTULO + PRECIO */}
-            <div className="flex justify-between items-start gap-6 px-2">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', padding: '0 8px' }}>
               <div>
-                <h2 className="text-4xl font-black leading-tight">
+                <h2 style={{ fontSize: '32px', fontWeight: '900', marginBottom: '8px', color: '#fff', margin: 0 }}>
                   {selectedEvent.titulo}
                 </h2>
-                <span className="inline-block mt-2 text-xs font-bold uppercase tracking-widest text-purple-500">
+                <span style={{ 
+                  fontSize: '12px', 
+                  fontWeight: 'bold',
+                  color: '#8b5cf6',
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                }}>
                   {selectedEvent.generoMusical}
                 </span>
               </div>
 
-              <div className="text-right">
-                <span className="block text-[10px] uppercase text-slate-400 font-bold">
+              <div style={{ textAlign: 'right' }}>
+                <span style={{ 
+                  display: 'block', 
+                  fontSize: '12px',
+                  color: '#94a3b8',
+                  fontWeight: 'bold',
+                  textTransform: 'uppercase',
+                  marginBottom: '8px',
+                }}>
                   Precio
                 </span>
-                <span className="text-4xl font-black text-emerald-500 font-mono">
+                <span style={{ 
+                  fontSize: '32px', 
+                  fontWeight: 'bold', 
+                  color: '#22c55e',
+                  fontFamily: 'monospace'
+                }}>
                   ${selectedEvent.precioEntrada}
                 </span>
               </div>
             </div>
 
-            {/* INFO GRID (SIN BORDES NI FONDOS) */}
-            <div className="grid grid-cols-2 gap-y-8 gap-x-12 px-2">
-              <div className="flex items-start gap-3">
-                <div className="text-purple-500 mt-1 text-xl">📅</div>
+            {/* INFO GRID */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '24px 32px',
+              padding: '0 8px',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                <div style={{ color: '#8b5cf6', marginTop: '4px', minWidth: '24px' }}>
+                  <Icons.Calendar />
+                </div>
                 <div>
-                  <p className="text-[10px] text-slate-400 uppercase font-black tracking-tight">Fecha</p>
-                  <p className="text-sm font-semibold">{new Date(selectedEvent.fecha).toLocaleDateString()}</p>
+                  <p style={{ fontSize: '12px', color: '#94a3b8', fontWeight: 'bold', margin: 0, marginBottom: '4px', textTransform: 'uppercase' }}>Fecha</p>
+                  <p style={{ fontSize: '16px', fontWeight: '600', color: '#e2e8f0', margin: 0 }}>{new Date(selectedEvent.fecha).toLocaleDateString()}</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
-                <div className="text-yellow-500 mt-1 text-xl">🎵</div>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                <div style={{ color: '#8b5cf6', marginTop: '4px', minWidth: '24px' }}>
+                  <Icons.Music2 />
+                </div>
                 <div>
-                  <p className="text-[10px] text-slate-400 uppercase font-black tracking-tight">Género</p>
-                  <p className="text-sm font-semibold">{selectedEvent.generoMusical}</p>
+                  <p style={{ fontSize: '12px', color: '#94a3b8', fontWeight: 'bold', margin: 0, marginBottom: '4px', textTransform: 'uppercase' }}>Género</p>
+                  <p style={{ fontSize: '16px', fontWeight: '600', color: '#e2e8f0', margin: 0 }}>{selectedEvent.generoMusical}</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
-                <div className="text-rose-500 mt-1 text-xl">📍</div>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                <div style={{ color: '#8b5cf6', marginTop: '4px', minWidth: '24px' }}>
+                  <Icons.MapPin />
+                </div>
                 <div>
-                  <p className="text-[10px] text-slate-400 uppercase font-black tracking-tight">Ubicación</p>
-                  <p className="text-sm font-semibold">{selectedEvent.lugar}</p>
+                  <p style={{ fontSize: '12px', color: '#94a3b8', fontWeight: 'bold', margin: 0, marginBottom: '4px', textTransform: 'uppercase' }}>Ubicación</p>
+                  <p style={{ fontSize: '16px', fontWeight: '600', color: '#e2e8f0', margin: 0 }}>{selectedEvent.lugar}</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
-                <div className="text-emerald-500 mt-1 text-xl">👥</div>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                <div style={{ color: '#8b5cf6', marginTop: '4px', minWidth: '24px' }}>
+                  <Icons.Users />
+                </div>
                 <div>
-                  <p className="text-[10px] text-slate-400 uppercase font-black tracking-tight">Capacidad</p>
-                  <p className="text-sm font-semibold">{selectedEvent.capacidad} personas</p>
+                  <p style={{ fontSize: '12px', color: '#94a3b8', fontWeight: 'bold', margin: 0, marginBottom: '4px', textTransform: 'uppercase' }}>Capacidad</p>
+                  <p style={{ fontSize: '16px', fontWeight: '600', color: '#e2e8f0', margin: 0 }}>{selectedEvent.capacidad} personas</p>
                 </div>
               </div>
             </div>
 
-            {/* ESTADO (LIMPIO) */}
-            <div className=" items-left justify-between px-2">
-              <span className="text-[10px] uppercase text-slate-400 font-black tracking-widest">
+            {/* ESTADO */}
+            <div style={{ padding: '0 8px' }}>
+              <p style={{ fontSize: '12px', color: '#94a3b8', fontWeight: 'bold', margin: 0, marginBottom: '8px', textTransform: 'uppercase' }}>
                 Estado
-              </span>
-              <div className={`text-xs font-black uppercase tracking-wider ${
-                selectedEvent.estado === 'programado' ? 'text-purple-500' : 'text-emerald-500'
-              }`}>
+              </p>
+              <span style={{
+                fontSize: '14px',
+                fontWeight: 'bold',
+                color: selectedEvent.estado === 'programado' ? '#8b5cf6' : '#22c55e',
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+              }}>
                 {selectedEvent.estado}
-              </div>
+              </span>
             </div>
 
-            {/* DESCRIPCIÓN (ÚNICO CON BORDE) */}
-            <div className="px-2">
-              <span className="block text-[10px] uppercase text-slate-400 font-black tracking-widest mb-3">
+            {/* DESCRIPCIÓN */}
+            <div style={{ padding: '0 8px' }}>
+              <p style={{ fontSize: '12px', color: '#94a3b8', fontWeight: 'bold', margin: 0, marginBottom: '12px', textTransform: 'uppercase' }}>
                 Descripción
-              </span>
-              <div className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-transparent text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+              </p>
+              <div style={{
+                padding: '16px 20px',
+                borderRadius: '12px',
+                border: '1px solid rgba(139, 92, 246, 0.2)',
+                background: 'rgba(30, 27, 75, 0.5)',
+                color: '#cbd5e1',
+                fontSize: '15px',
+                lineHeight: '1.6',
+              }}>
                 {selectedEvent.descripcion || 'Este evento no cuenta con una descripción detallada.'}
               </div>
             </div>
 
-            {/* FOOTER ACTIONS (Dentro del scroll para fácil acceso) */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-200 dark:border-slate-700">
-              <div className="flex gap-3 w-full sm:w-auto">
-                <Button
-                  onClick={() => handleOpenEditFromView(selectedEvent)}
-                  className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg flex-1 sm:flex-none"
-                  variant="primary"
-                >
-                  Editar
-                </Button>
-                <Button
-                  onClick={() => {
-                    if (selectedEvent.idEvento) removeEvent(selectedEvent.idEvento);
-                    setIsViewModalOpen(false);
-                  }}
-                  className="bg-rose-600 hover:bg-rose-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg flex-1 sm:flex-none"
-                  variant='eliminar'
-                >
-                  Eliminar
-                </Button>
-                
-              </div>
-              <Button
+            {/* FOOTER ACTIONS */}
+            <div style={{
+              display: 'flex',
+              gap: '12px',
+              paddingTop: '20px',
+              borderTop: '1px solid rgba(139, 92, 246, 0.2)',
+              flexWrap: 'wrap',
+            }}>
+              <button
+                onClick={() => handleOpenEditFromView(selectedEvent)}
+                style={{
+                  padding: '12px 24px',
+                  background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  fontWeight: '600',
+                  fontSize: '14px',
+                  transition: 'all 0.2s ease',
+                  flex: 1,
+                  minWidth: '120px',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
+              >
+                Editar
+              </button>
+              <button
+                onClick={() => {
+                  if (selectedEvent.idEvento) removeEvent(selectedEvent.idEvento);
+                  setIsViewModalOpen(false);
+                }}
+                style={{
+                  padding: '12px 24px',
+                  background: 'transparent',
+                  color: '#ef4444',
+                  border: '1px solid #ef4444',
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  fontWeight: '600',
+                  fontSize: '14px',
+                  transition: 'all 0.2s ease',
+                  flex: 1,
+                  minWidth: '120px',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                }}
+              >
+                Eliminar
+              </button>
+              <button
                 onClick={() => setIsViewModalOpen(false)}
-                className="bg-slate-700 hover:bg-slate-600 text-slate-200 px-5 py-2 rounded-xl text-sm font-semibold"
-                style={{ flex: 1, border: `1px solid ${colors.border}` }}
-                variant='cancelar'
+                style={{
+                  padding: '12px 24px',
+                  background: 'transparent',
+                  color: '#cbd5e1',
+                  border: '1px solid rgba(139, 92, 246, 0.3)',
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  fontWeight: '600',
+                  fontSize: '14px',
+                  transition: 'all 0.2s ease',
+                  flex: 1,
+                  minWidth: '120px',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#8b5cf6';
+                  e.currentTarget.style.color = '#8b5cf6';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                  e.currentTarget.style.color = '#cbd5e1';
+                }}
               >
                 Cancelar
-              </Button>
-
-
-              
+              </button>
             </div>
           </div>
         )}

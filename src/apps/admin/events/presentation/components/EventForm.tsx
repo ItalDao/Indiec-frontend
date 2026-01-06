@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { Button, Input } from '../../../../../shared/ui';
-import { colors } from '../../../../../shared/theme/colors';
 import type { Event } from '../../domain/models/Event';
 
 interface Props {
@@ -21,156 +19,270 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
 
   const formattedDate = initialData?.fecha ? new Date(initialData.fecha).toISOString().split('T')[0] : '';
 
+  const inputStyle = {
+    width: '100%',
+    padding: '12px 16px',
+    fontSize: '14px',
+    background: 'rgba(30, 27, 75, 0.5)',
+    border: '1px solid rgba(139, 92, 246, 0.3)',
+    borderRadius: '10px',
+    color: '#e2e8f0',
+    outline: 'none' as const,
+    transition: 'all 0.2s ease',
+  };
+
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      
       {/* CONTENEDOR CON SCROLL */}
       <div style={{ 
         flex: 1, 
-        maxHeight: '450px', // Ajusta esta altura según el tamaño de tu modal
+        maxHeight: '450px',
         overflowY: 'auto', 
-        paddingRight: '10px', // Espacio para que la barra no tape el contenido
+        paddingRight: '10px',
         paddingBottom: '1rem',
         display: 'flex', 
         flexDirection: 'column', 
-        gap: '1rem' 
+        gap: '16px' 
       }}>
         
-        <Input name="titulo" label="Título del Evento" defaultValue={initialData?.titulo} required />
-        
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-          <Input name="lugar" label="Lugar" defaultValue={initialData?.lugar} required />
-          <Input name="fecha" label="Fecha" type="date" defaultValue={formattedDate} required />
-        </div>
-
-        <Input name="generoMusical" label="Género Musical" defaultValue={initialData?.generoMusical} />
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <label style={{ color: colors.textSecondary || '#94A3B8', fontSize: '0.875rem' }}>Descripción</label>
-          <textarea 
-            name="descripcion" 
-            rows={3}
-            defaultValue={initialData?.descripcion}
-            style={{ 
-              background: colors.background || '#0F172A', 
-              color: colors.text, 
-              border: `1px solid ${colors.border}`,
-              borderRadius: '8px',
-              padding: '0.75rem',
-              outline: 'none',
-              resize: 'none'
+        {/* TÍTULO */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+            Título del Evento
+          </label>
+          <input 
+            type="text"
+            name="titulo" 
+            defaultValue={initialData?.titulo} 
+            required
+            style={inputStyle}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+              e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+              e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
             }}
           />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-          <Input name="precioEntrada" label="Precio" type="number" defaultValue={initialData?.precioEntrada} />
-          <Input name="capacidad" label="Capacidad" type="number" defaultValue={initialData?.capacidad} />
+        {/* LUGAR + FECHA */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+              Lugar
+            </label>
+            <input 
+              type="text"
+              name="lugar" 
+              defaultValue={initialData?.lugar} 
+              required
+              style={inputStyle}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+              }}
+            />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+              Fecha
+            </label>
+            <input 
+              type="date"
+              name="fecha" 
+              defaultValue={formattedDate} 
+              required
+              style={inputStyle}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+              }}
+            />
+          </div>
         </div>
 
-        <div style={{ border: `1px dashed ${colors.border}`, padding: '1rem', borderRadius: '8px' }}>
-          <p style={{ color: colors.textSecondary, fontSize: '0.7rem', marginBottom: '5px' }}>
-            {initialData?.imagen ? `Imagen actual: ${initialData.imagen}` : 'Subir imagen'}
-          </p>
+        {/* GÉNERO MUSICAL */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+            Género Musical
+          </label>
           <input 
-            type="file" 
+            type="text"
+            name="generoMusical" 
+            defaultValue={initialData?.generoMusical}
+            style={inputStyle}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+              e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+              e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+            }}
+          />
+        </div>
+
+        {/* DESCRIPCIÓN */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+            Descripción
+          </label>
+          <textarea 
+            name="descripcion" 
+            rows={4}
+            defaultValue={initialData?.descripcion}
+            style={{
+              ...inputStyle,
+              resize: 'none' as const,
+              fontFamily: 'inherit',
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+              e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+              e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+            }}
+          />
+        </div>
+
+        {/* PRECIO + CAPACIDAD */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+              Precio
+            </label>
+            <input 
+              type="number"
+              name="precioEntrada" 
+              defaultValue={initialData?.precioEntrada}
+              style={inputStyle}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+              }}
+            />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+              Capacidad
+            </label>
+            <input 
+              type="number"
+              name="capacidad" 
+              defaultValue={initialData?.capacidad}
+              style={inputStyle}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+              }}
+            />
+          </div>
+        </div>
+
+        {/* IMAGEN */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+            Imagen Promocional
+          </label>
+          {initialData?.imagen && (
+            <p style={{ fontSize: '12px', color: '#94a3b8', margin: 0 }}>
+              Imagen actual: {initialData.imagen}
+            </p>
+          )}
+          <input 
+            type="file"
             onChange={(e) => setFile(e.target.files?.[0] || null)} 
-            style={{ color: colors.text, fontSize: '0.8rem', width: '100%' }}
+            style={{
+              ...inputStyle,
+              padding: '8px 12px',
+              fontSize: '12px',
+            }}
             accept="image/*"
           />
         </div>
-        {/* PIE DE FORMULARIO (FIJO ABAJO) */}
+      </div>
+
+      {/* BOTONES */}
       <div style={{ 
         display: 'flex', 
-        gap: '1rem', 
-        marginTop: '1.5rem', 
-        paddingTop: '1rem', 
-        borderTop: `1px solid ${colors.border}` 
+        gap: '12px', 
+        marginTop: '16px', 
+        paddingTop: '16px', 
+        borderTop: '1px solid rgba(139, 92, 246, 0.2)'
       }}>
-        <Button type="button" onClick={onCancel} style={{ flex: 1, background: 'transparent', border: `1px solid ${colors.border}` }}>
-          Cancelar
-        </Button>
-        <Button type="submit" style={{ flex: 1, background: colors.primary }}>
-          {initialData ? 'Actualizar Evento' : 'Guardar Evento'}
-        </Button>
-      </div>
-      </div>
-
-      
-    </form>
-  );
-};
-//Esta es la ultima versión que
-
-/*import React, { useState } from 'react';
-import { Button, Input } from '../../../../../shared/ui';
-import { colors } from '../../../../../shared/theme/colors';
-
-interface Props {
-  onSuccess: (data: FormData) => void;
-  onCancel: () => void;
-}
-
-export const EventForm: React.FC<Props> = ({ onSuccess, onCancel }) => {
-  const [file, setFile] = useState<File | null>(null);
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    if (file) formData.append('imagen', file);
-    onSuccess(formData);
-  };
-
-  return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <Input name="titulo" label="Título del Evento" required />
-      
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-        <Input name="lugar" label="Lugar" required />
-        <Input name="fecha" label="Fecha" type="date" required />
-      </div>
-
-      <Input name="generoMusical" label="Género Musical" />
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        <label style={{ color: colors.textSecondary || '#94A3B8', fontSize: '0.875rem' }}>Descripción</label>
-        <textarea 
-          name="descripcion" 
-          rows={3}
-          style={{ 
-            background: colors.background || '#0F172A', 
-            color: colors.text, 
-            border: `1px solid ${colors.border}`,
-            borderRadius: '8px',
-            padding: '0.75rem',
-            outline: 'none'
+        <button
+          type="button"
+          onClick={onCancel}
+          style={{
+            flex: 1,
+            padding: '12px 24px',
+            background: 'transparent',
+            color: '#cbd5e1',
+            border: '1px solid rgba(139, 92, 246, 0.3)',
+            borderRadius: '10px',
+            cursor: 'pointer',
+            fontWeight: '600',
+            fontSize: '14px',
+            transition: 'all 0.2s ease',
           }}
-        />
-      </div>
-
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-        <Input name="precioEntrada" label="Precio" type="number" />
-        <Input name="capacidad" label="Capacidad" type="number" />
-      </div>
-
-      <div style={{ border: `1px dashed ${colors.border}`, padding: '1rem', borderRadius: '8px' }}>
-        <input 
-          type="file" 
-          onChange={(e) => setFile(e.target.files?.[0] || null)} 
-          style={{ color: colors.text, fontSize: '0.8rem' }}
-          accept="image/*"
-        />
-      </div>
-
-      <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-        <Button type="button" onClick={onCancel} style={{ flex: 1, background: 'transparent', border: `1px solid ${colors.border}` }}>
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = '#8b5cf6';
+            e.currentTarget.style.color = '#8b5cf6';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+            e.currentTarget.style.color = '#cbd5e1';
+          }}
+        >
           Cancelar
-        </Button>
-        <Button type="submit" style={{ flex: 1, background: colors.primary }}>
-          Guardar Evento
-        </Button>
+        </button>
+        <button
+          type="submit"
+          style={{
+            flex: 1,
+            padding: '12px 24px',
+            background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '10px',
+            cursor: 'pointer',
+            fontWeight: '600',
+            fontSize: '14px',
+            transition: 'all 0.2s ease',
+            boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 8px 20px rgba(139, 92, 246, 0.5)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(139, 92, 246, 0.3)';
+          }}
+        >
+          {initialData ? 'Actualizar Evento' : 'Guardar Evento'}
+        </button>
       </div>
     </form>
   );
 };
-*/

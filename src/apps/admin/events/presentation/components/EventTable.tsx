@@ -1,7 +1,6 @@
 import React from 'react';
 import type { Event } from '../../domain/models/Event';
-import { Card } from '../../../../../shared/ui';
-
+import { Icons } from '../../../../client/songs/presentation/components/Icons';
 
 interface Props {
   events: Event[];
@@ -10,67 +9,150 @@ interface Props {
 
 export const EventTable: React.FC<Props> = ({ events, onViewDetails }) => {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-2 gap-8">
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+      gap: '24px',
+    }}>
       {events.map((event) => (
-        <Card
+        <div
           key={event.idEvento}
           onClick={() => onViewDetails(event)}
-          className="group cursor-pointer bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-2xl p-0 overflow-hidden hover:shadow-2xl hover:shadow-purple-500/10 transition-all flex flex-col shadow-sm"
+          style={{
+            background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.8), rgba(45, 27, 105, 0.6))',
+            backdropFilter: 'blur(10px)',
+            borderRadius: '16px',
+            border: '1px solid rgba(139, 92, 246, 0.2)',
+            overflow: 'hidden',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-8px)';
+            e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.5)';
+            e.currentTarget.style.boxShadow = '0 12px 24px rgba(139, 92, 246, 0.2)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+            e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.2)';
+          }}
         >
-          {/* BANNER DE LA TARJETA */}
-          
-          <div className="eventoimg">
-  {event.imagen ? (
-    <img
-      src={`http://localhost:9000/uploads/eventos/${event.imagen}`}
-      alt={event.titulo}
-      className="imgevent"
-      crossOrigin="anonymous"
-    />
-  ) : (
-    <div className="no-image-text">
-      Sin Imagen Promocional
-    </div>
-  )}
-</div>
-
-
-          {/*<div className="w-full h-[200px] bg-slate-100 dark:bg-slate-800 overflow-hidden border-b border-slate-200 dark:border-slate-800 img-event">
+          {/* IMAGEN */}
+          <div style={{
+            width: '100%',
+            height: '200px',
+            background: '#1e1b4b',
+            overflow: 'hidden',
+            borderBottom: '1px solid rgba(139, 92, 246, 0.1)',
+          }}>
             {event.imagen ? (
-              
               <img
-                src={`http://localhost:9000/uploads/eventos/${event.imagen}`}
+                src={event.imagen}
                 alt={event.titulo}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 imgevent"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  transition: 'transform 0.3s ease',
+                }}
                 crossOrigin="anonymous"
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-slate-400 font-bold uppercase text-xs italic">
-                Sin Imagen Promocional
+              <div style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#94a3b8',
+                fontSize: '14px',
+                fontWeight: '500',
+              }}>
+                Sin Imagen
               </div>
             )}
-          </div>/*}
+          </div>
 
-          {/* CUERPO DE LA TARJETA */}
-          <div className="p-6">
-            <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-2 leading-tight">
+          {/* CONTENIDO */}
+          <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px', flex: 1 }}>
+            {/* TÍTULO */}
+            <h3 style={{
+              fontSize: '18px',
+              fontWeight: '700',
+              color: '#fff',
+              margin: 0,
+              lineHeight: '1.4',
+            }}>
               {event.titulo}
             </h3>
-            <div className="flex flex-col gap-1 text-slate-500 dark:text-slate-400 text-sm">
-              <span className="flex items-center gap-2">
-                <span className="opacity-70 font-medium">📅{event.fecha?.split('T')[0]}</span>
-                <p className="text-slate-400 font-medium flex items-center gap-2">
-                <span className="text-purple-500">📍</span> {event.lugar}
-              </p>
-              </span>
+
+            {/* INFO GRID */}
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              fontSize: '14px',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#cbd5e1' }}>
+                <div style={{ color: '#8b5cf6', display: 'flex', alignItems: 'center' }}>
+                  <Icons.Calendar />
+                </div>
+                <span>{event.fecha?.split('T')[0]}</span>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#cbd5e1' }}>
+                <div style={{ color: '#8b5cf6', display: 'flex', alignItems: 'center' }}>
+                  <Icons.MapPin />
+                </div>
+                <span>{event.lugar}</span>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#cbd5e1' }}>
+                <div style={{ color: '#8b5cf6', display: 'flex', alignItems: 'center' }}>
+                  <Icons.Music2 />
+                </div>
+                <span>{event.generoMusical}</span>
+              </div>
             </div>
 
-            <span className="text-purple-500"></span> {event.estado}
-
-
-            
+            {/* ESTADO + PRECIO */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingTop: '12px',
+              borderTop: '1px solid rgba(139, 92, 246, 0.1)',
+              marginTop: 'auto',
+            }}>
+              <span style={{
+                fontSize: '12px',
+                fontWeight: 'bold',
+                color: event.estado === 'programado' ? '#8b5cf6' : '#22c55e',
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+              }}>
+                {event.estado}
+              </span>
+              <span style={{
+                fontSize: '16px',
+                fontWeight: 'bold',
+                color: '#22c55e',
+              }}>
+                ${event.precioEntrada}
+              </span>
+            </div>
           </div>
-        </Card>
+        </div>
       ))}
     </div>
   );
