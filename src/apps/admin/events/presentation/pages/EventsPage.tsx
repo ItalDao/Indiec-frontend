@@ -114,81 +114,116 @@ export const EventsPage: React.FC = () => {
           </button>
         </div>
 
-        {/* BARRA DE FILTROS */}
-        <div style={{ 
-          display: 'flex', 
-          gap: '20px', 
-          marginBottom: '24px', 
-          flexWrap: 'wrap',
-          alignItems: 'flex-end'
-        }}>
-          {/* Filtro Estado */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ color: '#94a3b8', fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>
-              Estado
-            </label>
-            <select
-              value={filterEstado}
-              onChange={(e) => setFilterEstado(e.target.value)}
-              style={{
-                background: 'rgba(30, 27, 75, 0.7)',
-                color: '#fff',
-                border: '1px solid rgba(139, 92, 246, 0.3)',
-                padding: '10px 16px',
-                borderRadius: '8px',
-                outline: 'none',
-                cursor: 'pointer',
-                fontSize: '14px'
-              }}
-            >
-              <option value="todos">Todos los estados</option>
-              <option value="programado">Programados</option>
-              <option value="finalizado">Finalizados</option>
-              <option value="agotado">Agotados</option>
-            </select>
-          </div>
+        {/* BARRA DE FILTROS MEJORADA */}
+<div style={{ 
+  display: 'flex', 
+  gap: '24px', 
+  marginBottom: '40px', 
+  padding: '24px',
+  background: 'rgba(30, 27, 75, 0.4)',
+  backdropFilter: 'blur(12px)',
+  borderRadius: '20px',
+  border: '1px solid rgba(139, 92, 246, 0.15)',
+  alignItems: 'center',
+  flexWrap: 'wrap'
+}}>
+  
+  {/* Filtro Estado */}
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: '1', minWidth: '200px' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div style={{ color: '#8b5cf6', display: 'flex' }}></div>
+      <label style={{ color: '#94a3b8', fontSize: '11px', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '1.5px' }}>
+        Estado del Evento
+      </label>
+    </div>
+    <select
+      value={filterEstado}
+      onChange={(e) => setFilterEstado(e.target.value)}
+      style={{
+        background: '#0f172a',
+        color: '#f8fafc',
+        border: '1px solid rgba(139, 92, 246, 0.3)',
+        padding: '12px 16px',
+        borderRadius: '12px',
+        outline: 'none',
+        cursor: 'pointer',
+        fontSize: '14px',
+        fontWeight: '600',
+        transition: 'all 0.3s ease',
+        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.3)'
+      }}
+      onFocus={(e) => e.currentTarget.style.borderColor = '#8b5cf6'}
+      onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)'}
+    >
+      <option value="todos">🌟 Todos los estados</option>
+      <option value="programado">📅 Programados</option>
+      <option value="finalizado">✅ Finalizados</option>
+      <option value="agotado">🚫 Agotados</option>
+    </select>
+  </div>
 
-          {/* Filtro Fecha */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ color: '#94a3b8', fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>
-              Fecha del evento
-            </label>
-            <input
-              type="date"
-              value={filterFecha}
-              onChange={(e) => setFilterFecha(e.target.value)}
-              style={{
-                background: 'rgba(30, 27, 75, 0.7)',
-                color: '#fff',
-                border: '1px solid rgba(139, 92, 246, 0.3)',
-                padding: '10px 16px',
-                borderRadius: '8px',
-                outline: 'none',
-                fontSize: '14px',
-                colorScheme: 'dark' // Esto hace que el icono del calendario sea blanco
-              }}
-            />
-          </div>
+  {/* Filtro Fecha */}
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: '1', minWidth: '200px' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div style={{ color: '#8b5cf6', display: 'flex' }}><Icons.Calendar /></div>
+      <label style={{ color: '#94a3b8', fontSize: '11px', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '1.5px' }}>
+        Fecha Específica
+      </label>
+    </div>
+    <input
+      type="date"
+      value={filterFecha}
+      onChange={(e) => setFilterFecha(e.target.value)}
+      style={{
+        background: '#0f172a',
+        color: '#f8fafc',
+        border: '1px solid rgba(139, 92, 246, 0.3)',
+        padding: '12px 16px',
+        borderRadius: '12px',
+        outline: 'none',
+        fontSize: '14px',
+        fontWeight: '600',
+        colorScheme: 'dark',
+        transition: 'all 0.3s ease',
+        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.3)'
+      }}
+      onFocus={(e) => e.currentTarget.style.borderColor = '#8b5cf6'}
+      onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)'}
+    />
+  </div>
 
-          {/* Botón Limpiar (Solo si hay filtros activos) */}
-          {(filterEstado !== 'todos' || filterFecha !== '') && (
-            <button
-              onClick={() => { setFilterEstado('todos'); setFilterFecha(''); }}
-              style={{
-                background: 'transparent',
-                color: '#8b5cf6',
-                border: 'none',
-                fontSize: '14px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                paddingBottom: '12px',
-                textDecoration: 'underline'
-              }}
-            >
-              Limpiar filtros
-            </button>
-          )}
-        </div>
+  {/* Botón Reset con Estilo de Texto Neon */}
+  {(filterEstado !== 'todos' || filterFecha !== '') && (
+    <button
+      onClick={() => { setFilterEstado('todos'); setFilterFecha(''); }}
+      style={{
+        background: 'rgba(239, 68, 68, 0.1)',
+        color: '#ef4444',
+        border: '1px solid rgba(239, 68, 68, 0.2)',
+        fontSize: '13px',
+        fontWeight: '700',
+        cursor: 'pointer',
+        padding: '12px 20px',
+        borderRadius: '12px',
+        alignSelf: 'flex-end',
+        transition: 'all 0.2s ease',
+        textTransform: 'uppercase',
+        letterSpacing: '1px'
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)';
+        e.currentTarget.style.transform = 'scale(1.05)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
+        e.currentTarget.style.transform = 'scale(1)';
+      }}
+    >
+      Limpiar Filtros
+    </button>
+  )}
+</div>
+
 
 
         {/* TABLA DE EVENTOS */}
