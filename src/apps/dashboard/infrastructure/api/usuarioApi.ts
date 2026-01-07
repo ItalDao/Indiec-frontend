@@ -1,4 +1,4 @@
-import { api } from '../../../../../shared/services/api';
+import { api } from '../../../../shared/services/api';
 import type { UsuarioAdmin, CreateUsuarioDTO, UpdateUsuarioDTO } from '../../domain/models/UsuarioAdmin';
 import type { UsuarioRepository } from '../../domain/repositories/UsuarioRepository';
 
