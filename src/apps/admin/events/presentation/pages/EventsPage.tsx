@@ -7,24 +7,36 @@ import type { Event } from '../../domain/models/Event';
 import { Icons } from '../../../../client/songs/presentation/components/Icons';
 
 export const EventsPage: React.FC = () => {
-  const { events, saveEvent, removeEvent, updateExistingEvent } = useEventCrud();
 
+  
+  const { events, saveEvent, removeEvent, updateExistingEvent } = useEventCrud();
+  
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-
+  
   const handleOpenCreate = () => {
     setEditingEvent(null);
     setIsFormModalOpen(true);
   };
-
+  
   const handleOpenEditFromView = (event: Event) => {
     setEditingEvent(event);
     setIsViewModalOpen(false);
     setIsFormModalOpen(true);
   };
+  
+  // --- NUEVOS ESTADOS PARA FILTROS ---
+  const [filterEstado, setFilterEstado] = useState<string>('todos');
+  const [filterFecha, setFilterFecha] = useState<string>('');
 
+  // --- LÓGICA DE FILTRADO ---
+  const filteredEvents = events.filter(event => {
+    const matchesEstado = filterEstado === 'todos' || event.estado === filterEstado;
+    const matchesFecha = !filterFecha || event.fecha.includes(filterFecha);
+    return matchesEstado && matchesFecha;
+  });
   const handleFormSuccess = async (formData: FormData) => {
     if (editingEvent?.idEvento) {
       await updateExistingEvent(editingEvent.idEvento, formData);
@@ -102,6 +114,83 @@ export const EventsPage: React.FC = () => {
           </button>
         </div>
 
+        {/* BARRA DE FILTROS */}
+        <div style={{ 
+          display: 'flex', 
+          gap: '20px', 
+          marginBottom: '24px', 
+          flexWrap: 'wrap',
+          alignItems: 'flex-end'
+        }}>
+          {/* Filtro Estado */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <label style={{ color: '#94a3b8', fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>
+              Estado
+            </label>
+            <select
+              value={filterEstado}
+              onChange={(e) => setFilterEstado(e.target.value)}
+              style={{
+                background: 'rgba(30, 27, 75, 0.7)',
+                color: '#fff',
+                border: '1px solid rgba(139, 92, 246, 0.3)',
+                padding: '10px 16px',
+                borderRadius: '8px',
+                outline: 'none',
+                cursor: 'pointer',
+                fontSize: '14px'
+              }}
+            >
+              <option value="todos">Todos los estados</option>
+              <option value="programado">Programados</option>
+              <option value="finalizado">Finalizados</option>
+              <option value="agotado">Agotados</option>
+            </select>
+          </div>
+
+          {/* Filtro Fecha */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <label style={{ color: '#94a3b8', fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>
+              Fecha del evento
+            </label>
+            <input
+              type="date"
+              value={filterFecha}
+              onChange={(e) => setFilterFecha(e.target.value)}
+              style={{
+                background: 'rgba(30, 27, 75, 0.7)',
+                color: '#fff',
+                border: '1px solid rgba(139, 92, 246, 0.3)',
+                padding: '10px 16px',
+                borderRadius: '8px',
+                outline: 'none',
+                fontSize: '14px',
+                colorScheme: 'dark' // Esto hace que el icono del calendario sea blanco
+              }}
+            />
+          </div>
+
+          {/* Botón Limpiar (Solo si hay filtros activos) */}
+          {(filterEstado !== 'todos' || filterFecha !== '') && (
+            <button
+              onClick={() => { setFilterEstado('todos'); setFilterFecha(''); }}
+              style={{
+                background: 'transparent',
+                color: '#8b5cf6',
+                border: 'none',
+                fontSize: '14px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                paddingBottom: '12px',
+                textDecoration: 'underline'
+              }}
+            >
+              Limpiar filtros
+            </button>
+          )}
+        </div>
+
+
         {/* TABLA DE EVENTOS */}
         <div style={{
           background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.8), rgba(45, 27, 105, 0.6))',
@@ -113,7 +202,7 @@ export const EventsPage: React.FC = () => {
           width: '100%',
         }}>
           <EventTable
-            events={events}
+            events={filteredEvents} // <-- Cambiado de 'events' a 'filteredEvents'
             onViewDetails={(event) => {
               setSelectedEvent(event);
               setIsViewModalOpen(true);
