@@ -3,10 +3,10 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AdminLayout from '../layout/AdminLayout';
 import ClientLayout from '../layout/ClientLayout';
 
-import UsuariosPage from '../../admin/presentation/pages/UsuariosPage';
-import RolesPage from '../../admin/presentation/pages/RolesPage';
+import UsuariosPage from '../../admin/dashboard/presentation/pages/UsuariosPage';
+import RolesPage from '../../admin/dashboard/presentation/pages/RolesPage';
 
-import DashboardPage from '../../admin/presentation/pages/Dashboard';
+import DashboardPage from '../../admin/dashboard/presentation/pages/Dashboard';
 
 const TempPage = ({ title }: { title: string }) => (
   <div style={{ padding: '2rem', textAlign: 'center' }}>
