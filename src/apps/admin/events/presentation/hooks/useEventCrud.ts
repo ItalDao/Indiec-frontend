@@ -51,10 +51,10 @@ export const useEventCrud = () => {
 
   const updateExistingEvent = async (id: number, formData: FormData) => {
     // Convertir imagen a base64 si existe
-    const imageFile = formData.get('imagen') as File;
-    let imagenUrl = null;
+    const urlDeImagen = formData.get('imagen') as string;
+    //let imagenUrl = null;
 
-    if (imageFile && imageFile.size > 0) {
+    /*if (imageFile && imageFile.size > 0) {
       imagenUrl = await new Promise<string>((resolve) => {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -62,7 +62,7 @@ export const useEventCrud = () => {
         };
         reader.readAsDataURL(imageFile);
       });
-    }
+    }*/
 
     // Actualizar evento
     setEvents(prev => prev.map(event => {
@@ -77,7 +77,7 @@ export const useEventCrud = () => {
           precioEntrada: Number(formData.get('precioEntrada')),
           descripcion: formData.get('descripcion') as string,
           estado: formData.get('estado') as string, //Esto faltaba para la logica
-          imagen: imagenUrl || event.imagen, // Mantener imagen anterior si no hay nueva
+          imagen: urlDeImagen || event.imagen, // Mantener imagen anterior si no hay nueva
         };
       }
       return event;
