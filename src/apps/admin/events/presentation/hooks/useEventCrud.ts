@@ -8,10 +8,14 @@ export const useEventCrud = () => {
 
   const saveEvent = async (formData: FormData) => {
     // Convertir imagen a base64 si existe
-    const imageFile = formData.get('imagen') as File;
+
+    // esto trata a la imagen como archivo const imageFile = formData.get('imagen') as File;
+
+    const urlDeImagen = formData.get('imagen') as string; 
+
     let imagenUrl = "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=1000";
 
-    if (imageFile && imageFile.size > 0) {
+    /*if (imageFile && imageFile.size > 0) {
       imagenUrl = await new Promise<string>((resolve) => {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -19,7 +23,7 @@ export const useEventCrud = () => {
         };
         reader.readAsDataURL(imageFile);
       });
-    }
+    }*/
 
     // 1. Extraemos los datos del formulario
     const nuevoEvento: Event = {
@@ -31,7 +35,7 @@ export const useEventCrud = () => {
       capacidad: Number(formData.get('capacidad')),
       precioEntrada: Number(formData.get('precioEntrada')),
       descripcion: formData.get('descripcion') as string,
-      imagen: imagenUrl, // Usamos la imagen convertida a base64 o default
+      imagen: urlDeImagen || imagenUrl, // Usamos la imagen convertida a base64 o default
       estado: formData.get('estado') as string || "programado"
     };
 
@@ -47,10 +51,10 @@ export const useEventCrud = () => {
 
   const updateExistingEvent = async (id: number, formData: FormData) => {
     // Convertir imagen a base64 si existe
-    const imageFile = formData.get('imagen') as File;
-    let imagenUrl = null;
+    const urlDeImagen = formData.get('imagen') as string;
+    //let imagenUrl = null;
 
-    if (imageFile && imageFile.size > 0) {
+    /*if (imageFile && imageFile.size > 0) {
       imagenUrl = await new Promise<string>((resolve) => {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -58,7 +62,7 @@ export const useEventCrud = () => {
         };
         reader.readAsDataURL(imageFile);
       });
-    }
+    }*/
 
     // Actualizar evento
     setEvents(prev => prev.map(event => {
@@ -73,7 +77,7 @@ export const useEventCrud = () => {
           precioEntrada: Number(formData.get('precioEntrada')),
           descripcion: formData.get('descripcion') as string,
           estado: formData.get('estado') as string, //Esto faltaba para la logica
-          imagen: imagenUrl || event.imagen, // Mantener imagen anterior si no hay nueva
+          imagen: urlDeImagen || event.imagen, // Mantener imagen anterior si no hay nueva
         };
       }
       return event;
