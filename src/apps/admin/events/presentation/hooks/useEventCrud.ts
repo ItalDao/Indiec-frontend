@@ -72,6 +72,7 @@ export const useEventCrud = () => {
           capacidad: Number(formData.get('capacidad')),
           precioEntrada: Number(formData.get('precioEntrada')),
           descripcion: formData.get('descripcion') as string,
+          estado: formData.get('estado') as string, //Esto faltaba para la logica
           imagen: imagenUrl || event.imagen, // Mantener imagen anterior si no hay nueva
         };
       }
