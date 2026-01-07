@@ -7,24 +7,36 @@ import type { Event } from '../../domain/models/Event';
 import { Icons } from '../../../../client/songs/presentation/components/Icons';
 
 export const EventsPage: React.FC = () => {
-  const { events, saveEvent, removeEvent, updateExistingEvent } = useEventCrud();
 
+  
+  const { events, saveEvent, removeEvent, updateExistingEvent } = useEventCrud();
+  
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-
+  
   const handleOpenCreate = () => {
     setEditingEvent(null);
     setIsFormModalOpen(true);
   };
-
+  
   const handleOpenEditFromView = (event: Event) => {
     setEditingEvent(event);
     setIsViewModalOpen(false);
     setIsFormModalOpen(true);
   };
+  
+  // --- NUEVOS ESTADOS PARA FILTROS ---
+  const [filterEstado, setFilterEstado] = useState<string>('todos');
+  const [filterFecha, setFilterFecha] = useState<string>('');
 
+  // --- LÓGICA DE FILTRADO ---
+  const filteredEvents = events.filter(event => {
+    const matchesEstado = filterEstado === 'todos' || event.estado === filterEstado;
+    const matchesFecha = !filterFecha || event.fecha.includes(filterFecha);
+    return matchesEstado && matchesFecha;
+  });
   const handleFormSuccess = async (formData: FormData) => {
     if (editingEvent?.idEvento) {
       await updateExistingEvent(editingEvent.idEvento, formData);
@@ -102,6 +114,118 @@ export const EventsPage: React.FC = () => {
           </button>
         </div>
 
+        {/* BARRA DE FILTROS MEJORADA */}
+<div style={{ 
+  display: 'flex', 
+  gap: '24px', 
+  marginBottom: '40px', 
+  padding: '24px',
+  background: 'rgba(30, 27, 75, 0.4)',
+  backdropFilter: 'blur(12px)',
+  borderRadius: '20px',
+  border: '1px solid rgba(139, 92, 246, 0.15)',
+  alignItems: 'center',
+  flexWrap: 'wrap'
+}}>
+  
+  {/* Filtro Estado */}
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: '1', minWidth: '200px' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div style={{ color: '#8b5cf6', display: 'flex' }}></div>
+      <label style={{ color: '#94a3b8', fontSize: '11px', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '1.5px' }}>
+        Estado del Evento
+      </label>
+    </div>
+    <select
+      value={filterEstado}
+      onChange={(e) => setFilterEstado(e.target.value)}
+      style={{
+        background: '#0f172a',
+        color: '#f8fafc',
+        border: '1px solid rgba(139, 92, 246, 0.3)',
+        padding: '12px 16px',
+        borderRadius: '12px',
+        outline: 'none',
+        cursor: 'pointer',
+        fontSize: '14px',
+        fontWeight: '600',
+        transition: 'all 0.3s ease',
+        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.3)'
+      }}
+      onFocus={(e) => e.currentTarget.style.borderColor = '#8b5cf6'}
+      onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)'}
+    >
+      <option value="todos">🌟 Todos los estados</option>
+      <option value="programado">📅 Programados</option>
+      <option value="finalizado">✅ Finalizados</option>
+      <option value="agotado">🚫 Agotados</option>
+    </select>
+  </div>
+
+  {/* Filtro Fecha */}
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: '1', minWidth: '200px' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div style={{ color: '#8b5cf6', display: 'flex' }}><Icons.Calendar /></div>
+      <label style={{ color: '#94a3b8', fontSize: '11px', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '1.5px' }}>
+        Fecha Específica
+      </label>
+    </div>
+    <input
+      type="date"
+      value={filterFecha}
+      onChange={(e) => setFilterFecha(e.target.value)}
+      style={{
+        background: '#0f172a',
+        color: '#f8fafc',
+        border: '1px solid rgba(139, 92, 246, 0.3)',
+        padding: '12px 16px',
+        borderRadius: '12px',
+        outline: 'none',
+        fontSize: '14px',
+        fontWeight: '600',
+        colorScheme: 'dark',
+        transition: 'all 0.3s ease',
+        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.3)'
+      }}
+      onFocus={(e) => e.currentTarget.style.borderColor = '#8b5cf6'}
+      onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)'}
+    />
+  </div>
+
+  {/* Botón Reset con Estilo de Texto Neon */}
+  {(filterEstado !== 'todos' || filterFecha !== '') && (
+    <button
+      onClick={() => { setFilterEstado('todos'); setFilterFecha(''); }}
+      style={{
+        background: 'rgba(239, 68, 68, 0.1)',
+        color: '#ef4444',
+        border: '1px solid rgba(239, 68, 68, 0.2)',
+        fontSize: '13px',
+        fontWeight: '700',
+        cursor: 'pointer',
+        padding: '12px 20px',
+        borderRadius: '12px',
+        alignSelf: 'flex-end',
+        transition: 'all 0.2s ease',
+        textTransform: 'uppercase',
+        letterSpacing: '1px'
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)';
+        e.currentTarget.style.transform = 'scale(1.05)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
+        e.currentTarget.style.transform = 'scale(1)';
+      }}
+    >
+      Limpiar Filtros
+    </button>
+  )}
+</div>
+
+
+
         {/* TABLA DE EVENTOS */}
         <div style={{
           background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.8), rgba(45, 27, 105, 0.6))',
@@ -113,7 +237,7 @@ export const EventsPage: React.FC = () => {
           width: '100%',
         }}>
           <EventTable
-            events={events}
+            events={filteredEvents} // <-- Cambiado de 'events' a 'filteredEvents'
             onViewDetails={(event) => {
               setSelectedEvent(event);
               setIsViewModalOpen(true);
