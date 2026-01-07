@@ -15,24 +15,29 @@ const AdminLayout = () => {
     { path: '/admin/settings', label: 'Configuración', icon: '⚙️' },
   ];
 
+  // 👉 SIDEBAR
   const sidebarStyles: React.CSSProperties = {
     width: '260px',
     height: '100vh',
     background: colors.backgroundLight,
     borderRight: `1px solid ${colors.border}`,
     padding: '1.5rem',
-    position: 'fixed',
-    left: 0,
-    top: 0,
     overflowY: 'auto',
+    position: 'fixed',   // 🔥 CLAVE
+    flexShrink: 0, // 🔥 evita que se achique
   };
 
+  // 👉 CONTENEDOR PRINCIPAL
   const mainStyles: React.CSSProperties = {
-    marginLeft: '260px',
+    flex: 1,
+    marginLeft: '260px', // 🔥 CLAVE
     minHeight: '100vh',
     background: colors.background,
+    display: 'flex',
+    flexDirection: 'column',
   };
 
+  // 👉 HEADER
   const headerStyles: React.CSSProperties = {
     height: '70px',
     background: colors.backgroundLight,
@@ -42,7 +47,7 @@ const AdminLayout = () => {
     alignItems: 'center',
     justifyContent: 'space-between',
   };
-
+  
   return (
     <div style={{ display: 'flex' }}>
       <aside style={sidebarStyles}>
@@ -107,11 +112,10 @@ const AdminLayout = () => {
               justifyContent: 'center',
               fontWeight: '600',
             }}>
-              A
             </div>
           </div>
         </header>
-        <main style={{ padding: '2rem' }}>
+        <main style={{ padding: '2rem', flex: 1, overflowY: 'auto' }}>
           <Outlet />
         </main>
       </div>
