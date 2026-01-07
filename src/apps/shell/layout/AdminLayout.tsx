@@ -18,8 +18,6 @@ const AdminLayout = () => {
   const settingsSubMenu = [
     { path: '/admin/settings/general', label: 'General', icon: '⚙️' },
     { path: '/admin/settings/static-pages', label: 'Páginas Estáticas', icon: '📄' },
-    { path: '/admin/settings/users', label: 'Usuarios', icon: '👤' },
-    { path: '/admin/settings/roles', label: 'Roles y Permisos', icon: '🔐' },
     { path: '/admin/settings/catalogs', label: 'Catálogos', icon: '📚' },
   ];
 

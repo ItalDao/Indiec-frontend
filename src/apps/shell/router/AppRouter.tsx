@@ -1,10 +1,7 @@
 import GeneralSettingsPage from "../../admin/settings/presentation/pages/general/GeneralSettingsPage";
 import StaticPageForm from "../../admin/settings/presentation/pages/static-pages/StaticPageForm";
 import StaticPagesList from "../../admin/settings/presentation/pages/static-pages/StaticPagesList";
-import UsersList from "../../admin/settings/presentation/pages/users/UsersList";
-import UserForm from "../../admin/settings/presentation/pages/users/UserForm";
 import CatalogsList from "../../admin/settings/presentation/pages/catalogs/CatalogsList";
-import RolesList from "../../admin/settings/presentation/pages/roles/RolesList";
 import { Outlet } from "react-router-dom";
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AdminLayout from '../layout/AdminLayout';
@@ -37,10 +34,6 @@ export const AppRouter = () => {
             <Route path="static-pages" element={<StaticPagesList />} />
             <Route path="static-pages/new" element={<StaticPageForm />} />
             <Route path="static-pages/edit/:id" element={<StaticPageForm />} />
-            <Route path="users" element={<UsersList />} />
-            <Route path="users/new" element={<UserForm />} />
-            <Route path="users/edit/:id" element={<UserForm />} />
-            <Route path="roles" element={<RolesList />} />
             <Route path="catalogs" element={<CatalogsList />} />
           </Route>
         </Route>
