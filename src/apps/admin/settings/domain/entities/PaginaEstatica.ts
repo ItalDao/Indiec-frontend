@@ -3,7 +3,7 @@ export interface PaginaEstatica {
   titulo: string;
   slug: string;
   contenido: string;
+  metaDescripcion: string;
+  fechaActualizacion: string;
   visible: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
 }
