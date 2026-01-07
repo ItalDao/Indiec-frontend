@@ -238,7 +238,11 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
             </p>
           )}
           <input 
-            type="file"
+            //esto es para recibir url y no file
+            type="text"
+            name="imagen"
+            //antes solo estaba type = "file"
+
             onChange={(e) => setFile(e.target.files?.[0] || null)} 
             style={{
               ...inputStyle,

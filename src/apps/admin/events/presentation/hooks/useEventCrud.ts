@@ -32,7 +32,7 @@ export const useEventCrud = () => {
       precioEntrada: Number(formData.get('precioEntrada')),
       descripcion: formData.get('descripcion') as string,
       imagen: imagenUrl, // Usamos la imagen convertida a base64 o default
-      estado: "programado"
+      estado: formData.get('estado') as string || "programado"
     };
 
     // 2. Actualizamos el estado agregando el nuevo evento
