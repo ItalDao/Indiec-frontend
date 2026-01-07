@@ -24,23 +24,23 @@ export { usuarioRepository } from './infrastructure/api/usuarioApi';
 
 // ========== APPLICATION - USE CASES ==========
 // Roles
-export { getRoles } from '../../admin/usecases/roles/getRoles';
-export { getRolById } from '../../admin/usecases/roles/getRolById';
-export { createRol } from '../../admin/usecases/roles/createRol';
-export { updateRol } from '../../admin/usecases/roles/updateRol';
-export { deleteRol } from '../../admin/usecases/roles/deleteRol';
-export { toggleRolEstado } from '../../admin/usecases/roles/toggleRolEstado';
+export { getRoles } from './application/usecases/roles/getRoles';
+export { getRolById } from './application/usecases/roles/getRolById';
+export { createRol } from './application/usecases/roles/createRol';
+export { updateRol } from './application/usecases/roles/updateRol';
+export { deleteRol } from './application/usecases/roles/deleteRol';
+export { toggleRolEstado } from './application/usecases/roles/toggleRolEstado';
 
 // Usuarios
-export { getUsuarios } from '../../admin/usecases/usuarios/getUsuarios';
-export { getUsuarioById } from '../../admin/usecases/usuarios/getUsuarioById';
-export { createUsuario } from '../../admin/usecases/usuarios/createUsuario';
-export { updateUsuario } from '../../admin/usecases/usuarios/updateUsuario';
-export { deleteUsuario } from '../../admin/usecases/usuarios/deleteUsuario';
-export { resetPassword } from '../../admin/usecases/usuarios/resetPassword';
+export { getUsuarios } from './application/usecases/usuarios/getUsuarios';
+export { getUsuarioById } from './application/usecases/usuarios/getUsuarioById';
+export { createUsuario } from './application/usecases/usuarios/createUsuario';
+export { updateUsuario } from './application/usecases/usuarios/updateUsuario';
+export { deleteUsuario } from './application/usecases/usuarios/deleteUsuario';
+export { resetPassword } from './application/usecases/usuarios/resetPassword';
 
 // Dashboard
-export { getDashboardReport } from '../../admin/usecases/dashboard/getDashboardReport';
+export { getDashboardReport } from './application/usecases/dashboard/getDashboardReport';
 
 // ========== PRESENTATION ==========
 // Hooks
