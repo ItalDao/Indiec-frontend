@@ -242,6 +242,10 @@ export const EventsPage: React.FC = () => {
               setSelectedEvent(event);
               setIsViewModalOpen(true);
             }}
+            onEdit={(event) => {
+    setEditingEvent(event);
+    setIsFormModalOpen(true);
+  }}
           />
         </div>
       </div>
