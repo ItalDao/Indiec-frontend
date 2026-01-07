@@ -1,32 +1,32 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUsers } from "../../hooks/useUsers";
+import { useStaticPages } from "../../hooks/useStaticPages";
 
-export default function UsersList() {
+export default function StaticPagesList() {
   const navigate = useNavigate();
-  const { users, loading, error, deleteUser, toggleStatus } = useUsers();
+  const { pages, loading, error, deletePage, toggleVisibility } = useStaticPages();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [userToDelete, setUserToDelete] = useState<string | null>(null);
+  const [pageToDelete, setPageToDelete] = useState<string | null>(null);
 
   const handleDelete = (id: string) => {
-    setUserToDelete(id);
+    setPageToDelete(id);
     setShowDeleteModal(true);
   };
 
   const confirmDelete = async () => {
-    if (userToDelete) {
-      await deleteUser(userToDelete);
+    if (pageToDelete) {
+      await deletePage(pageToDelete);
       setShowDeleteModal(false);
-      setUserToDelete(null);
+      setPageToDelete(null);
     }
   };
 
-  if (loading && users.length === 0) {
+  if (loading && pages.length === 0) {
     return (
       <div className="page-container">
         <div style={{ textAlign: 'center', padding: '48px' }}>
-          <div style={{ fontSize: '48px', marginBottom: '16px' }}>👥</div>
-          <p style={{ color: '#94a3b8' }}>Cargando usuarios...</p>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>📄</div>
+          <p style={{ color: '#94a3b8' }}>Cargando páginas...</p>
         </div>
       </div>
     );
@@ -45,16 +45,16 @@ export default function UsersList() {
   return (
     <div className="page-container">
       <div className="page-header">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <h1 className="page-title">Gestión de Usuarios</h1>
-            <p className="page-subtitle">Administra los usuarios y sus permisos</p>
+            <h1 className="page-title">Páginas Estáticas</h1>
+            <p className="page-subtitle">Gestiona el contenido estático de tu plataforma</p>
           </div>
           <button
             className="btn btn-primary"
-            onClick={() => navigate("/admin/settings/users/new")}
+            onClick={() => navigate("/admin/settings/static-pages/new")}
           >
-            ➕ Nuevo usuario
+            ➕ Nueva página
           </button>
         </div>
       </div>
@@ -63,43 +63,47 @@ export default function UsersList() {
         <table className="table">
           <thead>
             <tr>
-              <th>Nombre</th>
-              <th>Email</th>
-              <th>Rol</th>
-              <th style={{ textAlign: "center" }}>Estado</th>
-              <th style={{ textAlign: "center" }}>Acciones</th>
+              <th>Título</th>
+              <th>URL</th>
+              <th>Última Actualización</th>
+              <th style={{ textAlign: 'center' }}>Estado</th>
+              <th style={{ textAlign: 'center' }}>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td style={{ fontWeight: "500" }}>{user.name}</td>
-                <td style={{ color: "#94a3b8", fontSize: "14px" }}>{user.email}</td>
-                <td>
-                  <span className="badge badge-warning">{user.role}</span>
+            {pages.map((page) => (
+              <tr key={page.id}>
+                <td style={{ fontWeight: '500' }}>{page.titulo}</td>
+                <td style={{ color: '#94a3b8', fontSize: '14px' }}>/{page.slug}</td>
+                <td style={{ color: '#94a3b8', fontSize: '14px' }}>
+                  {new Date(page.fechaActualizacion).toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
                 </td>
-                <td style={{ textAlign: "center" }}>
-                  <span className={user.status === "active" ? "badge badge-success" : "badge badge-danger"}>
-                    {user.status === "active" ? "✓ Activo" : "✗ Inactivo"}
+                <td style={{ textAlign: 'center' }}>
+                  <span className={page.visible ? 'badge badge-success' : 'badge badge-danger'}>
+                    {page.visible ? '👁️ Visible' : '🚫 Oculto'}
                   </span>
                 </td>
                 <td>
-                  <div className="action-buttons" style={{ justifyContent: "center" }}>
+                  <div className="action-buttons" style={{ justifyContent: 'center' }}>
                     <button
                       className="btn btn-sm btn-secondary"
-                      onClick={() => navigate(`/admin/settings/users/edit/${user.id}`)}
+                      onClick={() => navigate(`/admin/settings/static-pages/edit/${page.id}`)}
                     >
                       ✏️ Editar
                     </button>
                     <button
                       className="btn btn-sm btn-success"
-                      onClick={() => toggleStatus(user.id)}
+                      onClick={() => toggleVisibility(page.id)}
                     >
-                      {user.status === "active" ? "🔒 Desactivar" : "🔓 Activar"}
+                      {page.visible ? '👁️ Ocultar' : '👁️ Mostrar'}
                     </button>
                     <button
                       className="btn btn-sm btn-danger"
-                      onClick={() => handleDelete(user.id)}
+                      onClick={() => handleDelete(page.id)}
                     >
                       🗑️ Eliminar
                     </button>
@@ -116,7 +120,7 @@ export default function UsersList() {
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <h2 className="modal-title">⚠️ Confirmar eliminación</h2>
             <div className="modal-content">
-              ¿Estás seguro de eliminar este usuario? Esta acción no se puede deshacer.
+              ¿Estás seguro de eliminar esta página? Esta acción no se puede deshacer.
             </div>
             <div className="modal-actions">
               <button className="btn btn-secondary" onClick={() => setShowDeleteModal(false)}>

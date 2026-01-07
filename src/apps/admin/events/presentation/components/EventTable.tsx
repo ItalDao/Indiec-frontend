@@ -5,6 +5,7 @@ import { Icons } from '../../../../client/songs/presentation/components/Icons';
 interface Props {
   events: Event[];
   onViewDetails: (event: Event) => void;
+  onEdit: (event: Event) => void;
 }
 
 export const EventTable: React.FC<Props> = ({ events, onViewDetails }) => {

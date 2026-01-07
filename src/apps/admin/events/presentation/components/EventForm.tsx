@@ -132,6 +132,34 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
           />
         </div>
 
+        {/* ESTADO DEL EVENTO (AÑADIDO AQUÍ) */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+            Estado del Evento
+          </label>
+          <select 
+            name="estado"
+            defaultValue={initialData?.estado || 'programado'}
+            style={{
+              ...inputStyle,
+              cursor: 'pointer',
+              colorScheme: 'dark', // Ayuda a que las opciones en móviles se vean oscuras
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+              e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+              e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+            }}
+          >
+            <option value="programado" style={{ background: '#1e1b4b' }}>Programado</option>
+            <option value="finalizado" style={{ background: '#1e1b4b' }}>Finalizado</option>
+            <option value="agotado" style={{ background: '#1e1b4b' }}>Agotado</option>
+          </select>
+        </div>
+
         {/* DESCRIPCIÓN */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
           <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
@@ -210,7 +238,11 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
             </p>
           )}
           <input 
-            type="file"
+            //esto es para recibir url y no file
+            type="text"
+            name="imagen"
+            //antes solo estaba type = "file"
+
             onChange={(e) => setFile(e.target.files?.[0] || null)} 
             style={{
               ...inputStyle,

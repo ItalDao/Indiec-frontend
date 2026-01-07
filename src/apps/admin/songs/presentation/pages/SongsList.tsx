@@ -54,6 +54,7 @@ interface FormData {
   genero: string;
   duracion: string;
   imagen: string;
+  audioUrl: string; /*agregado*/
   reproducciones: number;
   likes: number;
 }
@@ -71,6 +72,7 @@ const SongsList = () => {
     genero: '',
     duracion: '',
     imagen: '',
+    audioUrl: '', /*agregado*/
     reproducciones: 0,
     likes: 0,
   });
@@ -89,6 +91,7 @@ const SongsList = () => {
       genero: '',
       duracion: '',
       imagen: '',
+      audioUrl: '', /*agregado*/ 
       reproducciones: 0,
       likes: 0,
     });
@@ -104,6 +107,7 @@ const SongsList = () => {
       genero: song.genero,
       duracion: song.duracion,
       imagen: song.imagen,
+      audioUrl: song.audioUrl || '', /*agregado*/
       reproducciones: song.reproducciones,
       likes: song.likes,
     });
@@ -141,6 +145,7 @@ const SongsList = () => {
       genero: '',
       duracion: '',
       imagen: '',
+      audioUrl: '', /*agregado*/
       reproducciones: 0,
       likes: 0,
     });
@@ -658,6 +663,30 @@ const SongsList = () => {
               }}
             />
           </div>
+
+          <div>
+            <label style={{ display: 'block', color: '#8b5cf6', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>
+              Link de Audio
+            </label>
+            <input
+              type="text"
+              placeholder="https://..."
+              value={formData.audioUrl}
+              onChange={(e) => setFormData({ ...formData, audioUrl: e.target.value })}
+              style={{
+                width: '100%',
+                padding: '12px 16px',
+                background: 'rgba(30, 27, 75, 0.5)',
+                border: '1px solid rgba(139, 92, 246, 0.3)',
+                borderRadius: '10px',
+                color: '#e2e8f0',
+                outline: 'none',
+                transition: 'all 0.2s ease',
+                boxSizing: 'border-box',
+          }}
+        />
+    </div>
+
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             <div>
