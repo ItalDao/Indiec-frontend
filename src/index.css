@@ -25,6 +25,7 @@ body {
   font-size: 32px;
   font-weight: 700;
   background: linear-gradient(135deg, #8B5CF6 0%, #06b6d4 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 8px;
