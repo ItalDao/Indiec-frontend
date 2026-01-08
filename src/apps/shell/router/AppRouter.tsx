@@ -1,15 +1,46 @@
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+
+// Admin Pages
+import AdminLayout from '../layout/AdminLayout';
+import { UsersList, UserForm } from '../../admin/users';
+import { ArtistsList } from '../../admin/artists';
+import { SongsList } from '../../admin/songs';
 import GeneralSettingsPage from "../../admin/settings/presentation/pages/general/GeneralSettingsPage";
 import StaticPageForm from "../../admin/settings/presentation/pages/static-pages/StaticPageForm";
 import StaticPagesList from "../../admin/settings/presentation/pages/static-pages/StaticPagesList";
 import CatalogsList from "../../admin/settings/presentation/pages/catalogs/CatalogsList";
-import { Outlet } from "react-router-dom";
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import AdminLayout from '../layout/AdminLayout';
+import { EventsPage } from '../../admin/events';
+
+
+// Client Pages
 import ClientLayout from '../layout/ClientLayout';
+import HomePage from '../../client/home/presentation/pages/HomePage';
+import { ArtistListPage } from '../../client/artists/presentation/pages/ArtistListPage';
+import { ArtistDetailPage } from '../../client/artists/presentation/pages/ArtistDetailPage';
+import { SongListPage } from '../../client/songs/presentation/pages/SongListPage';
+import { SongDetailPage } from '../../client/songs/presentation/pages/SongDetailPage';
+import { StorePage } from '../../client/store/presentation/pages/StorePage';
+import { ProductDetailPage } from '../../client/store/presentation/pages/ProductDetailPage';
+import { CartPage } from '../../client/account/presentation/pages/CartPage/CartPage';
+import { CheckoutPage } from '../../client/account/presentation/pages/CheckoutPage/CheckoutPage';
+import { OrdersPage } from '../../client/account/presentation/pages/OrdersPage/OrdersPage';
+import { OrderDetailPage } from '../../client/account/presentation/pages/OrderDetailPage/OrderDetailPage';
+import { FavoritesPage } from '../../client/account/presentation/pages/FavoritesPage/FavoritesPage';
+import { ProfilePage } from '../../client/account/presentation/pages/ProfilePage/ProfilePage';
+import { AboutPage } from '../../client/static/presentation/pages/AboutPage';
+import { TermsPage } from '../../client/static/presentation/pages/TermsPage';
+import { PrivacyPage } from '../../client/static/presentation/pages/PrivacyPage';
+import { ContactPage } from '../../client/static/presentation/pages/ContactPage';
+import { FAQPage } from '../../client/support/presentation/pages/FAQPage';
+import { UserSettingsPage } from '../../client/settings/presentation/pages/UserSettingsPage';
+import { PreferencesPage } from '../../client/preferences/pages/PreferencesPage';
+import { MisGustos } from '../../client/artists/presentation/components/MisGustos';
 
 const TempPage = ({ title }: { title: string }) => (
   <div style={{ padding: '2rem', textAlign: 'center' }}>
-    <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>{title}</h1>
+    <h1 style={{ fontSize: '2rem', marginBottom: '1rem', color: '#F1F5F9' }}>
+      {title}
+    </h1>
     <p style={{ color: '#94A3B8' }}>Este módulo está en desarrollo</p>
   </div>
 );
@@ -18,16 +49,26 @@ export const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {/* REDIRECCIÓN INICIAL */}
         <Route path="/" element={<Navigate to="/client/home" replace />} />
 
+        {/* ===== ADMIN ===== */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="dashboard" element={<TempPage title="Dashboard" />} />
-          <Route path="artists" element={<TempPage title="Gestión de Artistas" />} />
-          <Route path="songs" element={<TempPage title="Gestión de Canciones" />} />
-          <Route path="events" element={<TempPage title="Gestión de Eventos" />} />
-          <Route path="store" element={<TempPage title="Gestión de Tienda" />} />
-          
+          <Route path="artists" element={<ArtistsList />} />
+          <Route path="songs" element={<SongsList />} />
+          <Route path="events" element={<EventsPage />} />
+
+
+          {/* ===== USUARIOS ===== */}
+          <Route path="users" element={<UsersList />} />
+          <Route path="users/new" element={<UserForm />} />
+          <Route path="users/edit/:id" element={<UserForm />} />
+
+          {/* ===== CATÁLOGOS / SETTINGS ===== */}
+          <Route path="catalogs" element={<CatalogsList />} />
+
           <Route path="settings" element={<Outlet />}>
             <Route index element={<Navigate to="general" replace />} />
             <Route path="general" element={<GeneralSettingsPage />} />
@@ -38,18 +79,48 @@ export const AppRouter = () => {
           </Route>
         </Route>
 
+        {/* ===== CLIENT ===== */}
         <Route path="/client" element={<ClientLayout />}>
           <Route index element={<Navigate to="/client/home" replace />} />
-          <Route path="home" element={<TempPage title="Inicio" />} />
+          <Route path="home" element={<HomePage />} />
           <Route path="search" element={<TempPage title="Búsqueda" />} />
-          <Route path="artists" element={<TempPage title="Artistas" />} />
-          <Route path="artists/:id" element={<TempPage title="Detalle de Artista" />} />
-          <Route path="songs" element={<TempPage title="Canciones" />} />
-          <Route path="songs/:id" element={<TempPage title="Detalle de Canción" />} />
+
+          <Route path="artists" element={<ArtistListPage />} />
+          <Route path="artists/:id" element={<ArtistDetailPage />} />
+
+          <Route path="songs" element={<SongListPage />} />
+          <Route path="songs/:id" element={<SongDetailPage />} />
+
           <Route path="events" element={<TempPage title="Eventos" />} />
-          <Route path="store" element={<TempPage title="Tienda" />} />
+
+          {/* TIENDA CLIENT */}
+          <Route path="store" element={<StorePage />} />
+          <Route path="store/:id" element={<ProductDetailPage />} />
+          <Route path="cart" element={<CartPage />} />
+          <Route path="checkout" element={<CheckoutPage />} />
+
+          {/* PEDIDOS */}
+          <Route path="orders" element={<OrdersPage />} />
+          <Route path="orders/:id" element={<OrderDetailPage />} />
+
+          {/* CUENTA */}
+          <Route path="favorites" element={<FavoritesPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="settings" element={<UserSettingsPage />} />
+          <Route path="preferences" element={<PreferencesPage />} />
+
+          {/* PÁGINAS ESTÁTICAS */}
+          <Route path="about" element={<AboutPage />} />
+          <Route path="terms" element={<TermsPage />} />
+          <Route path="privacy" element={<PrivacyPage />} />
+          <Route path="contact" element={<ContactPage />} />
+          <Route path="faq" element={<FAQPage />} />
         </Route>
 
+        {/* RUTA SUELTA */}
+        <Route path="/masterclass" element={<MisGustos />} />
+
+        {/* 404 */}
         <Route path="*" element={<TempPage title="404 - Página no encontrada" />} />
       </Routes>
     </BrowserRouter>
