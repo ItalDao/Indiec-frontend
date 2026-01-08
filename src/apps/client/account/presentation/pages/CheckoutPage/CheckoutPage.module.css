@@ -6,6 +6,10 @@
   flex-direction: column;
   gap: 2rem;
   animation: fadeIn var(--transition-normal);
+  background: rgba(45, 27, 105, 0.2);
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(139, 92, 246, 0.25);
 }
 
 .stepCardContent {
@@ -19,11 +23,13 @@
   border-radius: 0.5rem;
   padding: 1rem;
   cursor: pointer;
-  transition: border 0.3s;
+  transition: all 0.3s;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .paymentOption.active {
-  border: 2px solid var(--primary);
+  border: 2px solid #8b5cf6;
+  background: rgba(139, 92, 246, 0.1);
 }
 
 .paymentDetails {
@@ -51,4 +57,5 @@
 .total {
   font-size: 1.5rem;
   font-weight: 600;
+  color: #c084fc;
 }

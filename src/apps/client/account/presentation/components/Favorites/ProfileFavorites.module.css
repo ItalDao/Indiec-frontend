@@ -2,17 +2,38 @@
   list-style: none;
   padding: 0;
   margin: 0;
+
+  /* Fondo y efecto glass */
+  background: linear-gradient(
+    135deg,
+    rgba(30, 27, 75, 0.5),
+    rgba(45, 27, 105, 0.3)
+  );
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 12px 16px;
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
 }
 
 .item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #e5e7eb; /* línea sutil entre productos */
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2); /* línea sutil violeta */
+  transition: background 0.3s, transform 0.2s;
+  cursor: pointer;
+}
+
+.item:hover {
+  background: rgba(139, 92, 246, 0.1);
+  transform: translateX(3px);
 }
 
 .emptyMessage {
-  color: #64748b;
+  color: #cbd5e1; /* más visible sobre fondo oscuro */
   font-style: italic;
+  text-align: center;
+  padding: 1rem 0;
 }

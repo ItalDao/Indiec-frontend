@@ -3,12 +3,30 @@
   gap: 1rem;
   align-items: center;
   padding: 1rem;
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(30, 27, 75, 0.5),
+    rgba(45, 27, 105, 0.3)
+  );
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
 }
 
 .image {
   width: 80px;
+  height: 80px;
   border-radius: 0.5rem;
   object-fit: cover;
+  flex-shrink: 0;
 }
 
 .details {
@@ -18,18 +36,27 @@
 .details h4 {
   margin: 0;
   font-size: 1rem;
+  font-weight: 600;
+  color: #e0e7ff; /* más visible sobre fondo oscuro */
 }
 
 .details p {
   font-size: 0.85rem;
-  color: #94A3B8;
+  color: #cbd5e1;
   margin: 0.25rem 0;
 }
 
 .price {
   font-weight: bold;
+  color: #c084fc; /* violeta destacado */
 }
 
 .quantityInput {
   width: 60px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  text-align: center;
 }

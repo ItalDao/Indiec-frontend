@@ -2,12 +2,23 @@
   padding: 2rem;
   max-width: 800px;
   margin: 0 auto;
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(30, 27, 75, 0.5),
+    rgba(45, 27, 105, 0.3)
+  );
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
   animation: fadeIn var(--transition-normal);
 }
 
 .title {
   font-size: 1.75rem;
   margin-bottom: 1rem;
+  color: #e0e7ff;
+  font-weight: 600;
 }
 
 .itemsGrid {
@@ -26,13 +37,22 @@
   margin-top: 0.5rem;
 }
 
+.couponInputWrapper input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
 .errorMessage {
-  color: var(--error);
+  color: #f87171; /* rojo suave */
   margin-top: 0.5rem;
 }
 
 .successMessage {
-  color: var(--success);
+  color: #34d399; /* verde suave */
   margin-top: 0.5rem;
   display: flex;
   align-items: center;
@@ -42,14 +62,15 @@
 .summary {
   margin-top: 1.5rem;
   text-align: right;
+  color: #e0e7ff;
 }
 
 .summaryLine {
-  color: var(--text-secondary);
+  color: #94a3b8;
 }
 
 .summaryDiscount {
-  color: var(--success);
+  color: #34d399;
   margin-top: 0.25rem;
 }
 
@@ -62,4 +83,6 @@
 .emptyCart {
   padding: 2rem;
   text-align: center;
+  color: #94a3b8;
+  font-style: italic;
 }

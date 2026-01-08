@@ -6,6 +6,10 @@
   flex-direction: column;
   gap: 1.5rem;
   animation: fadeIn var(--transition-normal);
+  background: rgba(45, 27, 105, 0.15);
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(139, 92, 246, 0.25);
 }
 
 .header {
@@ -25,13 +29,16 @@
 .totalCard {
   padding: 1.5rem;
   margin-bottom: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(139, 92, 246, 0.25);
 }
 
 .itemRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(139, 92, 246, 0.1);
   padding-bottom: 0.75rem;
 }
 
@@ -53,8 +60,20 @@
 
 .itemPrice strong {
   display: block;
+  color: #c084fc;
 }
 
 .backButton {
   align-self: flex-start;
+  background: rgba(139, 92, 246, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.backButton:hover {
+  background: rgba(139, 92, 246, 0.2);
+  border-color: #8b5cf6;
 }
