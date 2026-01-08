@@ -20,7 +20,6 @@ const AdminLayout = () => {
   const settingsSubMenu = [
     { path: '/admin/settings/general', label: 'General', Icon: Icons.Settings },
     { path: '/admin/settings/static-pages', label: 'Páginas Estáticas', Icon: Icons.FileText },
-    { path: '/admin/settings/catalogs', label: 'Catálogos', Icon: Icons.Layers },
   ];
 
   const isActive = (path: string) => {

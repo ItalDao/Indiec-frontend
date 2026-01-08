@@ -9,6 +9,9 @@ import { ArtistsList } from '../../admin/artists';
 import { SongsList } from '../../admin/songs';
 import { EventsPage } from '../../admin/events';
 
+// Importa la página del ADMIN 
+import AdminStorePage from "../../admin/store/presentation/pages/StorePage";
+
 // ✅ DASHBOARD REAL
 import Dashboard from '../../admin/dashboard/presentation/pages/Dashboard';
 
@@ -66,6 +69,7 @@ export const AppRouter = () => {
         {/* ================= ADMIN ================= */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
+          <Route path="store" element={<AdminStorePage />} />
 
           {/* ✅ DASHBOARD REAL */}
           <Route path="dashboard" element={<Dashboard />} />
