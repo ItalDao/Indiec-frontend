@@ -1,19 +1,27 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 
-// Admin Pages
+// ===== ADMIN LAYOUT =====
 import AdminLayout from '../layout/AdminLayout';
+
+// ===== ADMIN MODULES =====
 import { UsersList, UserForm } from '../../admin/users';
 import { ArtistsList } from '../../admin/artists';
 import { SongsList } from '../../admin/songs';
+import { EventsPage } from '../../admin/events';
+
+// ✅ DASHBOARD REAL
+import Dashboard from '../../admin/dashboard/presentation/pages/Dashboard';
+
+// ===== SETTINGS =====
 import GeneralSettingsPage from "../../admin/settings/presentation/pages/general/GeneralSettingsPage";
 import StaticPageForm from "../../admin/settings/presentation/pages/static-pages/StaticPageForm";
 import StaticPagesList from "../../admin/settings/presentation/pages/static-pages/StaticPagesList";
 import CatalogsList from "../../admin/settings/presentation/pages/catalogs/CatalogsList";
-import { EventsPage } from '../../admin/events';
 
-
-// Client Pages
+// ===== CLIENT LAYOUT =====
 import ClientLayout from '../layout/ClientLayout';
+
+// ===== CLIENT PAGES =====
 import HomePage from '../../client/home/presentation/pages/HomePage';
 import { ArtistListPage } from '../../client/artists/presentation/pages/ArtistListPage';
 import { ArtistDetailPage } from '../../client/artists/presentation/pages/ArtistDetailPage';
@@ -36,6 +44,7 @@ import { UserSettingsPage } from '../../client/settings/presentation/pages/UserS
 import { PreferencesPage } from '../../client/preferences/pages/PreferencesPage';
 import { MisGustos } from '../../client/artists/presentation/components/MisGustos';
 
+// ===== TEMP PAGE =====
 const TempPage = ({ title }: { title: string }) => (
   <div style={{ padding: '2rem', textAlign: 'center' }}>
     <h1 style={{ fontSize: '2rem', marginBottom: '1rem', color: '#F1F5F9' }}>
@@ -45,30 +54,35 @@ const TempPage = ({ title }: { title: string }) => (
   </div>
 );
 
+// ===== ROUTER =====
 export const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
+
         {/* REDIRECCIÓN INICIAL */}
         <Route path="/" element={<Navigate to="/client/home" replace />} />
 
-        {/* ===== ADMIN ===== */}
+        {/* ================= ADMIN ================= */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
-          <Route path="dashboard" element={<TempPage title="Dashboard" />} />
+
+          {/* ✅ DASHBOARD REAL */}
+          <Route path="dashboard" element={<Dashboard />} />
+
           <Route path="artists" element={<ArtistsList />} />
           <Route path="songs" element={<SongsList />} />
           <Route path="events" element={<EventsPage />} />
 
-
-          {/* ===== USUARIOS ===== */}
+          {/* USUARIOS */}
           <Route path="users" element={<UsersList />} />
           <Route path="users/new" element={<UserForm />} />
           <Route path="users/edit/:id" element={<UserForm />} />
 
-          {/* ===== CATÁLOGOS / SETTINGS ===== */}
+          {/* CATÁLOGOS */}
           <Route path="catalogs" element={<CatalogsList />} />
 
+          {/* SETTINGS */}
           <Route path="settings" element={<Outlet />}>
             <Route index element={<Navigate to="general" replace />} />
             <Route path="general" element={<GeneralSettingsPage />} />
@@ -79,7 +93,7 @@ export const AppRouter = () => {
           </Route>
         </Route>
 
-        {/* ===== CLIENT ===== */}
+        {/* ================= CLIENT ================= */}
         <Route path="/client" element={<ClientLayout />}>
           <Route index element={<Navigate to="/client/home" replace />} />
           <Route path="home" element={<HomePage />} />
@@ -93,7 +107,7 @@ export const AppRouter = () => {
 
           <Route path="events" element={<TempPage title="Eventos" />} />
 
-          {/* TIENDA CLIENT */}
+          {/* TIENDA */}
           <Route path="store" element={<StorePage />} />
           <Route path="store/:id" element={<ProductDetailPage />} />
           <Route path="cart" element={<CartPage />} />
@@ -122,6 +136,7 @@ export const AppRouter = () => {
 
         {/* 404 */}
         <Route path="*" element={<TempPage title="404 - Página no encontrada" />} />
+
       </Routes>
     </BrowserRouter>
   );
