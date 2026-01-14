@@ -61,6 +61,13 @@ interface FormData {
 
 const SongsList = () => {
   const [songs, setSongs] = useState<Song[]>(MOCK_SONGS);
+
+  const [filters, setFilters] = useState({
+  search: '',
+  genero: '',
+  estado: 'todos',
+});
+
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [selectedSong, setSelectedSong] = useState<Song | null>(null);
@@ -172,6 +179,33 @@ const SongsList = () => {
     return num.toString();
   };
 
+  const filterInputStyle = {
+  width: '100%',
+  padding: '12px 16px',
+  background: 'rgba(30, 27, 75, 0.4)',
+  border: '1px solid rgba(139, 92, 246, 0.3)',
+  borderRadius: '10px',
+  color: '#e2e8f0',
+  fontSize: '14px',
+  outline: 'none',
+  transition: 'all 0.2s ease',
+  boxSizing: 'border-box' as const,
+  cursor: 'pointer',
+};
+const filteredSongs = songs.filter((song) => {
+  const search = filters.search.toLowerCase();
+
+  const matchSearch = song.titulo.toLowerCase().includes(search);
+  const matchGenero = filters.genero ? song.genero === filters.genero : true;
+  const matchEstado = filters.estado === 'todos' ? true : song.estado === filters.estado;
+
+  return matchSearch && matchGenero && matchEstado;
+});
+
+const uniqueGenres = Array.from(new Set(songs.map((s) => s.genero))).filter(Boolean);
+
+
+
   return (
     <div
       style={{
@@ -230,6 +264,94 @@ const SongsList = () => {
         </button>
       </div>
 
+      {/* Filters Section */}
+<div
+  style={{
+    background: 'rgba(30, 27, 75, 0.2)', // Más sutil para no competir con las cards
+    backdropFilter: 'blur(8px)',
+    border: '1px solid rgba(139, 92, 246, 0.1)',
+    borderRadius: '16px',
+    padding: '20px',
+    marginBottom: '32px',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', // Responsivo
+    gap: '20px',
+    alignItems: 'end',
+  }}
+>
+  {/* Buscador de Canciones */}
+<div style={{ flex: 2 }}>
+  <label style={{ display: 'block', color: '#8b5cf6', fontSize: '11px', fontWeight: '700', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+    Buscar Canción
+  </label>
+  <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+    {/* Icono posicionado absolutamente para que no estorbe al escribir */}
+    <span style={{ 
+      position: 'absolute', 
+      left: '16px', 
+      display: 'flex',
+      color: '#8b5cf6',
+      opacity: 0.7,
+      pointerEvents: 'none' // Esto hace que el click pase a través del icono hacia el input
+    }}>
+      <Icons.Music />
+    </span>
+    
+    <input
+      placeholder="Escribe el nombre de la canción..."
+      value={filters.search}
+      onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+      style={{
+        ...filterInputStyle,
+        paddingLeft: '45px', // Espacio extra a la izquierda para el icono
+      }}
+      onFocus={(e) => (e.currentTarget.style.borderColor = '#8b5cf6')}
+      onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)')}
+    />
+  </div>
+</div>
+
+  {/* Género */}
+  <div>
+    <label style={{ display: 'block', color: '#8b5cf6', fontSize: '11px', fontWeight: '700', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+      Género
+    </label>
+    <select
+      value={filters.genero}
+      onChange={(e) => setFilters({ ...filters, genero: e.target.value })}
+      style={filterInputStyle}
+      onFocus={(e) => (e.currentTarget.style.borderColor = '#8b5cf6')}
+      onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)')}
+    >
+      <option value="" style={{ background: '#1e1b4b' }}>Todos los géneros</option>
+      {uniqueGenres.map((g) => (
+        <option key={g} value={g} style={{ background: '#1e1b4b' }}>{g}</option>
+      ))}
+    </select>
+  </div>
+
+  {/* Estado */}
+  <div>
+    <label style={{ display: 'block', color: '#8b5cf6', fontSize: '11px', fontWeight: '700', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+      Estado
+    </label>
+    <select
+      value={filters.estado}
+      onChange={(e) => setFilters({ ...filters, estado: e.target.value })}
+      style={filterInputStyle}
+      onFocus={(e) => (e.currentTarget.style.borderColor = '#8b5cf6')}
+      onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)')}
+    >
+      <option value="todos" style={{ background: '#1e1b4b' }}>Todos los estados</option>
+      <option value="activo" style={{ background: '#1e1b4b' }}>Activas</option>
+      <option value="inactivo" style={{ background: '#1e1b4b' }}>Inactivas</option>
+    </select>
+  </div>
+</div>
+
+
+
+
       {/* Songs Grid */}
       <div
         style={{
@@ -239,7 +361,7 @@ const SongsList = () => {
           marginBottom: '30px',
         }}
       >
-        {songs.map((song) => (
+        {filteredSongs.map((song) => (
           <div
             key={song.id}
             style={{
