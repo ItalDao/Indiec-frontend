@@ -499,7 +499,7 @@ export const ArtistsList: React.FC = () => {
                     }}
                   >
                     <Icons.Music />
-                    Ver
+                    
                   </button>
                   <button
                     onClick={() => handleEditArtist(artist)}
@@ -529,7 +529,7 @@ export const ArtistsList: React.FC = () => {
                     }}
                   >
                     <Icons.Edit />
-                    Editar
+                   
                   </button>
                   <button
                     onClick={() => toggleStatus(artist.id)}
@@ -559,7 +559,7 @@ export const ArtistsList: React.FC = () => {
                     }}
                   >
                     <Icons.Lock />
-                    {artist.estado === 'activo' ? 'Desactivar' : 'Activar'}
+                    
                   </button>
                   <button
                     onClick={() => handleDelete(artist.id)}
@@ -589,7 +589,7 @@ export const ArtistsList: React.FC = () => {
                     }}
                   >
                     <Icons.Trash />
-                    Eliminar
+                   
                   </button>
                 </div>
               </div>

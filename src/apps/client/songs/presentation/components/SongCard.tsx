@@ -118,7 +118,6 @@ export const SongCard = ({ song }: SongCardProps) => {
             style={{
               fontSize: '15px',
               fontWeight: '700',
-              color: '#fff',
               margin: 0,
               marginBottom: '8px',
               lineHeight: '1.4',
