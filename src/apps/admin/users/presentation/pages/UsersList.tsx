@@ -28,6 +28,14 @@ export default function UsersList() {
   const [rol, setRol] = useState('Admin');
   const [estado, setEstado] = useState<'activo' | 'inactivo'>('activo');
 
+  const [mensaje, setMensaje] = useState('');
+  const [busqueda, setBusqueda] = useState('');
+
+  /* ===== CONTADORES ===== */
+  const totalUsuarios = users.length;
+  const usuariosActivos = users.filter(u => u.estado === 'activo').length;
+  const usuariosInactivos = users.filter(u => u.estado === 'inactivo').length;
+
   const limpiarFormulario = () => {
     setNombre('');
     setEmail('');
@@ -38,7 +46,11 @@ export default function UsersList() {
   };
 
   const guardarUsuario = () => {
-    if (!nombre || !email || !password) return;
+    if (!nombre || !email || !password) {
+      setMensaje('Todos los campos son obligatorios');
+      setTimeout(() => setMensaje(''), 3000);
+      return;
+    }
 
     if (editandoId) {
       setUsers(users.map(u =>
@@ -46,14 +58,17 @@ export default function UsersList() {
           ? { ...u, nombre, email, password, rol, estado }
           : u
       ));
+      setMensaje('Usuario actualizado correctamente');
     } else {
       setUsers([
         ...users,
         { id: Date.now().toString(), nombre, email, password, rol, estado },
       ]);
+      setMensaje('Usuario creado correctamente');
     }
 
     limpiarFormulario();
+    setTimeout(() => setMensaje(''), 3000);
   };
 
   const editarUsuario = (u: Usuario) => {
@@ -69,20 +84,67 @@ export default function UsersList() {
     setUsers(users.map(u =>
       u.id === id ? { ...u, password: '123456' } : u
     ));
-    alert('Contraseña reseteada a: 123456');
+    setMensaje('Contraseña reseteada a 123456');
+    setTimeout(() => setMensaje(''), 3000);
   };
 
   const eliminarUsuario = (id: string) => {
+    const confirmar = window.confirm('¿Estás seguro de eliminar este usuario?');
+    if (!confirmar) return;
+
     setUsers(users.map(u =>
       u.id === id ? { ...u, estado: 'inactivo' } : u
     ));
+
+    setMensaje('Usuario eliminado correctamente');
+    setTimeout(() => setMensaje(''), 3000);
   };
+
+  const usuariosFiltrados = users.filter(u =>
+    u.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
+    u.email.toLowerCase().includes(busqueda.toLowerCase())
+  );
 
   return (
     <div style={{ background: bg, width: '100%', padding: '2rem' }}>
-      <h2 style={{ color: text, marginBottom: '2rem', textAlign: 'center' }}>
+      <h2 style={{ color: text, marginBottom: '0.5rem', textAlign: 'center' }}>
         Gestión de Usuarios
       </h2>
+
+      {/* CONTADOR */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '2rem',
+          marginBottom: '1.2rem',
+          color: text,
+          fontSize: '0.85rem',
+        }}
+      >
+        <span>Total: <strong>{totalUsuarios}</strong></span>
+        <span>Activos: <strong>{usuariosActivos}</strong></span>
+        <span>Inactivos: <strong>{usuariosInactivos}</strong></span>
+      </div>
+
+      {/* MENSAJE */}
+      {mensaje && (
+        <div
+          style={{
+            background: '#022c22',
+            color: '#34d399',
+            padding: '0.75rem 1rem',
+            borderRadius: 10,
+            textAlign: 'center',
+            marginBottom: '1.5rem',
+            maxWidth: 400,
+            marginInline: 'auto',
+            fontSize: '0.85rem',
+          }}
+        >
+          {mensaje}
+        </div>
+      )}
 
       {/* FORM */}
       <div
@@ -91,7 +153,7 @@ export default function UsersList() {
           padding: '2rem',
           borderRadius: 16,
           border: `1px solid ${border}`,
-          marginBottom: '3rem',
+          marginBottom: '2rem',
           maxWidth: 1400,
           marginInline: 'auto',
         }}
@@ -128,6 +190,16 @@ export default function UsersList() {
         </div>
       </div>
 
+      {/* SEARCH */}
+      <div style={{ maxWidth: 1400, margin: '0 auto 1.5rem' }}>
+        <input
+          style={input(border, text)}
+          placeholder="Buscar por nombre o correo"
+          value={busqueda}
+          onChange={e => setBusqueda(e.target.value)}
+        />
+      </div>
+
       {/* TABLE */}
       <div
         style={{
@@ -139,28 +211,9 @@ export default function UsersList() {
           marginInline: 'auto',
         }}
       >
-        <table
-          width="100%"
-          cellPadding={14}
-          style={{
-            borderCollapse: 'collapse',
-            color: text,
-            fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont',
-            fontSize: '0.9rem',
-            letterSpacing: '0.2px',
-          }}
-        >
+        <table width="100%" cellPadding={14} style={{ borderCollapse: 'collapse', color: text }}>
           <thead>
-            <tr
-              style={{
-                color: muted,
-                fontSize: '0.7rem',
-                textAlign: 'center',
-                fontWeight: 600,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-              }}
-            >
+            <tr style={{ color: muted, fontSize: '0.7rem', textAlign: 'center', fontWeight: 600 }}>
               <th>Nombre</th>
               <th>Correo</th>
               <th>Rol</th>
@@ -170,7 +223,7 @@ export default function UsersList() {
           </thead>
 
           <tbody>
-            {users.length === 0 && (
+            {usuariosFiltrados.length === 0 && (
               <tr>
                 <td colSpan={5} style={{ textAlign: 'center', color: muted, padding: '3rem' }}>
                   No hay usuarios registrados
@@ -178,30 +231,16 @@ export default function UsersList() {
               </tr>
             )}
 
-            {users.map(u => (
-              <tr
-                key={u.id}
-                style={{
-                  borderTop: `1px solid ${border}`,
-                  textAlign: 'center',
-                }}
-              >
+            {usuariosFiltrados.map(u => (
+              <tr key={u.id} style={{ borderTop: `1px solid ${border}`, textAlign: 'center' }}>
                 <td>{u.nombre}</td>
                 <td>{u.email}</td>
                 <td>{u.rol}</td>
+                <td><span style={badge(u.estado)}>{u.estado}</span></td>
                 <td>
-                  <span style={badge(u.estado)}>{u.estado}</span>
-                </td>
-                <td>
-                  <button style={btnGhost(border, text)} onClick={() => editarUsuario(u)}>
-                    Editar
-                  </button>{' '}
-                  <button style={btnGhost(border, text)} onClick={() => resetPassword(u.id)}>
-                    Recuperar
-                  </button>{' '}
-                  <button style={btnGhost(border, text)} onClick={() => eliminarUsuario(u.id)}>
-                    Eliminar
-                  </button>
+                  <button style={btnGhost(border, text)} onClick={() => editarUsuario(u)}>Editar</button>{' '}
+                  <button style={btnGhost(border, text)} onClick={() => resetPassword(u.id)}>Recuperar</button>{' '}
+                  <button style={btnGhost(border, text)} onClick={() => eliminarUsuario(u.id)}>Eliminar</button>
                 </td>
               </tr>
             ))}
@@ -212,7 +251,7 @@ export default function UsersList() {
   );
 }
 
-/* ===== styles ===== */
+/* ===== styles (SIN CAMBIOS) ===== */
 
 const input = (border: string, color: string) => ({
   background: '#020617',
