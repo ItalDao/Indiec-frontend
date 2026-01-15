@@ -21,6 +21,9 @@ import StaticPageForm from "../../admin/settings/presentation/pages/static-pages
 import StaticPagesList from "../../admin/settings/presentation/pages/static-pages/StaticPagesList";
 import CatalogsList from "../../admin/settings/presentation/pages/catalogs/CatalogsList";
 
+
+
+
 // ===== CLIENT LAYOUT =====
 import ClientLayout from '../layout/ClientLayout';
 
@@ -78,7 +81,6 @@ export const AppRouter = () => {
           <Route path="songs" element={<SongsList />} />
           <Route path="events" element={<EventsPage />} />
 
-          {/* USUARIOS */}
           <Route path="users" element={<UsersList />} />
           <Route path="users/new" element={<UserForm />} />
           <Route path="users/edit/:id" element={<UserForm />} />
