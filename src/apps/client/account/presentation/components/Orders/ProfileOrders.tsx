@@ -10,21 +10,38 @@ export const ProfileOrders = ({ orders }: Props) => {
   const navigate = useNavigate();
 
   if (orders.length === 0) {
-    return <p className={styles.emptyMessage}>No tienes pedidos aún.</p>;
+    return (
+      <div className={styles.emptyBox}>
+        <span>📦</span>
+        <p>No tienes pedidos aún</p>
+      </div>
+    );
   }
 
   return (
-    <>
+    <ul className={styles.list}>
       {orders.map(order => (
-        <Card
-          key={order.id}
-          className={styles.card}
-          onClick={() => navigate(`/client/orders/${order.id}`)}
-        >
-          <p><strong>Orden:</strong> #{order.id}</p>
-          <p><strong>Total:</strong> ${(order.total ?? 0).toFixed(2)}</p>
-        </Card>
+        <li key={order.id}>
+          <Card
+            className={styles.card}
+            onClick={() => navigate(`/client/orders/${order.id}`)}
+          >
+            <div className={styles.info}>
+              <div>
+                <p className={styles.label}>Orden</p>
+                <p className={styles.value}>#{order.id}</p>
+              </div>
+
+              <div className={styles.amount}>
+                <p className={styles.label}>Total</p>
+                <p className={styles.price}>
+                  ${(order.total ?? 0).toFixed(2)}
+                </p>
+              </div>
+            </div>
+          </Card>
+        </li>
       ))}
-    </>
+    </ul>
   );
 };
