@@ -2,18 +2,18 @@ import { useState } from 'react';
 import { Card } from '../../../../../../shared/ui';
 import { useCheckout } from '../../hooks/useCheckout';
 import { useFavorites } from '../../hooks/useFavorites';
-import { mockUser, mockUserNotifications } from '../../../infrastructure/mocks/mockUser';
+import {
+  mockUser,
+  mockUserNotifications
+} from '../../../infrastructure/mocks/mockUser';
 import type { User } from '../../../infrastructure/mocks/mockUser';
 
-import { ProfileTabs } from '../../components/Tabs/ProfileTabs';
 import { ProfileHeader } from '../../components/Header/ProfileHeader';
 import { ProfileOrders } from '../../components/Orders/ProfileOrders';
 import { ProfileFavorites } from '../../components/Favorites/ProfileFavorites';
 import { ProfileNotifications } from '../../components/Notifications/ProfileNotifications';
 
 import styles from './ProfilePage.module.css';
-
-type Section = 'personal' | 'orders' | 'favorites' | 'notifications';
 
 export const ProfilePage = () => {
   const { orders = [] } = useCheckout();
@@ -25,7 +25,6 @@ export const ProfilePage = () => {
   });
 
   const [notifications, setNotifications] = useState(mockUserNotifications);
-  const [section, setSection] = useState<Section>('personal');
 
   const handleSaveProfile = () => {
     localStorage.setItem('profile_user', JSON.stringify(user));
@@ -40,49 +39,67 @@ export const ProfilePage = () => {
     reader.onload = () => {
       setUser(prev => ({
         ...prev,
-        photo: reader.result as string,
+        photo: reader.result as string
       }));
     };
     reader.readAsDataURL(file);
   };
 
   return (
-    <div className={styles.container}>
-      <ProfileTabs active={section} onChange={setSection} />
+    <div className={styles.page}>
+      {/* HEADER */}
+      <header className={styles.header}>
+        <h1>Mi Perfil</h1>
+        <p>Bienvenido a tu perfil, {user.name}.</p>
+      </header>
 
-      <Card className={styles.card}>
-        <div className={styles.section}>
-          {section === 'personal' && (
-            <ProfileHeader
-              user={user}
-              onChange={setUser}
-              onPhotoChange={handlePhotoChange}
-              onSave={handleSaveProfile}
-            />
-          )}
+      {/* LAYOUT PRINCIPAL */}
+      <div className={styles.layout}>
+        {/* COLUMNA IZQUIERDA */}
+        <Card className={styles.formCard}>
+          <h3 className={styles.sectionTitle}>Datos personales</h3>
 
-          {section === 'orders' && <ProfileOrders orders={orders} />}
+          <ProfileHeader
+            user={user}
+            onChange={setUser}
+            onPhotoChange={handlePhotoChange}
+            onSave={handleSaveProfile}
+          />
+        </Card>
 
-          {section === 'favorites' && (
-            <ProfileFavorites
-              products={favorites.products}
-              onRemove={id => removeFavorite('products', id)}
-            />
-          )}
+        {/* COLUMNA DERECHA */}
+        <div className={styles.rightColumn}>
+          {/* ARRIBA */}
+          <Card className={styles.card}>
+            <h3 className={styles.sectionTitle}>Últimos pedidos</h3>
+            <ProfileOrders orders={orders} />
+          </Card>
 
-          {section === 'notifications' && (
-            <ProfileNotifications
-              notifications={notifications}
-              onToggle={key =>
-                setNotifications(prev => ({
-                  ...prev,
-                  [key]: !prev[key],
-                }))
-              }
-            />
-          )}
+          {/* ABAJO */}
+          <div className={styles.doubleRow}>
+            <Card className={styles.card}>
+              <h3 className={styles.sectionTitle}>Favoritos</h3>
+              <ProfileFavorites
+                products={favorites.products}
+                onRemove={id => removeFavorite('products', id)}
+              />
+            </Card>
+
+            <Card className={styles.card}>
+              <h3 className={styles.sectionTitle}>Notificaciones</h3>
+              <ProfileNotifications
+                notifications={notifications}
+                onToggle={key =>
+                  setNotifications(prev => ({
+                    ...prev,
+                    [key]: !prev[key]
+                  }))
+                }
+              />
+            </Card>
+          </div>
         </div>
-      </Card>
+      </div>
     </div>
   );
 };
