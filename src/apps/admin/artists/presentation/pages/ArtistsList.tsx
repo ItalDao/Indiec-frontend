@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MOCK_ARTISTS } from '../../data/artists.mock';
 import { Icons } from '../../../../client/songs/presentation/components/Icons';
+import { QRCodeComponent } from '../../../../../shared/ui';
 import type { Artist } from '../../data/artists.mock';
 
 const Modal: React.FC<{ isOpen: boolean; onClose: () => void; title: string; children: React.ReactNode }> = ({
@@ -51,6 +52,7 @@ export const ArtistsList: React.FC = () => {
   const [artists, setArtists] = useState<Artist[]>(MOCK_ARTISTS);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+  const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
   const [editingArtist, setEditingArtist] = useState<Artist | null>(null);
 
@@ -71,6 +73,11 @@ export const ArtistsList: React.FC = () => {
   const handleViewDetails = (artist: Artist) => {
     setSelectedArtist(artist);
     setIsDetailModalOpen(true);
+  };
+
+  const handleDownloadQR = (artist: Artist) => {
+    setSelectedArtist(artist);
+    setIsQRModalOpen(true);
   };
 
   const handleAddArtist = () => {
@@ -268,7 +275,9 @@ export const ArtistsList: React.FC = () => {
 >
   {/* Buscar por nombre */}
   <div style={{ flex: '1', minWidth: '220px', position: 'relative' }}>
-    <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', opacity: 0.6 }}>🔍</span>
+    <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', opacity: 0.6, display: 'flex', alignItems: 'center' }}>
+      <Icons.Search />
+    </div>
     <input
       placeholder="Buscar artista por nombre..."
       value={filterName}
@@ -292,7 +301,9 @@ export const ArtistsList: React.FC = () => {
 
   {/* Filtro género */}
   <div style={{ minWidth: '200px', position: 'relative' }}>
-    <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', opacity: 0.6, zIndex: 1 }}>🎸</span>
+    <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', opacity: 0.6, zIndex: 1, display: 'flex', alignItems: 'center' }}>
+      <Icons.Music />
+    </div>
     <select
       value={filterGenero}
       onChange={(e) => setFilterGenero(e.target.value)}
@@ -322,7 +333,9 @@ export const ArtistsList: React.FC = () => {
 
   {/* Filtro estado */}
   <div style={{ minWidth: '180px', position: 'relative' }}>
-    <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', opacity: 0.6, zIndex: 1 }}>⚡</span>
+    <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', opacity: 0.6, zIndex: 1, display: 'flex', alignItems: 'center' }}>
+      <Icons.Check />
+    </div>
     <select
       value={filterEstado}
       onChange={(e) => setFilterEstado(e.target.value)}
@@ -532,6 +545,35 @@ export const ArtistsList: React.FC = () => {
                    
                   </button>
                   <button
+                    onClick={() => handleDownloadQR(artist)}
+                    style={{
+                      flex: 1,
+                      padding: '8px 12px',
+                      background: 'transparent',
+                      color: '#06b6d4',
+                      border: '1px solid rgba(6, 182, 212, 0.3)',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      fontWeight: '600',
+                      fontSize: '12px',
+                      transition: 'all 0.2s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = '#06b6d4';
+                      e.currentTarget.style.background = 'rgba(6, 182, 212, 0.1)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.3)';
+                      e.currentTarget.style.background = 'transparent';
+                    }}
+                  >
+                    <Icons.FileText />
+                  </button>
+                  <button
                     onClick={() => toggleStatus(artist.id)}
                     style={{
                       flex: 1,
@@ -686,6 +728,46 @@ export const ArtistsList: React.FC = () => {
                 Cerrar
               </button>
             </div>
+          </div>
+        )}
+      </Modal>
+
+      {/* MODAL QR */}
+      <Modal isOpen={isQRModalOpen} onClose={() => setIsQRModalOpen(false)} title="Descargar QR del Artista">
+        {selectedArtist && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <p style={{ color: '#cbd5e1', fontSize: '14px', margin: 0 }}>
+              Descarga el código QR de <strong>{selectedArtist.nombre}</strong> para usar en materiales de marketing, redes sociales y promociones.
+            </p>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <QRCodeComponent
+                value={`ARTIST-${selectedArtist.id}-${selectedArtist.nombre}`}
+                size={256}
+                downloadFileName={`qr-${selectedArtist.nombre.replace(/\s+/g, '-')}.png`}
+              />
+            </div>
+            <button
+              onClick={() => setIsQRModalOpen(false)}
+              style={{
+                padding: '12px 24px',
+                background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '10px',
+                cursor: 'pointer',
+                fontWeight: '600',
+                fontSize: '14px',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              Cerrar
+            </button>
           </div>
         )}
       </Modal>

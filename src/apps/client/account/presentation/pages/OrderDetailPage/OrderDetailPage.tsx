@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { orderApi } from '../../../infrastructure/api/orderApi';
 import type { Order } from '../../../domain/models/Order';
 import { Icons } from '../../../../songs/presentation/components/Icons';
+import { QRCodeComponent } from '../../../../../../shared/ui';
 
 export const OrderDetailPage = () => {
   const { id } = useParams();
@@ -217,6 +218,7 @@ export const OrderDetailPage = () => {
           borderRadius: '16px',
           padding: '2rem',
           textAlign: 'center',
+          marginBottom: '2rem',
           boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.3)',
         }}>
           <p style={{ margin: 0, color: '#CBD5E1', fontSize: '0.9rem', marginBottom: '0.5rem' }}>Total del Pedido</p>
@@ -231,6 +233,29 @@ export const OrderDetailPage = () => {
           }}>
             ${order.total.toFixed(2)}
           </h2>
+        </div>
+
+        {/* QR CODE */}
+        <div style={{
+          background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.8) 0%, rgba(45, 27, 105, 0.6) 100%)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(139, 92, 246, 0.2)',
+          borderRadius: '16px',
+          padding: '2rem',
+          textAlign: 'center',
+          boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.3)',
+        }}>
+          <h3 style={{ color: '#E5E7EB', marginTop: 0, marginBottom: '1.5rem', fontSize: 'clamp(1.1rem, 4vw, 1.3rem)' }}>
+            Código QR de Confirmación
+          </h3>
+          <p style={{ color: '#CBD5E1', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
+            Muestra este código al recoger tu pedido o úsalo para rastrear tu orden
+          </p>
+          <QRCodeComponent
+            value={`ORDER-${order.id}-${new Date(order.createdAt).getTime()}`}
+            size={256}
+            downloadFileName={`orden-${order.id}.png`}
+          />
         </div>
       </div>
     </div>
