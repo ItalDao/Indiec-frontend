@@ -18,6 +18,7 @@ export const useRoles = () => {
       const data = await getRoles();
       setRoles(data);
     } catch (err) {
+      console.error('Error fetching roles:', err);
       setError(err instanceof Error ? err.message : 'Error al cargar roles');
     } finally {
       setLoading(false);
@@ -34,6 +35,7 @@ export const useRoles = () => {
       setRoles(prev => [...prev, newRol]);
       return newRol;
     } catch (err) {
+      console.error('Error creating rol:', err);
       setError(err instanceof Error ? err.message : 'Error al crear rol');
       throw err;
     }
@@ -45,6 +47,7 @@ export const useRoles = () => {
       setRoles(prev => prev.map(r => r.id === data.id ? updatedRol : r));
       return updatedRol;
     } catch (err) {
+      console.error('Error updating rol:', err);
       setError(err instanceof Error ? err.message : 'Error al actualizar rol');
       throw err;
     }
@@ -55,6 +58,7 @@ export const useRoles = () => {
       await deleteRol(id);
       setRoles(prev => prev.filter(r => r.id !== id));
     } catch (err) {
+      console.error('Error deleting rol:', err);
       setError(err instanceof Error ? err.message : 'Error al eliminar rol');
       throw err;
     }
@@ -66,6 +70,7 @@ export const useRoles = () => {
       setRoles(prev => prev.map(r => r.id === id ? updatedRol : r));
       return updatedRol;
     } catch (err) {
+      console.error('Error toggling estado:', err);
       setError(err instanceof Error ? err.message : 'Error al cambiar estado');
       throw err;
     }

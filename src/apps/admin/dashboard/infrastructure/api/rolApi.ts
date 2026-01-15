@@ -1,4 +1,4 @@
-import { api } from '../../../../shared/services/api';
+import { api } from '../../../../../shared/services/api';
 import type { Rol, CreateRolDTO, UpdateRolDTO } from '../../domain/models/Rol';
 import type { RolRepository } from '../../domain/repositories/RolRepository';
 
