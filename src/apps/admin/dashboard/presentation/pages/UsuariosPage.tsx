@@ -1,15 +1,9 @@
+// src/apps/admin/dashboard/presentation/pages/UsuariosPage.tsx
+
 import { useState } from 'react';
-
-type Usuario = {
-  id: string;
-  nombre: string;
-  email: string;
-  password: string;
-  rol: string;
-  estado: 'activo' | 'inactivo';
-};
-
-const rolesDisponibles = ['Admin', 'Editor', 'Viewer'];
+import { useUsuarios } from '../hooks/useUsuarios';
+import { useRoles } from '../hooks/useRoles';
+import type { CreateUsuarioDTO, UpdateUsuarioDTO } from '../../domain/models/UsuarioAdmin';
 
 const bg = '#0f172a';
 const card = '#111827';
@@ -19,64 +13,103 @@ const muted = '#9ca3af';
 const primary = '#6366f1';
 
 export default function UsuariosPage() {
-  const [users, setUsers] = useState<Usuario[]>([]);
-  const [editandoId, setEditandoId] = useState<string | null>(null);
-
+  const { usuarios, loading, error, addUsuario, editUsuario, removeUsuario, resetUserPassword } = useUsuarios();
+  const { roles, loading: rolesLoading } = useRoles();
+  
+ const [editandoId, setEditandoId] = useState<string | null>(null);
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rol, setRol] = useState('Admin');
+  const [rolId, setRolId] = useState(() => roles[0]?.id || ''); 
   const [estado, setEstado] = useState<'activo' | 'inactivo'>('activo');
 
   const limpiarFormulario = () => {
     setNombre('');
     setEmail('');
     setPassword('');
-    setRol('Admin');
+    setRolId(roles[0]?.id || '');
     setEstado('activo');
     setEditandoId(null);
   };
 
-  const guardarUsuario = () => {
-    if (!nombre || !email || !password) return;
-
-    if (editandoId) {
-      setUsers(users.map(u =>
-        u.id === editandoId
-          ? { ...u, nombre, email, password, rol, estado }
-          : u
-      ));
-    } else {
-      setUsers([
-        ...users,
-        { id: Date.now().toString(), nombre, email, password, rol, estado },
-      ]);
+  const guardarUsuario = async () => {
+    if (!nombre || !email || (!password && !editandoId)) {
+      alert('Por favor completa todos los campos obligatorios');
+      return;
     }
 
-    limpiarFormulario();
+    try {
+      if (editandoId) {
+        const updateData: UpdateUsuarioDTO = {
+          id: editandoId,
+          nombre,
+          email,
+          rolId,
+          estado,
+          ...(password && { password }),
+        };
+        await editUsuario(updateData);
+      } else {
+        const createData: CreateUsuarioDTO = {
+          nombre,
+          email,
+          password,
+          rolId,
+          estado,
+        };
+        await addUsuario(createData);
+      }
+      limpiarFormulario();
+    } catch (err) {
+      console.error('Error saving usuario:', err);
+      alert(`Error al ${editandoId ? 'actualizar' : 'crear'} usuario`);
+    }
   };
 
-  const editarUsuario = (u: Usuario) => {
+  const handleEditar = (u: typeof usuarios[0]) => {
     setEditandoId(u.id);
     setNombre(u.nombre);
     setEmail(u.email);
-    setPassword(u.password);
-    setRol(u.rol);
+    setPassword(''); // No mostrar password
+    setRolId(u.rolId);
     setEstado(u.estado);
   };
 
-  const resetPassword = (id: string) => {
-    setUsers(users.map(u =>
-      u.id === id ? { ...u, password: '123456' } : u
-    ));
-    alert('Contraseña reseteada a: 123456');
+  const handleResetPassword = async (id: string) => {
+    if (!confirm('¿Resetear contraseña a "123456"?')) return;
+    
+    try {
+      await resetUserPassword(id);
+      alert('Contraseña reseteada exitosamente');
+    } catch (err) {
+      console.error('Error resetting password:', err);
+      alert('Error al resetear contraseña');
+    }
   };
 
-  const eliminarUsuario = (id: string) => {
-    setUsers(users.map(u =>
-      u.id === id ? { ...u, estado: 'inactivo' } : u
-    ));
+  const handleEliminar = async (id: string) => {
+    if (!confirm('¿Estás seguro de eliminar este usuario?')) return;
+    
+    try {
+      await removeUsuario(id);
+    } catch (err) {
+      console.error('Error deleting usuario:', err);
+      alert('Error al eliminar usuario');
+    }
   };
+
+  const getRolNombre = (rolId: string) => {
+    const rol = roles.find(r => r.id === rolId);
+    return rol?.nombre || 'Sin rol';
+  };
+
+  if (loading || rolesLoading) {
+    return (
+      <div style={{ background: bg, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <p style={{ color: text, fontSize: '18px' }}>Cargando usuarios...</p>
+      </div>
+    );
+  }
 
   return (
     <div style={{ background: bg, width: '100%', padding: '2rem' }}>
@@ -84,35 +117,74 @@ export default function UsuariosPage() {
         Gestión de Usuarios
       </h2>
 
-      {/* FORM */}
-      <div
-        style={{
-          background: card,
-          padding: '2rem',
-          borderRadius: 16,
-          border: `1px solid ${border}`,
-          marginBottom: '3rem',
+      {error && (
+        <div style={{
+          background: 'rgba(239, 68, 68, 0.1)',
+          border: '1px solid rgba(239, 68, 68, 0.3)',
+          padding: '1rem',
+          borderRadius: '8px',
+          marginBottom: '1rem',
+          color: '#fca5a5',
           maxWidth: 1400,
           marginInline: 'auto',
-        }}
-      >
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '2fr 2fr 2fr 1.5fr 1.5fr auto auto',
-            gap: '1rem',
-          }}
-        >
-          <input style={input(border, text)} placeholder="Nombre" value={nombre} onChange={e => setNombre(e.target.value)} />
-          <input style={input(border, text)} placeholder="Correo" value={email} onChange={e => setEmail(e.target.value)} />
-          <input style={input(border, text)} type="password" placeholder="Contraseña" value={password} onChange={e => setPassword(e.target.value)} />
+        }}>
+          {error}
+        </div>
+      )}
 
-          <select style={input(border, text)} value={rol} onChange={e => setRol(e.target.value)}>
-            {rolesDisponibles.map(r => <option key={r}>{r}</option>)}
+      {/* FORM */}
+      <div style={{
+        background: card,
+        padding: '2rem',
+        borderRadius: 16,
+        border: `1px solid ${border}`,
+        marginBottom: '3rem',
+        maxWidth: 1400,
+        marginInline: 'auto',
+      }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '2fr 2fr 2fr 1.5fr 1.5fr auto auto',
+          gap: '1rem',
+        }}>
+          <input
+            style={input(border, text)}
+            placeholder="Nombre"
+            value={nombre}
+            onChange={e => setNombre(e.target.value)}
+          />
+          <input
+            style={input(border, text)}
+            placeholder="Correo"
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
+          <input
+            style={input(border, text)}
+            type="password"
+            placeholder={editandoId ? "Dejar vacío para no cambiar" : "Contraseña"}
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
+
+          <select
+            style={input(border, text)}
+            value={rolId}
+            onChange={e => setRolId(e.target.value)}
+          >
+            {roles.map(r => (
+              <option key={r.id} value={r.id}>
+                {r.nombre}
+              </option>
+            ))}
           </select>
 
-          <select style={input(border, text)} value={estado} onChange={e => setEstado(e.target.value as 'activo' | 'inactivo')}>
-
+          <select
+            style={input(border, text)}
+            value={estado}
+            onChange={e => setEstado(e.target.value as 'activo' | 'inactivo')}
+          >
             <option value="activo">Activo</option>
             <option value="inactivo">Inactivo</option>
           </select>
@@ -130,16 +202,14 @@ export default function UsuariosPage() {
       </div>
 
       {/* TABLE */}
-      <div
-        style={{
-          background: card,
-          padding: '2rem',
-          borderRadius: 16,
-          border: `1px solid ${border}`,
-          maxWidth: 1400,
-          marginInline: 'auto',
-        }}
-      >
+      <div style={{
+        background: card,
+        padding: '2rem',
+        borderRadius: 16,
+        border: `1px solid ${border}`,
+        maxWidth: 1400,
+        marginInline: 'auto',
+      }}>
         <table
           width="100%"
           cellPadding={14}
@@ -152,16 +222,14 @@ export default function UsuariosPage() {
           }}
         >
           <thead>
-            <tr
-              style={{
-                color: muted,
-                fontSize: '0.7rem',
-                textAlign: 'center',
-                fontWeight: 600,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-              }}
-            >
+            <tr style={{
+              color: muted,
+              fontSize: '0.7rem',
+              textAlign: 'center',
+              fontWeight: 600,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+            }}>
               <th>Nombre</th>
               <th>Correo</th>
               <th>Rol</th>
@@ -171,7 +239,7 @@ export default function UsuariosPage() {
           </thead>
 
           <tbody>
-            {users.length === 0 && (
+            {usuarios.length === 0 && (
               <tr>
                 <td colSpan={5} style={{ textAlign: 'center', color: muted, padding: '3rem' }}>
                   No hay usuarios registrados
@@ -179,7 +247,7 @@ export default function UsuariosPage() {
               </tr>
             )}
                   
-            {users.map(u => (
+            {usuarios.map(u => (
               <tr
                 key={u.id}
                 style={{
@@ -189,19 +257,28 @@ export default function UsuariosPage() {
               >
                 <td>{u.nombre}</td>
                 <td>{u.email}</td>
-                <td>{u.rol}</td>
+                <td>{getRolNombre(u.rolId)}</td>
                 <td>
                   <span style={badge(u.estado)}>{u.estado}</span>
                 </td>
                 <td>
-                  <button style={btnGhost(border, text)} onClick={() => editarUsuario(u)}>
-                    Editar
+                  <button
+                    style={btnGhost(border, text)}
+                    onClick={() => handleEditar(u)}
+                  >
+                    ✏️
                   </button>{' '}
-                  <button style={btnGhost(border, text)} onClick={() => resetPassword(u.id)}>
-                    Recuperar
+                  <button
+                    style={btnGhost(border, text)}
+                    onClick={() => handleResetPassword(u.id)}
+                  >
+                    🔑
                   </button>{' '}
-                  <button style={btnGhost(border, text)} onClick={() => eliminarUsuario(u.id)}>
-                    Eliminar
+                  <button
+                    style={{...btnGhost(border, '#f87171')}}
+                    onClick={() => handleEliminar(u.id)}
+                  >
+                    🗑️
                   </button>
                 </td>
               </tr>
@@ -213,8 +290,7 @@ export default function UsuariosPage() {
   );
 }
 
-/* ===== styles ===== */
-
+/* STYLES */
 const input = (border: string, color: string) => ({
   background: '#020617',
   border: `1px solid ${border}`,
@@ -243,10 +319,10 @@ const btnGhost = (border: string, color: string) => ({
   cursor: 'pointer',
 });
 
-const badge = (estado: string) => ({
+ const badge = (estado: string) => ({
   padding: '0.35rem 0.8rem',
   borderRadius: 999,
   fontSize: '0.7rem',
   background: estado === 'activo' ? '#022c22' : '#2a0e0e',
   color: estado === 'activo' ? '#34d399' : '#f87171',
-});
+ });

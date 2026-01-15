@@ -5,6 +5,7 @@ import AdminLayout from '../layout/AdminLayout';
 
 // ===== ADMIN MODULES =====
 import { UsersList, UserForm } from '../../admin/users';
+import { RolesPage } from '../../admin/dashboard';
 import { ArtistsList } from '../../admin/artists';
 import { SongsList } from '../../admin/songs';
 import { EventsPage } from '../../admin/events';
@@ -97,6 +98,7 @@ export const AppRouter = () => {
             <Route path="static-pages/new" element={<StaticPageForm />} />
             <Route path="static-pages/edit/:id" element={<StaticPageForm />} />
             <Route path="catalogs" element={<CatalogsList />} />
+             <Route path="roles" element={<RolesPage />} />
           </Route>
         </Route>
 
