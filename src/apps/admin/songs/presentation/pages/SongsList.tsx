@@ -203,6 +203,7 @@ const filteredSongs = songs.filter((song) => {
 });
 
 const uniqueGenres = Array.from(new Set(songs.map((s) => s.genero))).filter(Boolean);
+const availableArtists = Array.from(new Set(songs.map(s => s.artista)));
 
 
 
@@ -553,6 +554,65 @@ const uniqueGenres = Array.from(new Set(songs.map((s) => s.genero))).filter(Bool
                 objectFit: 'cover',
               }}
             />
+
+            {/* Reproductor Ultra Minimalista */}
+<div style={{ 
+  marginTop: '25px',
+  padding: '16px', 
+  background: 'rgba(30, 27, 75, 0.3)', 
+  borderRadius: '12px',
+  border: '1px solid rgba(139, 92, 246, 0.1)'
+}}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+    {/* Botón Play Circular */}
+    <button style={{
+      width: '36px',
+      height: '36px',
+      borderRadius: '50%',
+      backgroundColor: '#8b5cf6',
+      border: 'none',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer',
+      flexShrink: 0
+    }}>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+        <path d="M8 5v14l11-7z" />
+      </svg>
+    </button>
+
+    {/* Barra de Progreso */}
+    <div style={{ flex: 1 }}>
+      <div style={{ position: 'relative', width: '100%', height: '4px', background: 'rgba(255,255,255,0.1)', borderRadius: '2px' }}>
+        {/* Cuadrito morado al inicio (0%) */}
+        <div style={{ 
+          position: 'absolute', 
+          left: '0', 
+          top: '-4px',
+          width: '12px', 
+          height: '12px', 
+          background: '#8b5cf6', 
+          borderRadius: '2px',
+          boxShadow: '0 0 8px rgba(139, 92, 246, 0.6)'
+        }} />
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
+        <span style={{ color: '#e2e8f0', fontSize: '11px', fontWeight: '600' }}>0:00</span>
+        <span style={{ color: '#94a3b8', fontSize: '11px' }}>{selectedSong.duracion}</span>
+      </div>
+    </div>
+  </div>
+
+  {/* Título de la canción */}
+  <div style={{ marginTop: '12px', color: '#e2e8f0', fontSize: '13px', fontWeight: '500', textAlign: 'left' }}>
+    {selectedSong.titulo}
+  </div>
+
+  <audio src={selectedSong.audioUrl} />
+</div>
+
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div>
                 <p style={{ color: '#8b5cf6', fontSize: '12px', fontWeight: '600', margin: '0 0 4px 0' }}>ARTISTA</p>
@@ -635,34 +695,64 @@ const uniqueGenres = Array.from(new Set(songs.map((s) => s.genero))).filter(Bool
           </div>
 
           <div>
-            <label style={{ display: 'block', color: '#8b5cf6', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>
-              Artista *
-            </label>
-            <input
-              type="text"
-              value={formData.artista}
-              onChange={(e) => setFormData({ ...formData, artista: e.target.value })}
-              style={{
-                width: '100%',
-                padding: '12px 16px',
-                background: 'rgba(30, 27, 75, 0.5)',
-                border: '1px solid rgba(139, 92, 246, 0.3)',
-                borderRadius: '10px',
-                color: '#e2e8f0',
-                outline: 'none',
-                transition: 'all 0.2s ease',
-                boxSizing: 'border-box',
-              }}
-              onFocus={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
-                e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
-              }}
-              onBlur={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
-                e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
-              }}
-            />
-          </div>
+  <label style={{ display: 'block', color: '#8b5cf6', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>
+    Artista *
+  </label>
+  <div style={{ position: 'relative', width: '100%' }}>
+    <select
+      value={formData.artista}
+      onChange={(e) => setFormData({ ...formData, artista: e.target.value })}
+      style={{
+        width: '100%',
+        padding: '12px 16px',
+        paddingRight: '40px', // Espacio para que el texto no pise la flecha
+        background: 'rgba(30, 27, 75, 0.5)',
+        border: '1px solid rgba(139, 92, 246, 0.3)',
+        borderRadius: '10px',
+        color: '#e2e8f0', // El mismo tono que tus otros inputs
+        fontSize: '14px',
+        outline: 'none',
+        transition: 'all 0.2s ease',
+        boxSizing: 'border-box',
+        cursor: 'pointer',
+        appearance: 'none', // Oculta la flecha fea por defecto de Windows/Mac
+        WebkitAppearance: 'none',
+        MozAppearance: 'none',
+      }}
+      onFocus={(e) => {
+        e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+        e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+      }}
+      onBlur={(e) => {
+        e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+        e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+      }}
+    >
+      <option value="" style={{ background: '#1e1b4b', color: '#94a3b8' }}>Selecciona un artista...</option>
+      {availableArtists.map((artist) => (
+        <option key={artist} value={artist} style={{ background: '#1e1b4b', color: '#e2e8f0' }}>
+          {artist}
+        </option>
+      ))}
+    </select>
+
+    {/* Flecha personalizada (Icono) */}
+    <div style={{
+      position: 'absolute',
+      right: '12px',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      pointerEvents: 'none', // Para que al hacer clic en la flecha también se abra el select
+      display: 'flex',
+      alignItems: 'center',
+      color: 'rgba(139, 92, 246, 0.8)'
+    }}>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+        <path d="m6 9 6 6 6-6"/>
+      </svg>
+    </div>
+  </div>
+</div>
 
           <div>
             <label style={{ display: 'block', color: '#8b5cf6', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>
