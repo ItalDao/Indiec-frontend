@@ -49,6 +49,7 @@ import { FAQPage } from '../../client/support/presentation/pages/FAQPage';
 import { UserSettingsPage } from '../../client/settings/presentation/pages/UserSettingsPage';
 import { PreferencesPage } from '../../client/preferences/pages/PreferencesPage';
 import { MisGustos } from '../../client/artists/presentation/components/MisGustos';
+import { EventsPageClient } from '../../client/events/presentation/pages/EventsPageClient';
 
 // ===== TEMP PAGE =====
 const TempPage = ({ title }: { title: string }) => (
@@ -111,7 +112,8 @@ export const AppRouter = () => {
           <Route path="songs" element={<SongListPage />} />
           <Route path="songs/:id" element={<SongDetailPage />} />
 
-          <Route path="events" element={<TempPage title="Eventos" />} />
+
+          <Route path="events" element={<EventsPageClient />} />
 
           {/* TIENDA */}
           <Route path="store" element={<StorePage />} />
