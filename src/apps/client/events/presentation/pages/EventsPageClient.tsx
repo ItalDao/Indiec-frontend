@@ -21,25 +21,29 @@ export const EventsPageClient: React.FC = () => {
   });
 
   return (
-    <div style={{ 
-      background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)',
-      backgroundAttachment: 'fixed',
+    <div style={{
+      background: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 12%, #2d1b69 25%, #1a1f3a 40%, #0f172a 60%, #1a0033 75%, #0f172a 100%)",
+      backgroundAttachment: "fixed",
       minHeight: '100vh',
       paddingBottom: '60px',
-      color: '#f8fafc'
     }}>
       <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '60px 2rem' }}>
         
         {/* HEADER - Presentación minimalista */}
         <div style={{ marginBottom: '50px' }}>
-          <h1 style={{ 
-            fontSize: 'clamp(40px, 6vw, 56px)', 
-            fontWeight: '900',
-            background: 'linear-gradient(to right, #fff, #a78bfa)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            margin: 0,
-            letterSpacing: '-1.5px',
+          <h1 
+          style={{ 
+              fontSize: 'clamp(42px, 7vw, 64px)', 
+              fontWeight: '900',
+              marginBottom: '16px',
+              color: '#fff',
+              margin: 0,
+              letterSpacing: '-2px',
+              background: 'linear-gradient(135deg, #fff 0%, #8b5cf6 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              textShadow: '0 8px 32px rgba(139, 92, 246, 0.4)',
           }}>
             Eventos
           </h1>
