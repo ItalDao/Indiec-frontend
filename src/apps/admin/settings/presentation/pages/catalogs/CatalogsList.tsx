@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useCatalogs } from "../../hooks/useCatalogs";
 import { Icons } from "../../../../../client/songs/presentation/components/Icons";
-import type { CatalogType } from "../../domain/entities/Catalog";
+import type { CatalogType } from "../../../domain/entities/Catalog";
 
 export default function CatalogsList() {
   const [activeTab, setActiveTab] = useState<CatalogType>("genres");

@@ -3,15 +3,29 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(30, 27, 75, 0.5),
+    rgba(45, 27, 105, 0.3)
+  );
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
   animation: fadeIn var(--transition-normal);
 }
 
 .sectionCard {
   padding: 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(139, 92, 246, 0.2);
 }
 
 .sectionCard h3 {
   margin-bottom: 0.75rem;
+  color: #e0e7ff;
+  font-weight: 600;
 }
 
 .list {
@@ -24,18 +38,32 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+  color: #e0e7ff;
 }
 
 .listItem span {
   cursor: pointer;
-  color: var(--primary);
+  color: #8b5cf6; /* primary violet */
   transition: color 0.3s;
 }
 
 .listItem span:hover {
-  color: var(--primary-light);
+  color: #c084fc; /* lighter violet on hover */
 }
 
 .button {
   margin-left: 1rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 8px;
+  background: #8b5cf6;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.button:hover {
+  background: #c084fc;
 }

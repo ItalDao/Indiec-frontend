@@ -6,6 +6,7 @@ export interface Song {
   genero: string;
   duracion: string;
   imagen: string;
+  audioUrl?: string; /*agregado*/
   reproducciones: number;
   likes: number;
   estado: 'activo' | 'inactivo';
@@ -20,6 +21,7 @@ export const MOCK_SONGS: Song[] = [
     genero: 'Rock',
     duracion: '3:45',
     imagen: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=400&auto=format&fit=crop',
+    audioUrl: 'https://www.youtube.com/watch?v=X4bgXH3sJ2Q&list=RDPpqnlJU4Sgo&index=2',
     reproducciones: 125430,
     likes: 8945,
     estado: 'activo',
@@ -32,6 +34,7 @@ export const MOCK_SONGS: Song[] = [
     genero: 'Pop',
     duracion: '3:28',
     imagen: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=400&auto=format&fit=crop',
+    audioUrl: 'https://www.youtube.com/watch?v=X4bgXH3sJ2Q&list=RDPpqnlJU4Sgo&index=2',
     reproducciones: 324560,
     likes: 26780,
     estado: 'activo',
@@ -44,6 +47,7 @@ export const MOCK_SONGS: Song[] = [
     genero: 'Jazz',
     duracion: '4:12',
     imagen: 'https://th.bing.com/th/id/OIP.vwAV4Uf7eQpRMu2yObGNtgHaHa?w=187&h=187&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3',
+    audioUrl: 'https://www.youtube.com/watch?v=X4bgXH3sJ2Q&list=RDPpqnlJU4Sgo&index=2',
     reproducciones: 67890,
     likes: 4320,
     estado: 'activo',
@@ -56,6 +60,7 @@ export const MOCK_SONGS: Song[] = [
     genero: 'Indie',
     duracion: '3:54',
     imagen: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?q=80&w=400&auto=format&fit=crop',
+    audioUrl: 'https://www.youtube.com/watch?v=X4bgXH3sJ2Q&list=RDPpqnlJU4Sgo&index=2',
     reproducciones: 156780,
     likes: 12450,
     estado: 'activo',
@@ -68,6 +73,7 @@ export const MOCK_SONGS: Song[] = [
     genero: 'Electrónica',
     duracion: '4:03',
     imagen: 'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=400&auto=format&fit=crop',
+    audioUrl: 'https://www.youtube.com/watch?v=X4bgXH3sJ2Q&list=RDPpqnlJU4Sgo&index=2',
     reproducciones: 89234,
     likes: 5678,
     estado: 'inactivo',
@@ -80,6 +86,7 @@ export const MOCK_SONGS: Song[] = [
     genero: 'Reggaeton',
     duracion: '3:35',
     imagen: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=400&auto=format&fit=crop',
+    audioUrl: 'https://www.youtube.com/watch?v=X4bgXH3sJ2Q&list=RDPpqnlJU4Sgo&index=2',
     reproducciones: 456789,
     likes: 34560,
     estado: 'activo',
@@ -92,6 +99,7 @@ export const MOCK_SONGS: Song[] = [
     genero: 'Rock',
     duracion: '3:22',
     imagen: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=400&auto=format&fit=crop',
+    audioUrl: 'https://www.youtube.com/watch?v=X4bgXH3sJ2Q&list=RDPpqnlJU4Sgo&index=2',
     reproducciones: 234567,
     likes: 15678,
     estado: 'activo',
@@ -103,7 +111,8 @@ export const MOCK_SONGS: Song[] = [
     album: 'Sentimientos',
     genero: 'Pop',
     duracion: '3:18',
-    imagen: 'https://images.unsplash.com/photo-1511379938547-c1f69b13d835?q=80&w=400&auto=format&fit=crop',
+    imagen: 'https://static.vecteezy.com/system/resources/thumbnails/007/379/506/small/pop-music-vintage-3d-lettering-retro-bold-font-typeface-pop-art-stylized-text-old-school-style-neon-light-letters-90s-80s-poster-banner-dark-violet-color-background-vector.jpg',
+    audioUrl: 'https://www.youtube.com/watch?v=X4bgXH3sJ2Q&list=RDPpqnlJU4Sgo&index=2',
     reproducciones: 567890,
     likes: 45678,
     estado: 'activo',

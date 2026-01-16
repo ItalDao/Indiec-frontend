@@ -14,7 +14,8 @@ const ClientLayout = () => {
     { path: '/client/home', label: 'Inicio' },
     { path: '/client/artists', label: 'Artistas' },
     { path: '/client/songs', label: 'Canciones' },
-    { path: '/client/store', label: 'Tienda' },
+    { path: '/client/events', label: 'Eventos'},
+    { path: '/client/store', label: 'Tienda' }
   ];
 
   const headerStyles: React.CSSProperties = {

@@ -54,12 +54,20 @@ interface FormData {
   genero: string;
   duracion: string;
   imagen: string;
+  audioUrl: string; /*agregado*/
   reproducciones: number;
   likes: number;
 }
 
 const SongsList = () => {
   const [songs, setSongs] = useState<Song[]>(MOCK_SONGS);
+
+  const [filters, setFilters] = useState({
+  search: '',
+  genero: '',
+  estado: 'todos',
+});
+
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [selectedSong, setSelectedSong] = useState<Song | null>(null);
@@ -71,6 +79,7 @@ const SongsList = () => {
     genero: '',
     duracion: '',
     imagen: '',
+    audioUrl: '', /*agregado*/
     reproducciones: 0,
     likes: 0,
   });
@@ -89,6 +98,7 @@ const SongsList = () => {
       genero: '',
       duracion: '',
       imagen: '',
+      audioUrl: '', /*agregado*/ 
       reproducciones: 0,
       likes: 0,
     });
@@ -104,6 +114,7 @@ const SongsList = () => {
       genero: song.genero,
       duracion: song.duracion,
       imagen: song.imagen,
+      audioUrl: song.audioUrl || '', /*agregado*/
       reproducciones: song.reproducciones,
       likes: song.likes,
     });
@@ -141,6 +152,7 @@ const SongsList = () => {
       genero: '',
       duracion: '',
       imagen: '',
+      audioUrl: '', /*agregado*/
       reproducciones: 0,
       likes: 0,
     });
@@ -166,6 +178,34 @@ const SongsList = () => {
     if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
     return num.toString();
   };
+
+  const filterInputStyle = {
+  width: '100%',
+  padding: '12px 16px',
+  background: 'rgba(30, 27, 75, 0.4)',
+  border: '1px solid rgba(139, 92, 246, 0.3)',
+  borderRadius: '10px',
+  color: '#e2e8f0',
+  fontSize: '14px',
+  outline: 'none',
+  transition: 'all 0.2s ease',
+  boxSizing: 'border-box' as const,
+  cursor: 'pointer',
+};
+const filteredSongs = songs.filter((song) => {
+  const search = filters.search.toLowerCase();
+
+  const matchSearch = song.titulo.toLowerCase().includes(search);
+  const matchGenero = filters.genero ? song.genero === filters.genero : true;
+  const matchEstado = filters.estado === 'todos' ? true : song.estado === filters.estado;
+
+  return matchSearch && matchGenero && matchEstado;
+});
+
+const uniqueGenres = Array.from(new Set(songs.map((s) => s.genero))).filter(Boolean);
+const availableArtists = Array.from(new Set(songs.map(s => s.artista)));
+
+
 
   return (
     <div
@@ -225,6 +265,94 @@ const SongsList = () => {
         </button>
       </div>
 
+      {/* Filters Section */}
+<div
+  style={{
+    background: 'rgba(30, 27, 75, 0.2)', // Más sutil para no competir con las cards
+    backdropFilter: 'blur(8px)',
+    border: '1px solid rgba(139, 92, 246, 0.1)',
+    borderRadius: '16px',
+    padding: '20px',
+    marginBottom: '32px',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', // Responsivo
+    gap: '20px',
+    alignItems: 'end',
+  }}
+>
+  {/* Buscador de Canciones */}
+<div style={{ flex: 2 }}>
+  <label style={{ display: 'block', color: '#8b5cf6', fontSize: '11px', fontWeight: '700', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+    Buscar Canción
+  </label>
+  <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+    {/* Icono posicionado absolutamente para que no estorbe al escribir */}
+    <span style={{ 
+      position: 'absolute', 
+      left: '16px', 
+      display: 'flex',
+      color: '#8b5cf6',
+      opacity: 0.7,
+      pointerEvents: 'none' // Esto hace que el click pase a través del icono hacia el input
+    }}>
+      <Icons.Music />
+    </span>
+    
+    <input
+      placeholder="Escribe el nombre de la canción..."
+      value={filters.search}
+      onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+      style={{
+        ...filterInputStyle,
+        paddingLeft: '45px', // Espacio extra a la izquierda para el icono
+      }}
+      onFocus={(e) => (e.currentTarget.style.borderColor = '#8b5cf6')}
+      onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)')}
+    />
+  </div>
+</div>
+
+  {/* Género */}
+  <div>
+    <label style={{ display: 'block', color: '#8b5cf6', fontSize: '11px', fontWeight: '700', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+      Género
+    </label>
+    <select
+      value={filters.genero}
+      onChange={(e) => setFilters({ ...filters, genero: e.target.value })}
+      style={filterInputStyle}
+      onFocus={(e) => (e.currentTarget.style.borderColor = '#8b5cf6')}
+      onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)')}
+    >
+      <option value="" style={{ background: '#1e1b4b' }}>Todos los géneros</option>
+      {uniqueGenres.map((g) => (
+        <option key={g} value={g} style={{ background: '#1e1b4b' }}>{g}</option>
+      ))}
+    </select>
+  </div>
+
+  {/* Estado */}
+  <div>
+    <label style={{ display: 'block', color: '#8b5cf6', fontSize: '11px', fontWeight: '700', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+      Estado
+    </label>
+    <select
+      value={filters.estado}
+      onChange={(e) => setFilters({ ...filters, estado: e.target.value })}
+      style={filterInputStyle}
+      onFocus={(e) => (e.currentTarget.style.borderColor = '#8b5cf6')}
+      onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)')}
+    >
+      <option value="todos" style={{ background: '#1e1b4b' }}>Todos los estados</option>
+      <option value="activo" style={{ background: '#1e1b4b' }}>Activas</option>
+      <option value="inactivo" style={{ background: '#1e1b4b' }}>Inactivas</option>
+    </select>
+  </div>
+</div>
+
+
+
+
       {/* Songs Grid */}
       <div
         style={{
@@ -234,7 +362,7 @@ const SongsList = () => {
           marginBottom: '30px',
         }}
       >
-        {songs.map((song) => (
+        {filteredSongs.map((song) => (
           <div
             key={song.id}
             style={{
@@ -426,6 +554,65 @@ const SongsList = () => {
                 objectFit: 'cover',
               }}
             />
+
+            {/* Reproductor Ultra Minimalista */}
+<div style={{ 
+  marginTop: '25px',
+  padding: '16px', 
+  background: 'rgba(30, 27, 75, 0.3)', 
+  borderRadius: '12px',
+  border: '1px solid rgba(139, 92, 246, 0.1)'
+}}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+    {/* Botón Play Circular */}
+    <button style={{
+      width: '36px',
+      height: '36px',
+      borderRadius: '50%',
+      backgroundColor: '#8b5cf6',
+      border: 'none',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer',
+      flexShrink: 0
+    }}>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+        <path d="M8 5v14l11-7z" />
+      </svg>
+    </button>
+
+    {/* Barra de Progreso */}
+    <div style={{ flex: 1 }}>
+      <div style={{ position: 'relative', width: '100%', height: '4px', background: 'rgba(255,255,255,0.1)', borderRadius: '2px' }}>
+        {/* Cuadrito morado al inicio (0%) */}
+        <div style={{ 
+          position: 'absolute', 
+          left: '0', 
+          top: '-4px',
+          width: '12px', 
+          height: '12px', 
+          background: '#8b5cf6', 
+          borderRadius: '2px',
+          boxShadow: '0 0 8px rgba(139, 92, 246, 0.6)'
+        }} />
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
+        <span style={{ color: '#e2e8f0', fontSize: '11px', fontWeight: '600' }}>0:00</span>
+        <span style={{ color: '#94a3b8', fontSize: '11px' }}>{selectedSong.duracion}</span>
+      </div>
+    </div>
+  </div>
+
+  {/* Título de la canción */}
+  <div style={{ marginTop: '12px', color: '#e2e8f0', fontSize: '13px', fontWeight: '500', textAlign: 'left' }}>
+    {selectedSong.titulo}
+  </div>
+
+  <audio src={selectedSong.audioUrl} />
+</div>
+
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div>
                 <p style={{ color: '#8b5cf6', fontSize: '12px', fontWeight: '600', margin: '0 0 4px 0' }}>ARTISTA</p>
@@ -508,34 +695,64 @@ const SongsList = () => {
           </div>
 
           <div>
-            <label style={{ display: 'block', color: '#8b5cf6', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>
-              Artista *
-            </label>
-            <input
-              type="text"
-              value={formData.artista}
-              onChange={(e) => setFormData({ ...formData, artista: e.target.value })}
-              style={{
-                width: '100%',
-                padding: '12px 16px',
-                background: 'rgba(30, 27, 75, 0.5)',
-                border: '1px solid rgba(139, 92, 246, 0.3)',
-                borderRadius: '10px',
-                color: '#e2e8f0',
-                outline: 'none',
-                transition: 'all 0.2s ease',
-                boxSizing: 'border-box',
-              }}
-              onFocus={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
-                e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
-              }}
-              onBlur={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
-                e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
-              }}
-            />
-          </div>
+  <label style={{ display: 'block', color: '#8b5cf6', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>
+    Artista *
+  </label>
+  <div style={{ position: 'relative', width: '100%' }}>
+    <select
+      value={formData.artista}
+      onChange={(e) => setFormData({ ...formData, artista: e.target.value })}
+      style={{
+        width: '100%',
+        padding: '12px 16px',
+        paddingRight: '40px', // Espacio para que el texto no pise la flecha
+        background: 'rgba(30, 27, 75, 0.5)',
+        border: '1px solid rgba(139, 92, 246, 0.3)',
+        borderRadius: '10px',
+        color: '#e2e8f0', // El mismo tono que tus otros inputs
+        fontSize: '14px',
+        outline: 'none',
+        transition: 'all 0.2s ease',
+        boxSizing: 'border-box',
+        cursor: 'pointer',
+        appearance: 'none', // Oculta la flecha fea por defecto de Windows/Mac
+        WebkitAppearance: 'none',
+        MozAppearance: 'none',
+      }}
+      onFocus={(e) => {
+        e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+        e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+      }}
+      onBlur={(e) => {
+        e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+        e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+      }}
+    >
+      <option value="" style={{ background: '#1e1b4b', color: '#94a3b8' }}>Selecciona un artista...</option>
+      {availableArtists.map((artist) => (
+        <option key={artist} value={artist} style={{ background: '#1e1b4b', color: '#e2e8f0' }}>
+          {artist}
+        </option>
+      ))}
+    </select>
+
+    {/* Flecha personalizada (Icono) */}
+    <div style={{
+      position: 'absolute',
+      right: '12px',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      pointerEvents: 'none', // Para que al hacer clic en la flecha también se abra el select
+      display: 'flex',
+      alignItems: 'center',
+      color: 'rgba(139, 92, 246, 0.8)'
+    }}>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+        <path d="m6 9 6 6 6-6"/>
+      </svg>
+    </div>
+  </div>
+</div>
 
           <div>
             <label style={{ display: 'block', color: '#8b5cf6', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>
@@ -658,6 +875,30 @@ const SongsList = () => {
               }}
             />
           </div>
+
+          <div>
+            <label style={{ display: 'block', color: '#8b5cf6', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>
+              Link de Audio
+            </label>
+            <input
+              type="text"
+              placeholder="https://..."
+              value={formData.audioUrl}
+              onChange={(e) => setFormData({ ...formData, audioUrl: e.target.value })}
+              style={{
+                width: '100%',
+                padding: '12px 16px',
+                background: 'rgba(30, 27, 75, 0.5)',
+                border: '1px solid rgba(139, 92, 246, 0.3)',
+                borderRadius: '10px',
+                color: '#e2e8f0',
+                outline: 'none',
+                transition: 'all 0.2s ease',
+                boxSizing: 'border-box',
+          }}
+        />
+    </div>
+
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             <div>

@@ -119,7 +119,7 @@ const HomePage = () => {
             borderBottom: "2px solid rgba(139, 92, 246, 0.3)"
           }}>
             <div style={{ color: "#8b5cf6", display: "flex" }}>
-              <SongIcon />
+              <SongIcon/>
             </div>
             <div>
               <h2 style={{ fontSize: "1.75rem", fontWeight: "700", margin: 0, letterSpacing: "-0.5px" }}>Nuevas canciones</h2>

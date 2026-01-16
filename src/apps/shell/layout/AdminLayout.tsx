@@ -14,15 +14,14 @@ const AdminLayout = () => {
     { path: '/admin/events', label: 'Eventos', Icon: Icons.Calendar },
     { path: '/admin/store', label: 'Tienda', Icon: Icons.ShoppingBag },
     { path: '/admin/catalogs', label: 'Catálogos', Icon: Icons.Layers },
-    { path: '/admin/users', label: 'Usuarios', Icon: Icons.Users },
+    
   ];
 
   const settingsSubMenu = [
+    { path: '/admin/users', label: 'Usuarios', Icon: Icons.Users },
     { path: '/admin/settings/general', label: 'General', Icon: Icons.Settings },
     { path: '/admin/settings/static-pages', label: 'Páginas Estáticas', Icon: Icons.FileText },
-    { path: '/admin/settings/users', label: 'Usuarios', Icon: Icons.User },
-    { path: '/admin/settings/roles', label: 'Roles y Permisos', Icon: Icons.Lock },
-    { path: '/admin/settings/catalogs', label: 'Catálogos', Icon: Icons.Layers },
+    
   ];
 
   const isActive = (path: string) => {

@@ -1,25 +1,27 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUsers } from "../../hooks/useUsers";
+import { useStaticPages } from "../../hooks/useStaticPages";
 
-export default function UserForm() {
+export default function StaticPageForm() {
   const navigate = useNavigate();
-  const { createUser, loading } = useUsers();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("Gestor de Artistas");
-  const [status, setStatus] = useState<"active" | "inactive">("active");
+  const { createPage, loading } = useStaticPages();
+  const [title, setTitle] = useState("");
+  const [url, setUrl] = useState("");
+  const [content, setContent] = useState("");
+  const [metaDescription, setMetaDescription] = useState("");
+  const [visible, setVisible] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const success = await createUser({
-      name,
-      email,
-      role,
-      status,
+    const success = await createPage({
+      titulo: title,
+      slug: url,
+      contenido: content,
+      metaDescripcion: metaDescription,
+      fechaActualizacion: new Date().toISOString().split('T')[0],
+      visible: visible,
     });
 
     if (success) {
@@ -29,95 +31,123 @@ export default function UserForm() {
 
   const handleConfirm = () => {
     setShowModal(false);
-    navigate("/admin/settings/users");
+    navigate("/admin/settings/static-pages");
   };
+
+  const generateUrl = (text: string) => {
+    return text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  };
+
+  const handleTitleChange = (value: string) => {
+    setTitle(value);
+    if (!url) {
+      setUrl(generateUrl(value));
+    }
+  };
+
+  const remainingChars = 160 - metaDescription.length;
 
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1 className="page-title">Crear Usuario</h1>
-        <p className="page-subtitle">Agrega un nuevo usuario al sistema</p>
+        <h1 className="page-title">Crear Página Estática</h1>
+        <p className="page-subtitle">Define el contenido estático de tu plataforma</p>
       </div>
 
       <form onSubmit={handleSubmit}>
         <div className="card">
-          <h3 style={{ marginBottom: "24px", fontSize: "20px", fontWeight: "600" }}>
-            Información del Usuario
-          </h3>
-
-          <div className="grid grid-2">
-            <div className="form-group">
-              <label className="form-label">Nombre completo</label>
-              <input
-                className="form-input"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Ej: Juan Pérez"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">Email</label>
-              <input
-                className="form-input"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="usuario@indiec.com"
-                required
-              />
-            </div>
+          <div className="form-group">
+            <label className="form-label">Título de la página</label>
+            <input
+              className="form-input"
+              value={title}
+              onChange={(e) => handleTitleChange(e.target.value)}
+              placeholder="Ej: Sobre INDIEC"
+              required
+            />
           </div>
 
-          <div className="grid grid-2">
-            <div className="form-group">
-              <label className="form-label">Contraseña</label>
-              <input
-                className="form-input"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Mínimo 8 caracteres"
-                required
-                minLength={8}
-              />
-            </div>
+          <div className="form-group">
+            <label className="form-label">URL amigable</label>
+            <input
+              className="form-input"
+              value={url}
+              onChange={(e) => setUrl(generateUrl(e.target.value))}
+              placeholder="sobre-indiec"
+              required
+            />
+            <small style={{ color: '#94a3b8', fontSize: '13px', marginTop: '4px', display: 'block' }}>
+              URL final: /paginas/{url || 'tu-url'}
+            </small>
+          </div>
 
-            <div className="form-group">
-              <label className="form-label">Rol</label>
-              <select
-                className="form-select"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-              >
-                <option value="Super Admin">Super Admin</option>
-                <option value="Gestor de Artistas">Gestor de Artistas</option>
-                <option value="Gestor de Contenido">Gestor de Contenido</option>
-                <option value="Gestor de Tienda">Gestor de Tienda</option>
-              </select>
-            </div>
+          <div className="form-group">
+            <label className="form-label">Meta Descripción (SEO)</label>
+            <textarea
+              className="form-textarea"
+              value={metaDescription}
+              onChange={(e) => setMetaDescription(e.target.value.slice(0, 160))}
+              placeholder="Descripción breve que aparecerá en resultados de búsqueda (máx. 160 caracteres)"
+              rows={3}
+              maxLength={160}
+            />
+            <small style={{ 
+              color: remainingChars < 20 ? '#fca5a5' : '#94a3b8', 
+              fontSize: '13px', 
+              marginTop: '4px', 
+              display: 'block' 
+            }}>
+              {remainingChars} caracteres restantes
+            </small>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Contenido</label>
+            <textarea
+              className="form-textarea"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="Escribe el contenido de la página..."
+              rows={10}
+            />
           </div>
 
           <div className="form-group">
             <label className="form-checkbox">
               <input
                 type="checkbox"
-                checked={status === "active"}
-                onChange={() => setStatus(status === "active" ? "inactive" : "active")}
+                checked={visible}
+                onChange={() => setVisible(!visible)}
               />
-              <span>Usuario activo</span>
+              <span>Publicar página (visible para usuarios)</span>
             </label>
           </div>
 
-          <div style={{ display: "flex", gap: "12px", marginTop: "32px" }}>
+          <div style={{ 
+            background: 'rgba(139, 92, 246, 0.1)', 
+            padding: '12px 16px', 
+            borderRadius: '8px',
+            marginBottom: '24px',
+            border: '1px solid rgba(139, 92, 246, 0.2)'
+          }}>
+            <small style={{ color: '#cbd5e1', fontSize: '13px' }}>
+              ℹ️ La fecha de actualización se registrará automáticamente al guardar
+            </small>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px', marginTop: '32px' }}>
             <button type="submit" className="btn btn-primary" disabled={loading}>
-              {loading ? '⏳ Creando...' : '💾 Crear usuario'}
+              {loading ? '⏳ Guardando...' : '💾 Guardar página'}
             </button>
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={() => navigate("/admin/settings/users")}
+              onClick={() => navigate("/admin/settings/static-pages")}
             >
               ← Cancelar
             </button>
@@ -128,9 +158,9 @@ export default function UserForm() {
       {showModal && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <h2 className="modal-title">¡Página guardada!</h2>
+            <h2 className="modal-title">✅ ¡Página creada!</h2>
             <div className="modal-content">
-              El usuario "{name}" ha sido creado exitosamente.
+              La página "{title}" ha sido creada exitosamente.
             </div>
             <div className="modal-actions">
               <button className="btn btn-primary" onClick={handleConfirm}>

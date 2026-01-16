@@ -3,6 +3,11 @@
   gap: 1rem;
   flex-wrap: wrap;
   margin-top: 1rem;
+  background: rgba(45, 27, 105, 0.3);
+  padding: 1rem;
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(139, 92, 246, 0.25);
 }
 
 .avatar {
@@ -10,6 +15,8 @@
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
+  border: 2px solid #8b5cf6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 .form {
@@ -27,10 +34,12 @@
 .photoLabel {
   font-weight: 500;
   margin-top: 0.5rem;
+  color: #e0e7ff;
 }
 
 .title {
   margin-bottom: 1rem;
   font-size: 1.2rem;
   font-weight: 600;
+  color: #c084fc;
 }

@@ -6,6 +6,10 @@
   flex-direction: column;
   gap: 1.5rem;
   animation: fadeIn var(--transition-normal);
+  background: rgba(45, 27, 105, 0.15);
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(139, 92, 246, 0.25);
 }
 
 .header {
@@ -17,6 +21,11 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  text-align: center;
+  color: var(--text-secondary);
 }
 
 .cardRow {
@@ -24,6 +33,15 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  transition: all 0.3s;
+}
+
+.cardRow:hover {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: #8b5cf6;
 }
 
 .orderInfo h3 {
@@ -38,6 +56,7 @@
 
 .orderInfo strong {
   text-transform: capitalize;
+  color: #c084fc;
 }
 
 .orderActions {
@@ -50,4 +69,16 @@
 
 .orderActions button {
   margin-top: 0.5rem;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  color: #fff;
+}
+
+.orderActions button:hover {
+  background: rgba(139, 92, 246, 0.2);
+  border-color: #8b5cf6;
 }

@@ -8,15 +8,28 @@ interface Props {
 
 export const ProfileFavorites = ({ products, onRemove }: Props) => {
   if (products.length === 0) {
-    return <p className={styles.emptyMessage}>No hay productos favoritos.</p>;
+    return (
+      <div className={styles.emptyBox}>
+        <span>💜</span>
+        <p>No tienes productos favoritos aún</p>
+      </div>
+    );
   }
 
   return (
     <ul className={styles.list}>
       {products.map(id => (
         <li key={id} className={styles.item}>
-          Producto #{id}
-          <Button size="sm" onClick={() => onRemove(id)}>
+          <div className={styles.info}>
+            <span className={styles.badge}>#{id}</span>
+            <p className={styles.name}>Producto favorito</p>
+          </div>
+
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => onRemove(id)}
+          >
             Quitar
           </Button>
         </li>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MOCK_ARTISTS } from '../../data/artists.mock';
 import { Icons } from '../../../../client/songs/presentation/components/Icons';
+import { QRCodeComponent } from '../../../../../shared/ui';
 import type { Artist } from '../../data/artists.mock';
 
 const Modal: React.FC<{ isOpen: boolean; onClose: () => void; title: string; children: React.ReactNode }> = ({
@@ -51,8 +52,14 @@ export const ArtistsList: React.FC = () => {
   const [artists, setArtists] = useState<Artist[]>(MOCK_ARTISTS);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+  const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
   const [editingArtist, setEditingArtist] = useState<Artist | null>(null);
+
+  const [filterName, setFilterName] = useState('');
+  const [filterGenero, setFilterGenero] = useState('');
+  const [filterEstado, setFilterEstado] = useState('');
+
   const [formData, setFormData] = useState({
     nombre: '',
     genero: '',
@@ -60,11 +67,17 @@ export const ArtistsList: React.FC = () => {
     email: '',
     imagen: '',
     seguidores: 0,
+    biografia: '',
   });
 
   const handleViewDetails = (artist: Artist) => {
     setSelectedArtist(artist);
     setIsDetailModalOpen(true);
+  };
+
+  const handleDownloadQR = (artist: Artist) => {
+    setSelectedArtist(artist);
+    setIsQRModalOpen(true);
   };
 
   const handleAddArtist = () => {
@@ -76,6 +89,7 @@ export const ArtistsList: React.FC = () => {
       email: '',
       imagen: '',
       seguidores: 0,
+      biografia: '',
     });
     setIsFormModalOpen(true);
   };
@@ -89,6 +103,7 @@ export const ArtistsList: React.FC = () => {
       email: artist.email,
       imagen: artist.imagen,
       seguidores: artist.seguidores,
+      biografia: artist.biografia,
     });
     setIsFormModalOpen(true);
   };
@@ -112,6 +127,7 @@ export const ArtistsList: React.FC = () => {
                 email: formData.email,
                 imagen: formData.imagen || a.imagen,
                 seguidores: formData.seguidores,
+                biografia: formData.biografia,
               }
             : a
         )
@@ -127,6 +143,7 @@ export const ArtistsList: React.FC = () => {
         imagen: formData.imagen || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=400&auto=format&fit=crop',
         seguidores: formData.seguidores,
         estado: 'activo',
+        biografia: formData.biografia,
       };
       setArtists([...artists, newArtist]);
     }
@@ -140,6 +157,7 @@ export const ArtistsList: React.FC = () => {
       email: '',
       imagen: '',
       seguidores: 0,
+      biografia: '',
     });
   };
 
@@ -156,6 +174,15 @@ export const ArtistsList: React.FC = () => {
       )
     );
   };
+
+  const filteredArtists = artists.filter((artist) => {
+  return (
+    artist.nombre.toLowerCase().includes(filterName.toLowerCase()) &&
+    (filterGenero ? artist.genero === filterGenero : true) &&
+    (filterEstado ? artist.estado === filterEstado : true)
+  );
+});
+
 
   return (
     <div
@@ -230,6 +257,111 @@ export const ArtistsList: React.FC = () => {
           </button>
         </div>
 
+        {/* ESTILOS DE LOS FILTROS */} 
+<div
+  style={{
+    display: 'flex',
+    gap: '16px',
+    marginBottom: '40px',
+    flexWrap: 'wrap',
+    background: 'rgba(30, 41, 59, 0.4)', // Fondo más limpio estilo Glassmorphism
+    backdropFilter: 'blur(12px)',
+    padding: '24px',
+    borderRadius: '20px',
+    border: '1px solid rgba(139, 92, 246, 0.2)',
+    boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5)',
+    alignItems: 'center'
+  }}
+>
+  {/* Buscar por nombre */}
+  <div style={{ flex: '1', minWidth: '220px', position: 'relative' }}>
+    <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', opacity: 0.6, display: 'flex', alignItems: 'center' }}>
+      <Icons.Search />
+    </div>
+    <input
+      placeholder="Buscar artista por nombre..."
+      value={filterName}
+      onChange={(e) => setFilterName(e.target.value)}
+      style={{
+        width: '100%',
+        padding: '14px 16px 14px 40px', // Espacio para el icono
+        fontSize: '14px',
+        background: '#0f172a',
+        border: '1px solid rgba(139, 92, 246, 0.2)',
+        borderRadius: '14px',
+        color: '#f8fafc',
+        outline: 'none',
+        transition: 'all 0.3s ease',
+        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.2)'
+      }}
+      onFocus={(e) => e.target.style.border = '1px solid #7c3aed'}
+      onBlur={(e) => e.target.style.border = '1px solid rgba(139, 92, 246, 0.2)'}
+    />
+  </div>
+
+  {/* Filtro género */}
+  <div style={{ minWidth: '200px', position: 'relative' }}>
+    <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', opacity: 0.6, zIndex: 1, display: 'flex', alignItems: 'center' }}>
+      <Icons.Music />
+    </div>
+    <select
+      value={filterGenero}
+      onChange={(e) => setFilterGenero(e.target.value)}
+      style={{
+        width: '100%',
+        padding: '14px 16px 14px 40px',
+        fontSize: '14px',
+        background: '#0f172a',
+        border: '1px solid rgba(139, 92, 246, 0.2)',
+        borderRadius: '14px',
+        color: '#f8fafc',
+        outline: 'none',
+        cursor: 'pointer',
+        appearance: 'none', // Quita la flecha fea por defecto
+      }}
+    >
+      <option value="">Todos los géneros</option>
+      <option value="Rock">Rock</option>
+      <option value="Pop">Pop</option>
+      <option value="Jazz">Jazz</option>
+      <option value="Indie">Indie</option>
+      <option value="Electrónica">Electrónica</option>
+      <option value="Reggaeton">Reggaeton</option>
+    </select>
+    <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', fontSize: '10px', opacity: 0.5 }}>▼</span>
+  </div>
+
+  {/* Filtro estado */}
+  <div style={{ minWidth: '180px', position: 'relative' }}>
+    <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', opacity: 0.6, zIndex: 1, display: 'flex', alignItems: 'center' }}>
+      <Icons.Check />
+    </div>
+    <select
+      value={filterEstado}
+      onChange={(e) => setFilterEstado(e.target.value)}
+      style={{
+        width: '100%',
+        padding: '14px 16px 14px 40px',
+        fontSize: '14px',
+        background: '#0f172a',
+        border: '1px solid rgba(139, 92, 246, 0.2)',
+        borderRadius: '14px',
+        color: '#f8fafc',
+        outline: 'none',
+        cursor: 'pointer',
+        appearance: 'none',
+      }}
+    >
+      <option value="">Todos los estados</option>
+      <option value="activo">Activo</option>
+      <option value="inactivo">Inactivo</option>
+    </select>
+    <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', fontSize: '10px', opacity: 0.5 }}>▼</span>
+  </div>
+</div>
+
+
+
         {/* GRID DE ARTISTAS */}
         <div
           style={{
@@ -238,7 +370,7 @@ export const ArtistsList: React.FC = () => {
             gap: '24px',
           }}
         >
-          {artists.map((artist) => (
+          {filteredArtists.map((artist) => (
             <div
               key={artist.id}
               style={{
@@ -380,7 +512,7 @@ export const ArtistsList: React.FC = () => {
                     }}
                   >
                     <Icons.Music />
-                    Ver
+                    
                   </button>
                   <button
                     onClick={() => handleEditArtist(artist)}
@@ -410,7 +542,36 @@ export const ArtistsList: React.FC = () => {
                     }}
                   >
                     <Icons.Edit />
-                    Editar
+                   
+                  </button>
+                  <button
+                    onClick={() => handleDownloadQR(artist)}
+                    style={{
+                      flex: 1,
+                      padding: '8px 12px',
+                      background: 'transparent',
+                      color: '#06b6d4',
+                      border: '1px solid rgba(6, 182, 212, 0.3)',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      fontWeight: '600',
+                      fontSize: '12px',
+                      transition: 'all 0.2s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = '#06b6d4';
+                      e.currentTarget.style.background = 'rgba(6, 182, 212, 0.1)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.3)';
+                      e.currentTarget.style.background = 'transparent';
+                    }}
+                  >
+                    <Icons.FileText />
                   </button>
                   <button
                     onClick={() => toggleStatus(artist.id)}
@@ -440,7 +601,7 @@ export const ArtistsList: React.FC = () => {
                     }}
                   >
                     <Icons.Lock />
-                    {artist.estado === 'activo' ? 'Desactivar' : 'Activar'}
+                    
                   </button>
                   <button
                     onClick={() => handleDelete(artist.id)}
@@ -470,7 +631,7 @@ export const ArtistsList: React.FC = () => {
                     }}
                   >
                     <Icons.Trash />
-                    Eliminar
+                   
                   </button>
                 </div>
               </div>
@@ -567,6 +728,46 @@ export const ArtistsList: React.FC = () => {
                 Cerrar
               </button>
             </div>
+          </div>
+        )}
+      </Modal>
+
+      {/* MODAL QR */}
+      <Modal isOpen={isQRModalOpen} onClose={() => setIsQRModalOpen(false)} title="Descargar QR del Artista">
+        {selectedArtist && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <p style={{ color: '#cbd5e1', fontSize: '14px', margin: 0 }}>
+              Descarga el código QR de <strong>{selectedArtist.nombre}</strong> para usar en materiales de marketing, redes sociales y promociones.
+            </p>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <QRCodeComponent
+                value={`ARTIST-${selectedArtist.id}-${selectedArtist.nombre}`}
+                size={256}
+                downloadFileName={`qr-${selectedArtist.nombre.replace(/\s+/g, '-')}.png`}
+              />
+            </div>
+            <button
+              onClick={() => setIsQRModalOpen(false)}
+              style={{
+                padding: '12px 24px',
+                background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '10px',
+                cursor: 'pointer',
+                fontWeight: '600',
+                fontSize: '14px',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              Cerrar
+            </button>
           </div>
         )}
       </Modal>
@@ -699,6 +900,30 @@ export const ArtistsList: React.FC = () => {
               }}
             />
           </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+  <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+    Biografía
+  </label>
+  <textarea
+    value={formData.biografia}
+    onChange={(e) => setFormData({ ...formData, biografia: e.target.value })}
+    placeholder="Describe al artista..."
+    rows={4}
+    style={{
+      width: '100%',
+      padding: '12px 16px',
+      fontSize: '14px',
+      background: 'rgba(30, 27, 75, 0.5)',
+      border: '1px solid rgba(139, 92, 246, 0.3)',
+      borderRadius: '10px',
+      color: '#e2e8f0',
+      outline: 'none',
+      resize: 'none',
+    }}
+  />
+</div>
+
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>

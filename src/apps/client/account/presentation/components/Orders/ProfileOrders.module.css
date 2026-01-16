@@ -1,9 +1,101 @@
-.card {
-  cursor: pointer;
-  margin-bottom: 0.5rem;
+/* ================== LIST ================== */
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
 }
 
-.emptyMessage {
-  color: #64748b;
-  font-style: italic;
+/* ================== CARD ================== */
+.card {
+  cursor: pointer;
+
+  /* MISMO COLOR QUE FAVORITOS */
+  background: linear-gradient(
+    135deg,
+    rgba(30, 27, 75, 0.55),
+    rgba(45, 27, 105, 0.35)
+  );
+
+  backdrop-filter: blur(12px);
+  border-radius: 0.9rem;
+  padding: 0.9rem 1rem;
+
+  border: 1px solid rgba(139, 92, 246, 0.25);
+
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.25s ease,
+    border 0.25s ease,
+    background 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.25),
+    rgba(76, 29, 149, 0.35)
+  );
+
+  border-color: rgba(139, 92, 246, 0.5);
+
+  box-shadow:
+    0 12px 30px rgba(139, 92, 246, 0.35);
+}
+
+/* ================== INFO ================== */
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #c084fc;
+  font-weight: 700;
+}
+
+.value {
+  font-size: 0.9rem;
+  color: #e5e7eb;
+  font-weight: 600;
+}
+
+.amount {
+  text-align: right;
+}
+
+.price {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #f5f3ff;
+}
+
+/* ================== EMPTY ================== */
+.emptyBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+
+  padding: 1.2rem 0;
+  color: #cbd5e1;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.emptyBox span {
+  font-size: 1.4rem;
 }

@@ -3,6 +3,7 @@ export interface Artist {
   nombre: string;
   genero: string;
   pais: string;
+  biografia: string;
   imagen: string;
   seguidores: number;
   email: string;
@@ -19,6 +20,7 @@ export const MOCK_ARTISTS: Artist[] = [
     seguidores: 15420,
     email: 'victorz@example.com',
     estado: 'activo',
+    biografia: 'Banda de rock alternativo formada en Colombia, conocida por sus letras intensas y sonidos crudos que mezclan rock clásico con influencias modernas.'
   },
   {
     id: 2,
@@ -29,6 +31,7 @@ export const MOCK_ARTISTS: Artist[] = [
     seguidores: 28650,
     email: 'maria@example.com',
     estado: 'activo',
+    biografia: 'Cantante pop mexicana con una propuesta fresca y emotiva, destacada por su voz dulce y canciones que conectan con el público joven.'
   },
   {
     id: 3,
@@ -39,6 +42,7 @@ export const MOCK_ARTISTS: Artist[] = [
     seguidores: 9340,
     email: 'carlos@example.com',
     estado: 'activo',
+    biografia: 'Músico y compositor argentino especializado en jazz contemporáneo, reconocido por sus improvisaciones y fusiones con ritmos latinoamericanos.'
   },
   {
     id: 4,
@@ -49,6 +53,7 @@ export const MOCK_ARTISTS: Artist[] = [
     seguidores: 12780,
     email: 'laura@example.com',
     estado: 'activo',
+    biografia: 'Artista indie chilena que combina sonidos acústicos y electrónicos, con letras introspectivas y una estética musical minimalista.'
   },
   {
     id: 5,
@@ -59,6 +64,7 @@ export const MOCK_ARTISTS: Artist[] = [
     seguidores: 34210,
     email: 'david@example.com',
     estado: 'inactivo',
+    biografia: 'Productor y DJ español de música electrónica, enfocado en sonidos house y techno, con experiencia en festivales y proyectos colaborativos.'
   },
   {
     id: 6,
@@ -69,5 +75,6 @@ export const MOCK_ARTISTS: Artist[] = [
     seguidores: 45680,
     email: 'sofia@example.com',
     estado: 'activo',
+    biografia: 'Cantante puertorriqueña de reggaetón y música urbana, destacada por su energía en el escenario y letras pegajosas de estilo moderno.'
   },
 ];

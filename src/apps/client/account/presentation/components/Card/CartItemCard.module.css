@@ -1,35 +1,153 @@
 .card {
-  display: flex;
+  display: grid;
+  grid-template-columns: 90px 1fr auto auto auto auto;
   gap: 1rem;
   align-items: center;
-  padding: 1rem;
+
+  padding: 1.1rem;
+  border-radius: 1rem;
+
+  background: linear-gradient(
+    135deg,
+    rgba(30, 27, 75, 0.75),
+    rgba(45, 27, 105, 0.55)
+  );
+
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 8px 22px rgba(0,0,0,0.35);
+
+  transition: all 0.3s ease;
 }
 
+.card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(139, 92, 246, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 14px 32px rgba(139,92,246,0.25);
+}
+
+/* Imagen */
 .image {
-  width: 80px;
-  border-radius: 0.5rem;
+  width: 90px;
+  height: 90px;
   object-fit: cover;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(139, 92, 246, 0.3);
 }
 
+/* Detalles */
 .details {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 
 .details h4 {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #e5e7eb;
 }
 
 .details p {
-  font-size: 0.85rem;
-  color: #94A3B8;
-  margin: 0.25rem 0;
+  margin: 0;
+  font-size: 0.8rem;
+  color: #a78bfa;
 }
 
-.price {
-  font-weight: bold;
+/* Precio / Total */
+.priceBlock,
+.totalBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
 }
 
+.priceBlock span,
+.totalBlock span {
+  font-size: 0.7rem;
+  color: #cbd5e1;
+}
+
+.priceBlock strong {
+  color: #c084fc;
+  font-size: 0.95rem;
+}
+
+.totalBlock strong {
+  color: #8b5cf6;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+/* Cantidad */
 .quantityInput {
   width: 60px;
+  padding: 0.45rem;
+
+  border-radius: 0.6rem;
+  border: 1px solid rgba(139, 92, 246, 0.35);
+
+  background: rgba(15, 23, 42, 0.75);
+  color: #e5e7eb;
+
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.85rem;
+
+  transition: all 0.25s ease;
+}
+
+.quantityInput:focus {
+  outline: none;
+  border-color: rgba(139, 92, 246, 0.7);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+  background: rgba(15, 23, 42, 0.9);
+}
+
+/* Botón eliminar */
+.removeBtn {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 0.6rem;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.removeBtn:hover {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.6);
+  transform: scale(1.08);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .card {
+    grid-template-columns: 70px 1fr;
+    grid-auto-rows: auto;
+    row-gap: 0.8rem;
+  }
+
+  .priceBlock,
+  .totalBlock,
+  .quantityInput,
+  .removeBtn {
+    justify-self: flex-end;
+  }
 }
