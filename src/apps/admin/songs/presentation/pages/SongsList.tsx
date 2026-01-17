@@ -16,33 +16,61 @@ const Modal: React.FC<{ isOpen: boolean; onClose: () => void; title: string; chi
       style={{
         position: 'fixed',
         inset: 0,
-        background: 'rgba(0, 0, 0, 0.8)',
+        background: 'rgba(0, 0, 0, 0.85)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 1000,
+        backdropFilter: 'blur(4px)',
       }}
       onClick={onClose}
     >
       <div
         style={{
-          background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.95), rgba(45, 27, 105, 0.7))',
-          backdropFilter: 'blur(10px)',
-          borderRadius: '16px',
-          border: '1px solid rgba(139, 92, 246, 0.3)',
-          padding: '32px',
-          maxWidth: '600px',
-          width: '90%',
+          background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.95) 100%)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '20px',
+          border: '1px solid rgba(139, 92, 246, 0.4)',
+          boxShadow: '0 25px 50px rgba(139, 92, 246, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+          padding: '48px',
+          maxWidth: '700px',
+          width: '95%',
           maxHeight: '90vh',
           overflowY: 'auto',
+          animation: 'fadeInUp 0.3s ease-out',
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#e2e8f0', marginBottom: '24px', margin: 0 }}>
+        <h2 style={{ 
+          fontSize: '32px', 
+          fontWeight: '900', 
+          background: 'linear-gradient(135deg, #fff 0%, #8b5cf6 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+          marginBottom: '8px', 
+          margin: 0,
+          letterSpacing: '-1px',
+        }}>
           {title}
         </h2>
+        <p style={{ color: '#94a3b8', fontSize: '14px', marginBottom: '32px', marginTop: '8px' }}>
+          Completa los datos de la canción
+        </p>
         {children}
       </div>
+      <style>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 };
@@ -220,15 +248,28 @@ const availableArtists = Array.from(new Set(songs.map(s => s.artista)));
       <div style={{ marginBottom: '40px' }}>
         <h1
           style={{
-            fontSize: 'clamp(24px, 5vw, 42px)',
-            fontWeight: '700',
-            color: '#e2e8f0',
-            marginBottom: '10px',
+            fontSize: 'clamp(42px, 7vw, 64px)',
+            fontWeight: '900',
+            marginBottom: '16px',
+            background: 'linear-gradient(135deg, #fff 0%, #8b5cf6 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            margin: 0,
+            letterSpacing: '-2px',
           }}
         >
           Gestión de Canciones
         </h1>
-        <p style={{ color: '#cbd5e1', fontSize: '16px' }}>
+        <p
+          style={{
+            fontSize: '18px',
+            color: '#cbd5e1',
+            fontWeight: '400',
+            lineHeight: '1.6',
+            maxWidth: '600px',
+          }}
+        >
           Administra el catálogo de canciones de la plataforma
         </p>
       </div>
@@ -238,19 +279,19 @@ const availableArtists = Array.from(new Set(songs.map(s => s.artista)));
         <button
           onClick={handleAddSong}
           style={{
-            padding: '12px 24px',
+            padding: '14px 28px',
             background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
             color: '#fff',
             border: 'none',
             borderRadius: '10px',
             cursor: 'pointer',
             fontWeight: '600',
-            fontSize: '14px',
+            fontSize: '16px',
+            transition: 'all 0.2s ease',
+            boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)',
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            transition: 'all 0.2s ease',
-            boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'translateY(-2px)';
@@ -268,16 +309,17 @@ const availableArtists = Array.from(new Set(songs.map(s => s.artista)));
       {/* Filters Section */}
 <div
   style={{
-    background: 'rgba(30, 27, 75, 0.2)', // Más sutil para no competir con las cards
-    backdropFilter: 'blur(8px)',
-    border: '1px solid rgba(139, 92, 246, 0.1)',
-    borderRadius: '16px',
-    padding: '20px',
-    marginBottom: '32px',
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', // Responsivo
-    gap: '20px',
-    alignItems: 'end',
+    display: 'flex',
+    gap: '16px',
+    marginBottom: '40px',
+    flexWrap: 'wrap',
+    background: 'rgba(30, 41, 59, 0.4)',
+    backdropFilter: 'blur(12px)',
+    padding: '24px',
+    borderRadius: '20px',
+    border: '1px solid rgba(139, 92, 246, 0.2)',
+    boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5)',
+    alignItems: 'end'
   }}
 >
   {/* Buscador de Canciones */}
@@ -662,160 +704,152 @@ const availableArtists = Array.from(new Set(songs.map(s => s.artista)));
       </Modal>
 
       {/* Form Modal */}
-      <Modal isOpen={isFormModalOpen} onClose={() => setIsFormModalOpen(false)} title={editingSong ? 'Editar Canción' : 'Agregar Nueva Canción'}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <Modal isOpen={isFormModalOpen} onClose={() => setIsFormModalOpen(false)} title={editingSong ? '✏️ Editar Canción' : '🎵 Nueva Canción'}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          {/* Título */}
           <div>
-            <label style={{ display: 'block', color: '#8b5cf6', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               Título *
             </label>
             <input
               type="text"
               value={formData.titulo}
               onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
+              placeholder="Nombre de la canción..."
               style={{
                 width: '100%',
-                padding: '12px 16px',
+                padding: '14px 18px',
+                fontSize: '15px',
                 background: 'rgba(30, 27, 75, 0.5)',
-                border: '1px solid rgba(139, 92, 246, 0.3)',
-                borderRadius: '10px',
+                border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                borderRadius: '12px',
                 color: '#e2e8f0',
                 outline: 'none',
-                transition: 'all 0.2s ease',
-                boxSizing: 'border-box',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               }}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
                 e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
                 e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             />
           </div>
 
+          {/* Artista */}
           <div>
-  <label style={{ display: 'block', color: '#8b5cf6', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>
-    Artista *
-  </label>
-  <div style={{ position: 'relative', width: '100%' }}>
-    <select
-      value={formData.artista}
-      onChange={(e) => setFormData({ ...formData, artista: e.target.value })}
-      style={{
-        width: '100%',
-        padding: '12px 16px',
-        paddingRight: '40px', // Espacio para que el texto no pise la flecha
-        background: 'rgba(30, 27, 75, 0.5)',
-        border: '1px solid rgba(139, 92, 246, 0.3)',
-        borderRadius: '10px',
-        color: '#e2e8f0', // El mismo tono que tus otros inputs
-        fontSize: '14px',
-        outline: 'none',
-        transition: 'all 0.2s ease',
-        boxSizing: 'border-box',
-        cursor: 'pointer',
-        appearance: 'none', // Oculta la flecha fea por defecto de Windows/Mac
-        WebkitAppearance: 'none',
-        MozAppearance: 'none',
-      }}
-      onFocus={(e) => {
-        e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
-        e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
-      }}
-      onBlur={(e) => {
-        e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
-        e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
-      }}
-    >
-      <option value="" style={{ background: '#1e1b4b', color: '#94a3b8' }}>Selecciona un artista...</option>
-      {availableArtists.map((artist) => (
-        <option key={artist} value={artist} style={{ background: '#1e1b4b', color: '#e2e8f0' }}>
-          {artist}
-        </option>
-      ))}
-    </select>
+            <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              Artista *
+            </label>
+            <select
+              value={formData.artista}
+              onChange={(e) => setFormData({ ...formData, artista: e.target.value })}
+              style={{
+                width: '100%',
+                padding: '14px 18px',
+                fontSize: '15px',
+                background: 'rgba(30, 27, 75, 0.5)',
+                border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                borderRadius: '12px',
+                color: '#e2e8f0',
+                outline: 'none',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                cursor: 'pointer',
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
+                e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+                e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              <option value="" style={{ background: '#1e1b4b' }}>Selecciona un artista...</option>
+              {availableArtists.map((artist) => (
+                <option key={artist} value={artist} style={{ background: '#1e1b4b' }}>
+                  {artist}
+                </option>
+              ))}
+            </select>
+          </div>
 
-    {/* Flecha personalizada (Icono) */}
-    <div style={{
-      position: 'absolute',
-      right: '12px',
-      top: '50%',
-      transform: 'translateY(-50%)',
-      pointerEvents: 'none', // Para que al hacer clic en la flecha también se abra el select
-      display: 'flex',
-      alignItems: 'center',
-      color: 'rgba(139, 92, 246, 0.8)'
-    }}>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-        <path d="m6 9 6 6 6-6"/>
-      </svg>
-    </div>
-  </div>
-</div>
-
+          {/* Álbum */}
           <div>
-            <label style={{ display: 'block', color: '#8b5cf6', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               Álbum *
             </label>
             <input
               type="text"
               value={formData.album}
               onChange={(e) => setFormData({ ...formData, album: e.target.value })}
+              placeholder="Nombre del álbum..."
               style={{
                 width: '100%',
-                padding: '12px 16px',
+                padding: '14px 18px',
+                fontSize: '15px',
                 background: 'rgba(30, 27, 75, 0.5)',
-                border: '1px solid rgba(139, 92, 246, 0.3)',
-                borderRadius: '10px',
+                border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                borderRadius: '12px',
                 color: '#e2e8f0',
                 outline: 'none',
-                transition: 'all 0.2s ease',
-                boxSizing: 'border-box',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               }}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
                 e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
                 e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          {/* Género y Duración */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px' }}>
             <div>
-              <label style={{ display: 'block', color: '#8b5cf6', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>
+              <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 Género
               </label>
               <input
                 type="text"
                 value={formData.genero}
                 onChange={(e) => setFormData({ ...formData, genero: e.target.value })}
+                placeholder="Rock, Pop, Jazz..."
                 style={{
                   width: '100%',
-                  padding: '12px 16px',
+                  padding: '14px 18px',
+                  fontSize: '15px',
                   background: 'rgba(30, 27, 75, 0.5)',
-                  border: '1px solid rgba(139, 92, 246, 0.3)',
-                  borderRadius: '10px',
+                  border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                  borderRadius: '12px',
                   color: '#e2e8f0',
                   outline: 'none',
-                  transition: 'all 0.2s ease',
-                  boxSizing: 'border-box',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
                   e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
                   e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               />
             </div>
             <div>
-              <label style={{ display: 'block', color: '#8b5cf6', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>
+              <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 Duración
               </label>
               <input
@@ -825,164 +859,188 @@ const availableArtists = Array.from(new Set(songs.map(s => s.artista)));
                 onChange={(e) => setFormData({ ...formData, duracion: e.target.value })}
                 style={{
                   width: '100%',
-                  padding: '12px 16px',
+                  padding: '14px 18px',
+                  fontSize: '15px',
                   background: 'rgba(30, 27, 75, 0.5)',
-                  border: '1px solid rgba(139, 92, 246, 0.3)',
-                  borderRadius: '10px',
+                  border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                  borderRadius: '12px',
                   color: '#e2e8f0',
                   outline: 'none',
-                  transition: 'all 0.2s ease',
-                  boxSizing: 'border-box',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
                   e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
                   e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               />
             </div>
           </div>
 
+          {/* URL de Imagen */}
           <div>
-            <label style={{ display: 'block', color: '#8b5cf6', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               URL de Imagen
             </label>
             <input
               type="text"
               value={formData.imagen}
               onChange={(e) => setFormData({ ...formData, imagen: e.target.value })}
+              placeholder="https://example.com/imagen.jpg"
               style={{
                 width: '100%',
-                padding: '12px 16px',
+                padding: '14px 18px',
+                fontSize: '15px',
                 background: 'rgba(30, 27, 75, 0.5)',
-                border: '1px solid rgba(139, 92, 246, 0.3)',
-                borderRadius: '10px',
+                border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                borderRadius: '12px',
                 color: '#e2e8f0',
                 outline: 'none',
-                transition: 'all 0.2s ease',
-                boxSizing: 'border-box',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               }}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
                 e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
                 e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             />
           </div>
 
+          {/* Link de Audio */}
           <div>
-            <label style={{ display: 'block', color: '#8b5cf6', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               Link de Audio
             </label>
             <input
               type="text"
-              placeholder="https://..."
+              placeholder="https://example.com/audio.mp3"
               value={formData.audioUrl}
               onChange={(e) => setFormData({ ...formData, audioUrl: e.target.value })}
               style={{
                 width: '100%',
-                padding: '12px 16px',
+                padding: '14px 18px',
+                fontSize: '15px',
                 background: 'rgba(30, 27, 75, 0.5)',
-                border: '1px solid rgba(139, 92, 246, 0.3)',
-                borderRadius: '10px',
+                border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                borderRadius: '12px',
                 color: '#e2e8f0',
                 outline: 'none',
-                transition: 'all 0.2s ease',
-                boxSizing: 'border-box',
-          }}
-        />
-    </div>
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
+                e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+                e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            />
+          </div>
 
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          {/* Reproducciones y Likes */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px' }}>
             <div>
-              <label style={{ display: 'block', color: '#8b5cf6', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>
+              <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 Reproducciones
               </label>
               <input
                 type="number"
                 value={formData.reproducciones}
                 onChange={(e) => setFormData({ ...formData, reproducciones: parseInt(e.target.value) || 0 })}
+                placeholder="0"
                 style={{
                   width: '100%',
-                  padding: '12px 16px',
+                  padding: '14px 18px',
+                  fontSize: '15px',
                   background: 'rgba(30, 27, 75, 0.5)',
-                  border: '1px solid rgba(139, 92, 246, 0.3)',
-                  borderRadius: '10px',
+                  border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                  borderRadius: '12px',
                   color: '#e2e8f0',
                   outline: 'none',
-                  transition: 'all 0.2s ease',
-                  boxSizing: 'border-box',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
                   e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
                   e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               />
             </div>
             <div>
-              <label style={{ display: 'block', color: '#8b5cf6', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>
+              <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 Likes
               </label>
               <input
                 type="number"
                 value={formData.likes}
                 onChange={(e) => setFormData({ ...formData, likes: parseInt(e.target.value) || 0 })}
+                placeholder="0"
                 style={{
                   width: '100%',
-                  padding: '12px 16px',
+                  padding: '14px 18px',
+                  fontSize: '15px',
                   background: 'rgba(30, 27, 75, 0.5)',
-                  border: '1px solid rgba(139, 92, 246, 0.3)',
-                  borderRadius: '10px',
+                  border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                  borderRadius: '12px',
                   color: '#e2e8f0',
                   outline: 'none',
-                  transition: 'all 0.2s ease',
-                  boxSizing: 'border-box',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
                   e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
                   e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               />
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '12px', paddingTop: '20px', borderTop: '1px solid rgba(139, 92, 246, 0.2)' }}>
+          {/* Botones de acción */}
+          <div style={{ display: 'flex', gap: '12px', paddingTop: '32px', borderTop: '1px solid rgba(139, 92, 246, 0.15)' }}>
             <button
               onClick={() => setIsFormModalOpen(false)}
               style={{
                 flex: 1,
-                padding: '12px 24px',
-                background: 'transparent',
+                padding: '14px 24px',
+                backgroundColor: 'rgba(30, 27, 75, 0.5)',
                 color: '#cbd5e1',
-                border: '1px solid rgba(139, 92, 246, 0.3)',
-                borderRadius: '10px',
+                border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                borderRadius: '12px',
                 cursor: 'pointer',
+                fontSize: '15px',
                 fontWeight: '600',
-                fontSize: '14px',
-                transition: 'all 0.2s ease',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = '#8b5cf6';
-                e.currentTarget.style.color = '#8b5cf6';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.4)';
+                e.currentTarget.style.backgroundColor = 'rgba(30, 27, 75, 0.7)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
-                e.currentTarget.style.color = '#cbd5e1';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+                e.currentTarget.style.backgroundColor = 'rgba(30, 27, 75, 0.5)';
               }}
             >
               Cancelar
@@ -991,28 +1049,34 @@ const availableArtists = Array.from(new Set(songs.map(s => s.artista)));
               onClick={handleSaveSong}
               style={{
                 flex: 1,
-                padding: '12px 24px',
-                background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
-                color: '#fff',
+                padding: '14px 24px',
+                backgroundColor: '#8b5cf6',
+                color: 'white',
                 border: 'none',
-                borderRadius: '10px',
+                borderRadius: '12px',
                 cursor: 'pointer',
+                fontSize: '15px',
                 fontWeight: '600',
-                fontSize: '14px',
-                transition: 'all 0.2s ease',
-                boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                boxShadow: '0 4px 15px rgba(139, 92, 246, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
               }}
               onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#a78bfa';
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(139, 92, 246, 0.5)';
                 e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 8px 20px rgba(139, 92, 246, 0.5)';
               }}
               onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#8b5cf6';
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(139, 92, 246, 0.3)';
                 e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(139, 92, 246, 0.3)';
               }}
             >
               {editingSong ? <Icons.Edit /> : <Icons.Plus />}
-              {editingSong ? 'Actualizar Canción' : 'Crear Canción'}
+              {editingSong ? 'Actualizar Canción' : 'Agregar Canción'}
             </button>
           </div>
         </div>
