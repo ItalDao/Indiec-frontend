@@ -374,7 +374,6 @@ export default function StorePage() {
                       }}
                     >
                       <Icons.Edit />
-                      Editar
                     </button>
                     <button
                       onClick={() => deleteProduct(product.id)}
