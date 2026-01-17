@@ -23,13 +23,13 @@ class DashboardApiRepository implements DashboardRepository {
         {
           label: 'Eventos Totales',
           value: '3',
-          icon: '📅',
+          icon: 'calendar',
           change: '+12%',
         },
         {
           label: 'Próximos',
           value: '2',
-          icon: '⏰',
+          icon: 'clock',
           change: '+5%',
         },
       ],
@@ -37,13 +37,13 @@ class DashboardApiRepository implements DashboardRepository {
         {
           label: 'Usuarios Activos',
           value: '1,247',
-          icon: '👥',
+          icon: 'users',
           change: '+18%',
         },
         {
           label: 'Nuevos este mes',
           value: '89',
-          icon: '🆕',
+          icon: 'star',
           change: '+23%',
         },
       ],

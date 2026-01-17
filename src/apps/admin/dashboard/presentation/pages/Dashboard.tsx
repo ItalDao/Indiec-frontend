@@ -15,7 +15,8 @@ import {
   Clock, 
   Sparkles, 
   AlertCircle, 
-  Mic2
+  Mic2,
+  CheckCircle2
 } from 'lucide-react';
 
 const bg = '#0f172a';
@@ -24,6 +25,83 @@ const border = '#1f2937';
 const text = '#e5e7eb';
 const muted = '#9ca3af';
 const primary = '#6366f1';
+
+const getIconByName = (iconName: string) => {
+  const iconMap: { [key: string]: React.ReactNode } = {
+    calendar: <Calendar size={32} color={text} />,
+    clock: <Clock size={32} color={text} />,
+    users: <Users size={32} color={text} />,
+    star: <Sparkles size={32} color={text} />,
+  };
+  return iconMap[iconName] || iconName;
+};
+
+// Inyectar estilos de animación
+const animationStyles = `
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  @keyframes countUp {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .dashboard-card {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .dashboard-card:nth-child(1) { animation-delay: 0.1s; }
+  .dashboard-card:nth-child(2) { animation-delay: 0.2s; }
+  .dashboard-card:nth-child(3) { animation-delay: 0.3s; }
+  .dashboard-card:nth-child(4) { animation-delay: 0.4s; }
+  .dashboard-card:nth-child(5) { animation-delay: 0.5s; }
+
+  .alert-box {
+    animation: slideInLeft 0.5s ease-out;
+  }
+
+  .badge-pulse {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+`;
+
+if (typeof window !== 'undefined') {
+  const styleEl = document.createElement('style');
+  styleEl.innerHTML = animationStyles;
+  document.head.appendChild(styleEl);
+}
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -97,7 +175,7 @@ export default function DashboardPage() {
 
   const styles = {
     container: {
-      background: bg,
+      background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 12%, #2d1b69 25%, #1a1f3a 40%, #0f172a 60%, #1a0033 75%, #0f172a 100%)',
       minHeight: '100vh',
       padding: '2rem',
     },
@@ -171,8 +249,9 @@ export default function DashboardPage() {
       marginBottom: '2.5rem',
     },
     metricCard: {
-      background: card,
-      border: `1px solid ${border}`,
+      background: 'rgba(30, 27, 75, 0.4)',
+      backdropFilter: 'blur(10px)',
+      border: '1px solid rgba(139, 92, 246, 0.2)',
       borderRadius: '12px',
       padding: '1.5rem',
       transition: 'all 0.2s',
@@ -250,8 +329,9 @@ export default function DashboardPage() {
       fontSize: '0.9rem',
     },
     listCard: {
-      background: card,
-      border: `1px solid ${border}`,
+      background: 'rgba(30, 27, 75, 0.4)',
+      backdropFilter: 'blur(10px)',
+      border: '1px solid rgba(139, 92, 246, 0.2)',
       borderRadius: '12px',
       overflow: 'hidden',
     },
@@ -294,20 +374,58 @@ export default function DashboardPage() {
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.inner}>
+    <div style={{
+      background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 12%, #2d1b69 25%, #1a1f3a 40%, #0f172a 60%, #1a0033 75%, #0f172a 100%)',
+      backgroundAttachment: 'fixed',
+      minHeight: '100vh',
+      paddingBottom: '60px',
+    }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '60px 2rem' }}>
         {/* HEADER */}
-        <div style={styles.header}>
-          <h1 style={styles.title}>Panel</h1>
-          <p style={styles.subtitle}>Vista general del estado de la plataforma</p>
+        <div style={{ marginBottom: '60px' }}>
+          <h1
+            style={{
+              fontSize: 'clamp(42px, 7vw, 64px)',
+              fontWeight: '900',
+              marginBottom: '16px',
+              background: 'linear-gradient(135deg, #fff 0%, #8b5cf6 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              margin: 0,
+              letterSpacing: '-2px',
+            }}
+          >
+            Dashboard
+          </h1>
+          <p
+            style={{
+              fontSize: '18px',
+              color: '#cbd5e1',
+              fontWeight: '400',
+              lineHeight: '1.6',
+              maxWidth: '600px',
+            }}
+          >
+            Gestión integral y métricas en tiempo real de todos los aspectos de la plataforma
+          </p>
         </div>
 
         {/* ALERTAS */}
         {(alertas.eventosProximos.length > 0 || 
           alertas.productosStockBajo.length > 0 || 
           alertas.artistasSinCanciones.length > 0) && (
-          <div style={styles.alertBox}>
-            <h3 style={styles.alertTitle}>
+          <div 
+            className="alert-box"
+            style={{
+              ...styles.alertBox,
+              animation: 'slideInLeft 0.5s ease-out',
+            }}
+          >
+            <h3 style={{
+              ...styles.alertTitle,
+              animation: 'pulse-glow 2s infinite',
+            }}>
               <AlertTriangle size={20} /> Alertas importantes
             </h3>
             <ul style={styles.alertList}>
@@ -337,10 +455,27 @@ export default function DashboardPage() {
           </h2>
           <div style={styles.grid4}>
             {/* Artistas */}
-            <div style={styles.metricCard}>
+            <div 
+              className="dashboard-card"
+              style={{
+                ...styles.metricCard,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-8px)';
+                e.currentTarget.style.boxShadow = '0 16px 32px rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.5)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+              }}
+            >
               <div style={styles.metricHeader}>
                 <Users size={32} color={text} />
-                <span style={{...styles.badge, ...styles.badgeGreen}}>
+                <span style={{...styles.badge, ...styles.badgeGreen, animation: 'pulse-glow 2s infinite'}}>
                   {artistas.activos} activos
                 </span>
               </div>
@@ -352,10 +487,27 @@ export default function DashboardPage() {
             </div>
 
             {/* Canciones */}
-            <div style={styles.metricCard}>
+            <div 
+              className="dashboard-card"
+              style={{
+                ...styles.metricCard,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-8px)';
+                e.currentTarget.style.boxShadow = '0 16px 32px rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.5)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+              }}
+            >
               <div style={styles.metricHeader}>
                 <Music size={32} color={text} />
-                <span style={{...styles.badge, ...styles.badgeGreen}}>
+                <span style={{...styles.badge, ...styles.badgeGreen, animation: 'pulse-glow 2s infinite'}}>
                   +{canciones.nuevasPeriodo}
                 </span>
               </div>
@@ -365,10 +517,27 @@ export default function DashboardPage() {
             </div>
 
             {/* Eventos */}
-            <div style={styles.metricCard}>
+            <div 
+              className="dashboard-card"
+              style={{
+                ...styles.metricCard,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-8px)';
+                e.currentTarget.style.boxShadow = '0 16px 32px rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.5)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+              }}
+            >
               <div style={styles.metricHeader}>
                 <Calendar size={32} color={text} />
-                <span style={{...styles.badge, ...styles.badgeBlue}}>
+                <span style={{...styles.badge, ...styles.badgeBlue, animation: 'pulse-glow 2s infinite'}}>
                   {eventos.proximos} próximos
                 </span>
               </div>
@@ -382,7 +551,24 @@ export default function DashboardPage() {
             </div>
 
             {/* Productos */}
-            <div style={styles.metricCard}>
+            <div 
+              className="dashboard-card"
+              style={{
+                ...styles.metricCard,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-8px)';
+                e.currentTarget.style.boxShadow = '0 16px 32px rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.5)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+              }}
+            >
               <div style={styles.metricHeader}>
                 <Package size={32} color={text} />
                 {productos.stockBajo > 0 && (
@@ -462,7 +648,8 @@ export default function DashboardPage() {
               style={styles.filterButton}
               onClick={() => navigate('/admin/events')}
             >
-              ✅ Finalizados ({eventos.finalizados})
+              <CheckCircle2 size={16} style={{display: 'inline', marginRight: '4px', verticalAlign: 'middle'}} />
+              Finalizados ({eventos.finalizados})
             </button>
           </div>
         </section>
@@ -473,11 +660,31 @@ export default function DashboardPage() {
             <Calendar size={24} /> Resumen de Eventos
           </h2>
           <div style={styles.grid3}>
-            {eventosStats.map((stat: DashboardStat) => (
-              <div key={stat.label} style={styles.metricCard}>
+            {eventosStats.map((stat: DashboardStat, index: number) => (
+              <div 
+                key={stat.label} 
+                className="dashboard-card"
+                style={{
+                  ...styles.metricCard,
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  animation: `fadeInUp 0.6s ease-out forwards`,
+                  animationDelay: `${0.6 + index * 0.1}s`,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-8px)';
+                  e.currentTarget.style.boxShadow = '0 16px 32px rgba(139, 92, 246, 0.3)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.5)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+                }}
+              >
                 <div style={styles.metricHeader}>
-                  <span style={{fontSize: '2rem'}}>{stat.icon}</span>
-                  <span style={{...styles.badge, ...styles.badgeGreen}}>
+                  <span>{getIconByName(stat.icon)}</span>
+                  <span style={{...styles.badge, ...styles.badgeGreen, animation: 'pulse-glow 2s infinite'}}>
                     {stat.change}
                   </span>
                 </div>
@@ -491,7 +698,19 @@ export default function DashboardPage() {
         {/* LISTAS */}
         <div style={styles.grid2}>
           {/* EVENTOS RECIENTES */}
-          <div style={styles.listCard}>
+          <div 
+            style={{
+              ...styles.listCard,
+              animation: 'slideInLeft 0.6s ease-out',
+              transition: 'all 0.3s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = '0 16px 32px rgba(139, 92, 246, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
             <div style={styles.listHeader}>
               <h3 style={styles.listTitle}>
                 <Clock size={20} style={{display: 'inline', marginRight: '8px', verticalAlign: 'middle'}} />
@@ -540,7 +759,19 @@ export default function DashboardPage() {
           </div>
 
           {/* USUARIOS RECIENTES */}
-          <div style={styles.listCard}>
+          <div 
+            style={{
+              ...styles.listCard,
+              animation: 'slideInLeft 0.7s ease-out',
+              transition: 'all 0.3s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = '0 16px 32px rgba(139, 92, 246, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
             <div style={styles.listHeader}>
               <h3 style={styles.listTitle}>
                 <Sparkles size={20} style={{display: 'inline', marginRight: '8px', verticalAlign: 'middle'}} />
@@ -587,7 +818,20 @@ export default function DashboardPage() {
 
           {/* PRODUCTOS CON STOCK BAJO */}
           {alertas.productosStockBajo.length > 0 && (
-            <div style={{...styles.listCard, borderColor: 'rgba(239, 68, 68, 0.3)'}}>
+            <div 
+              style={{
+                ...styles.listCard, 
+                borderColor: 'rgba(239, 68, 68, 0.3)',
+                animation: 'slideInLeft 0.8s ease-out',
+                transition: 'all 0.3s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = '0 16px 32px rgba(239, 68, 68, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
               <div style={styles.listHeader}>
                 <h3 style={styles.listTitle}>
                   <AlertCircle size={20} style={{display: 'inline', marginRight: '8px', verticalAlign: 'middle'}} />
@@ -623,7 +867,20 @@ export default function DashboardPage() {
 
           {/* ARTISTAS SIN CANCIONES */}
           {alertas.artistasSinCanciones.length > 0 && (
-            <div style={{...styles.listCard, borderColor: 'rgba(234, 179, 8, 0.3)'}}>
+            <div 
+              style={{
+                ...styles.listCard, 
+                borderColor: 'rgba(234, 179, 8, 0.3)',
+                animation: 'slideInLeft 0.9s ease-out',
+                transition: 'all 0.3s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = '0 16px 32px rgba(234, 179, 8, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
               <div style={styles.listHeader}>
                 <h3 style={styles.listTitle}>
                   <AlertTriangle size={20} style={{display: 'inline', marginRight: '8px', verticalAlign: 'middle'}} />
