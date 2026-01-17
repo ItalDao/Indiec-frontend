@@ -2,8 +2,10 @@
 
 export const Icons = {
   Music: () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M9 18V5l12-2v13M9 9l12-2" />
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M9 18V5l12-2v13M9 9l12-2" strokeLinecap="round" strokeLinejoin="round" stroke="currentColor" strokeWidth="2" fill="none" />
+      <circle cx="9" cy="18" r="1.5" fill="currentColor" />
+      <circle cx="21" cy="16" r="1.5" fill="currentColor" />
     </svg>
   ),
   
@@ -269,7 +271,7 @@ export const Icons = {
   ),
 
   Check: () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
       <polyline points="20 6 9 17 4 12" />
     </svg>
   ),

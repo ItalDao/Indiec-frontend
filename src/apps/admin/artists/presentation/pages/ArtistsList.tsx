@@ -17,31 +17,47 @@ const Modal: React.FC<{ isOpen: boolean; onClose: () => void; title: string; chi
       style={{
         position: 'fixed',
         inset: 0,
-        background: 'rgba(0, 0, 0, 0.8)',
+        background: 'rgba(0, 0, 0, 0.85)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 1000,
+        backdropFilter: 'blur(4px)',
       }}
       onClick={onClose}
     >
       <div
         style={{
-          background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.95), rgba(45, 27, 105, 0.7))',
-          backdropFilter: 'blur(10px)',
-          borderRadius: '16px',
-          border: '1px solid rgba(139, 92, 246, 0.3)',
-          padding: '32px',
-          maxWidth: '600px',
-          width: '90%',
+          background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.95) 100%)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '20px',
+          border: '1px solid rgba(139, 92, 246, 0.4)',
+          boxShadow: '0 25px 50px rgba(139, 92, 246, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+          padding: '48px',
+          maxWidth: '700px',
+          width: '95%',
           maxHeight: '90vh',
           overflowY: 'auto',
+          animation: 'fadeInUp 0.3s ease-out',
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#e2e8f0', marginBottom: '24px', margin: 0 }}>
+        <h2 style={{ 
+          fontSize: '32px', 
+          fontWeight: '900', 
+          background: 'linear-gradient(135deg, #fff 0%, #8b5cf6 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+          marginBottom: '8px', 
+          margin: 0,
+          letterSpacing: '-1px',
+        }}>
           {title}
         </h2>
+        <p style={{ color: '#94a3b8', fontSize: '14px', marginBottom: '32px', marginTop: '8px' }}>
+          Completa los datos del artista
+        </p>
         {children}
       </div>
     </div>
@@ -264,99 +280,116 @@ export const ArtistsList: React.FC = () => {
     gap: '16px',
     marginBottom: '40px',
     flexWrap: 'wrap',
-    background: 'rgba(30, 41, 59, 0.4)', // Fondo más limpio estilo Glassmorphism
+    background: 'rgba(30, 41, 59, 0.4)',
     backdropFilter: 'blur(12px)',
     padding: '24px',
     borderRadius: '20px',
     border: '1px solid rgba(139, 92, 246, 0.2)',
     boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5)',
-    alignItems: 'center'
+    alignItems: 'end'
   }}
 >
-  {/* Buscar por nombre */}
-  <div style={{ flex: '1', minWidth: '220px', position: 'relative' }}>
-    <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', opacity: 0.6, display: 'flex', alignItems: 'center' }}>
-      <Icons.Search />
+  {/* Buscar Artista */}
+  <div style={{ flex: 2 }}>
+    <label style={{ display: 'block', color: '#8b5cf6', fontSize: '11px', fontWeight: '700', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+      Buscar Artista
+    </label>
+    <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+      <span style={{ 
+        position: 'absolute', 
+        left: '16px', 
+        display: 'flex',
+        color: '#8b5cf6',
+        opacity: 0.7,
+        pointerEvents: 'none'
+      }}>
+        <Icons.Search />
+      </span>
+      
+      <input
+        placeholder="Escribe el nombre del artista..."
+        value={filterName}
+        onChange={(e) => setFilterName(e.target.value)}
+        style={{
+          width: '100%',
+          padding: '12px 16px 12px 45px',
+          background: 'rgba(30, 27, 75, 0.4)',
+          border: '1px solid rgba(139, 92, 246, 0.3)',
+          borderRadius: '10px',
+          color: '#e2e8f0',
+          fontSize: '14px',
+          outline: 'none',
+          transition: 'all 0.2s ease',
+          boxSizing: 'border-box' as const,
+        }}
+        onFocus={(e) => (e.currentTarget.style.borderColor = '#8b5cf6')}
+        onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)')}
+      />
     </div>
-    <input
-      placeholder="Buscar artista por nombre..."
-      value={filterName}
-      onChange={(e) => setFilterName(e.target.value)}
-      style={{
-        width: '100%',
-        padding: '14px 16px 14px 40px', // Espacio para el icono
-        fontSize: '14px',
-        background: '#0f172a',
-        border: '1px solid rgba(139, 92, 246, 0.2)',
-        borderRadius: '14px',
-        color: '#f8fafc',
-        outline: 'none',
-        transition: 'all 0.3s ease',
-        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.2)'
-      }}
-      onFocus={(e) => e.target.style.border = '1px solid #7c3aed'}
-      onBlur={(e) => e.target.style.border = '1px solid rgba(139, 92, 246, 0.2)'}
-    />
   </div>
 
-  {/* Filtro género */}
-  <div style={{ minWidth: '200px', position: 'relative' }}>
-    <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', opacity: 0.6, zIndex: 1, display: 'flex', alignItems: 'center' }}>
-      <Icons.Music />
-    </div>
+  {/* Género */}
+  <div>
+    <label style={{ display: 'block', color: '#8b5cf6', fontSize: '11px', fontWeight: '700', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+      Género
+    </label>
     <select
       value={filterGenero}
       onChange={(e) => setFilterGenero(e.target.value)}
       style={{
         width: '100%',
-        padding: '14px 16px 14px 40px',
+        padding: '12px 16px',
+        background: 'rgba(30, 27, 75, 0.4)',
+        border: '1px solid rgba(139, 92, 246, 0.3)',
+        borderRadius: '10px',
+        color: '#e2e8f0',
         fontSize: '14px',
-        background: '#0f172a',
-        border: '1px solid rgba(139, 92, 246, 0.2)',
-        borderRadius: '14px',
-        color: '#f8fafc',
         outline: 'none',
+        transition: 'all 0.2s ease',
+        boxSizing: 'border-box' as const,
         cursor: 'pointer',
-        appearance: 'none', // Quita la flecha fea por defecto
       }}
+      onFocus={(e) => (e.currentTarget.style.borderColor = '#8b5cf6')}
+      onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)')}
     >
-      <option value="">Todos los géneros</option>
-      <option value="Rock">Rock</option>
-      <option value="Pop">Pop</option>
-      <option value="Jazz">Jazz</option>
-      <option value="Indie">Indie</option>
-      <option value="Electrónica">Electrónica</option>
-      <option value="Reggaeton">Reggaeton</option>
+      <option value="" style={{ background: '#1e1b4b' }}>Todos los géneros</option>
+      <option value="Rock" style={{ background: '#1e1b4b' }}>Rock</option>
+      <option value="Pop" style={{ background: '#1e1b4b' }}>Pop</option>
+      <option value="Jazz" style={{ background: '#1e1b4b' }}>Jazz</option>
+      <option value="Indie" style={{ background: '#1e1b4b' }}>Indie</option>
+      <option value="Electrónica" style={{ background: '#1e1b4b' }}>Electrónica</option>
+      <option value="Reggaeton" style={{ background: '#1e1b4b' }}>Reggaeton</option>
     </select>
-    <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', fontSize: '10px', opacity: 0.5 }}>▼</span>
   </div>
 
-  {/* Filtro estado */}
-  <div style={{ minWidth: '180px', position: 'relative' }}>
-    <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', opacity: 0.6, zIndex: 1, display: 'flex', alignItems: 'center' }}>
-      <Icons.Check />
-    </div>
+  {/* Estado */}
+  <div>
+    <label style={{ display: 'block', color: '#8b5cf6', fontSize: '11px', fontWeight: '700', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+      Estado
+    </label>
     <select
       value={filterEstado}
       onChange={(e) => setFilterEstado(e.target.value)}
       style={{
         width: '100%',
-        padding: '14px 16px 14px 40px',
+        padding: '12px 16px',
+        background: 'rgba(30, 27, 75, 0.4)',
+        border: '1px solid rgba(139, 92, 246, 0.3)',
+        borderRadius: '10px',
+        color: '#e2e8f0',
         fontSize: '14px',
-        background: '#0f172a',
-        border: '1px solid rgba(139, 92, 246, 0.2)',
-        borderRadius: '14px',
-        color: '#f8fafc',
         outline: 'none',
+        transition: 'all 0.2s ease',
+        boxSizing: 'border-box' as const,
         cursor: 'pointer',
-        appearance: 'none',
       }}
+      onFocus={(e) => (e.currentTarget.style.borderColor = '#8b5cf6')}
+      onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)')}
     >
-      <option value="">Todos los estados</option>
-      <option value="activo">Activo</option>
-      <option value="inactivo">Inactivo</option>
+      <option value="" style={{ background: '#1e1b4b' }}>Todos los estados</option>
+      <option value="activo" style={{ background: '#1e1b4b' }}>Activos</option>
+      <option value="inactivo" style={{ background: '#1e1b4b' }}>Inactivos</option>
     </select>
-    <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', fontSize: '10px', opacity: 0.5 }}>▼</span>
   </div>
 </div>
 
@@ -773,43 +806,47 @@ export const ArtistsList: React.FC = () => {
       </Modal>
 
       {/* MODAL FORMULARIO AGREGAR/EDITAR ARTISTA */}
-      <Modal isOpen={isFormModalOpen} onClose={() => setIsFormModalOpen(false)} title={editingArtist ? 'Editar Artista' : 'Agregar Nuevo Artista'}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
-              Nombre *
+      <Modal isOpen={isFormModalOpen} onClose={() => setIsFormModalOpen(false)} title={editingArtist ? '✏️ Editar Artista' : '🎵 Nuevo Artista'}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          {/* Nombre - Full Width */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              Nombre del Artista *
             </label>
             <input
               type="text"
               value={formData.nombre}
               onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-              placeholder="Nombre del artista"
+              placeholder="Ej: The Beatles, Bad Bunny..."
               style={{
                 width: '100%',
-                padding: '12px 16px',
-                fontSize: '14px',
+                padding: '14px 18px',
+                fontSize: '15px',
                 background: 'rgba(30, 27, 75, 0.5)',
-                border: '1px solid rgba(139, 92, 246, 0.3)',
-                borderRadius: '10px',
+                border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                borderRadius: '12px',
                 color: '#e2e8f0',
                 outline: 'none',
-                transition: 'all 0.2s ease',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               }}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
                 e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
                 e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
-                Género *
+          {/* Género y País - 2 Columns */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Género Musical *
               </label>
               <input
                 type="text"
@@ -818,29 +855,31 @@ export const ArtistsList: React.FC = () => {
                 placeholder="Rock, Pop, Jazz..."
                 style={{
                   width: '100%',
-                  padding: '12px 16px',
-                  fontSize: '14px',
+                  padding: '14px 18px',
+                  fontSize: '15px',
                   background: 'rgba(30, 27, 75, 0.5)',
-                  border: '1px solid rgba(139, 92, 246, 0.3)',
-                  borderRadius: '10px',
+                  border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                  borderRadius: '12px',
                   color: '#e2e8f0',
                   outline: 'none',
-                  transition: 'all 0.2s ease',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
                   e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
                   e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               />
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
-                País *
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                País de Origen *
               </label>
               <input
                 type="text"
@@ -849,30 +888,33 @@ export const ArtistsList: React.FC = () => {
                 placeholder="Colombia"
                 style={{
                   width: '100%',
-                  padding: '12px 16px',
-                  fontSize: '14px',
+                  padding: '14px 18px',
+                  fontSize: '15px',
                   background: 'rgba(30, 27, 75, 0.5)',
-                  border: '1px solid rgba(139, 92, 246, 0.3)',
-                  borderRadius: '10px',
+                  border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                  borderRadius: '12px',
                   color: '#e2e8f0',
                   outline: 'none',
-                  transition: 'all 0.2s ease',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
                   e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
                   e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               />
             </div>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
-              Email *
+          {/* Email */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              Email del Artista *
             </label>
             <input
               type="email"
@@ -881,84 +923,101 @@ export const ArtistsList: React.FC = () => {
               placeholder="artist@example.com"
               style={{
                 width: '100%',
-                padding: '12px 16px',
-                fontSize: '14px',
+                padding: '14px 18px',
+                fontSize: '15px',
                 background: 'rgba(30, 27, 75, 0.5)',
-                border: '1px solid rgba(139, 92, 246, 0.3)',
-                borderRadius: '10px',
+                border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                borderRadius: '12px',
                 color: '#e2e8f0',
                 outline: 'none',
-                transition: 'all 0.2s ease',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               }}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
                 e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
                 e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             />
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-  <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
-    Biografía
-  </label>
-  <textarea
-    value={formData.biografia}
-    onChange={(e) => setFormData({ ...formData, biografia: e.target.value })}
-    placeholder="Describe al artista..."
-    rows={4}
-    style={{
-      width: '100%',
-      padding: '12px 16px',
-      fontSize: '14px',
-      background: 'rgba(30, 27, 75, 0.5)',
-      border: '1px solid rgba(139, 92, 246, 0.3)',
-      borderRadius: '10px',
-      color: '#e2e8f0',
-      outline: 'none',
-      resize: 'none',
-    }}
-  />
-</div>
+          {/* Biografía */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              Biografía
+            </label>
+            <textarea
+              value={formData.biografia}
+              onChange={(e) => setFormData({ ...formData, biografia: e.target.value })}
+              placeholder="Cuéntanos sobre el artista, sus logros, estilo musical..."
+              rows={4}
+              style={{
+                width: '100%',
+                padding: '14px 18px',
+                fontSize: '15px',
+                background: 'rgba(30, 27, 75, 0.5)',
+                border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                borderRadius: '12px',
+                color: '#e2e8f0',
+                outline: 'none',
+                resize: 'none',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                fontFamily: 'inherit',
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
+                e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+                e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            />
+          </div>
 
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
-                Imagen URL
+          {/* Imagen URL y Seguidores */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Foto/Imagen del Artista
               </label>
               <input
                 type="text"
                 value={formData.imagen}
                 onChange={(e) => setFormData({ ...formData, imagen: e.target.value })}
-                placeholder="https://..."
+                placeholder="https://example.com/foto.jpg"
                 style={{
                   width: '100%',
-                  padding: '12px 16px',
-                  fontSize: '14px',
+                  padding: '14px 18px',
+                  fontSize: '15px',
                   background: 'rgba(30, 27, 75, 0.5)',
-                  border: '1px solid rgba(139, 92, 246, 0.3)',
-                  borderRadius: '10px',
+                  border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                  borderRadius: '12px',
                   color: '#e2e8f0',
                   outline: 'none',
-                  transition: 'all 0.2s ease',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
                   e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
                   e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               />
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 Seguidores
               </label>
               <input
@@ -968,49 +1027,52 @@ export const ArtistsList: React.FC = () => {
                 placeholder="0"
                 style={{
                   width: '100%',
-                  padding: '12px 16px',
-                  fontSize: '14px',
+                  padding: '14px 18px',
+                  fontSize: '15px',
                   background: 'rgba(30, 27, 75, 0.5)',
-                  border: '1px solid rgba(139, 92, 246, 0.3)',
-                  borderRadius: '10px',
+                  border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                  borderRadius: '12px',
                   color: '#e2e8f0',
                   outline: 'none',
-                  transition: 'all 0.2s ease',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
                   e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
                   e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               />
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '12px', paddingTop: '20px', borderTop: '1px solid rgba(139, 92, 246, 0.2)' }}>
+          {/* Botones de acción */}
+          <div style={{ display: 'flex', gap: '12px', paddingTop: '32px', borderTop: '1px solid rgba(139, 92, 246, 0.15)' }}>
             <button
               onClick={() => setIsFormModalOpen(false)}
               style={{
                 flex: 1,
-                padding: '12px 24px',
-                background: 'transparent',
+                padding: '14px 20px',
+                backgroundColor: 'rgba(30, 27, 75, 0.5)',
                 color: '#cbd5e1',
-                border: '1px solid rgba(139, 92, 246, 0.3)',
-                borderRadius: '10px',
+                border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                borderRadius: '12px',
                 cursor: 'pointer',
+                fontSize: '15px',
                 fontWeight: '600',
-                fontSize: '14px',
-                transition: 'all 0.2s ease',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = '#8b5cf6';
-                e.currentTarget.style.color = '#8b5cf6';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.4)';
+                e.currentTarget.style.backgroundColor = 'rgba(30, 27, 75, 0.7)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
-                e.currentTarget.style.color = '#cbd5e1';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+                e.currentTarget.style.backgroundColor = 'rgba(30, 27, 75, 0.5)';
               }}
             >
               Cancelar
@@ -1019,24 +1081,30 @@ export const ArtistsList: React.FC = () => {
               onClick={handleSaveArtist}
               style={{
                 flex: 1,
-                padding: '12px 24px',
-                background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
-                color: '#fff',
+                padding: '14px 20px',
+                backgroundColor: '#8b5cf6',
+                color: 'white',
                 border: 'none',
-                borderRadius: '10px',
+                borderRadius: '12px',
                 cursor: 'pointer',
+                fontSize: '15px',
                 fontWeight: '600',
-                fontSize: '14px',
-                transition: 'all 0.2s ease',
-                boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                boxShadow: '0 4px 15px rgba(139, 92, 246, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
               }}
               onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#a78bfa';
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(139, 92, 246, 0.5)';
                 e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 8px 20px rgba(139, 92, 246, 0.5)';
               }}
               onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#8b5cf6';
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(139, 92, 246, 0.3)';
                 e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(139, 92, 246, 0.3)';
               }}
             >
               {editingArtist ? <Icons.Edit /> : <Icons.Plus />}
