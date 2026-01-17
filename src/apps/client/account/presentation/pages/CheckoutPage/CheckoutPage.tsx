@@ -52,101 +52,101 @@ export const CheckoutPage = () => {
         {/* PASO 1 - DATOS */}
         {step === 0 && (
           <div style={{
-            background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.8) 0%, rgba(45, 27, 105, 0.6) 100%)',
+            background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.95) 100%)',
             backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(139, 92, 246, 0.2)',
-            borderRadius: '16px',
-            padding: '2rem',
-            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.3)',
+            border: '1.5px solid rgba(139, 92, 246, 0.2)',
+            borderRadius: '20px',
+            padding: '48px',
+            boxShadow: '0 25px 50px rgba(139, 92, 246, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
           }}>
-            <h2 style={{ color: '#E5E7EB', marginBottom: '1.5rem', fontSize: 'clamp(1.25rem, 4vw, 1.5rem)' }}>Datos de envío</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            <h2 style={{ color: '#e2e8f0', marginBottom: '32px', fontSize: 'clamp(20px, 4vw, 28px)', fontWeight: '700', margin: 0 }}>Datos de envío</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
               <div>
-                <label style={{ display: 'block', color: '#A78BFA', fontSize: '0.85rem', marginBottom: '0.35rem', fontWeight: 600 }}>Nombre completo</label>
+                <label style={{ display: 'block', color: '#cbd5e1', fontSize: '13px', marginBottom: '12px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Nombre completo</label>
                 <input
                   value={form.name}
                   onChange={e => setForm({ ...form, name: e.target.value })}
                   style={{
                     width: '100%',
-                    padding: '0.75rem 1rem',
-                    borderRadius: '8px',
-                    border: '1px solid rgba(139, 92, 246, 0.3)',
-                    background: 'rgba(15, 23, 42, 0.7)',
-                    color: '#E5E7EB',
-                    fontSize: '0.9rem',
-                    backdropFilter: 'blur(10px)',
+                    padding: '14px 18px',
+                    borderRadius: '12px',
+                    border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                    background: 'rgba(30, 27, 75, 0.5)',
+                    color: '#e2e8f0',
+                    fontSize: '15px',
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    boxSizing: 'border-box' as const,
                   }}
                   onFocus={e => {
                     const target = e.currentTarget;
-                    target.style.borderColor = 'rgba(139, 92, 246, 0.6)';
-                    target.style.background = 'rgba(15, 23, 42, 0.9)';
+                    target.style.borderColor = 'rgba(139, 92, 246, 1)';
+                    target.style.background = 'rgba(30, 27, 75, 0.8)';
                     target.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
                   }}
                   onBlur={e => {
                     const target = e.currentTarget;
-                    target.style.borderColor = 'rgba(139, 92, 246, 0.3)';
-                    target.style.background = 'rgba(15, 23, 42, 0.7)';
+                    target.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+                    target.style.background = 'rgba(30, 27, 75, 0.5)';
                     target.style.boxShadow = 'none';
                   }}
                 />
               </div>
               <div>
-                <label style={{ display: 'block', color: '#A78BFA', fontSize: '0.85rem', marginBottom: '0.35rem', fontWeight: 600 }}>Dirección</label>
+                <label style={{ display: 'block', color: '#cbd5e1', fontSize: '13px', marginBottom: '12px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Dirección</label>
                 <input
                   value={form.address}
                   onChange={e => setForm({ ...form, address: e.target.value })}
                   style={{
                     width: '100%',
-                    padding: '0.75rem 1rem',
-                    borderRadius: '8px',
-                    border: '1px solid rgba(139, 92, 246, 0.3)',
-                    background: 'rgba(15, 23, 42, 0.7)',
-                    color: '#E5E7EB',
-                    fontSize: '0.9rem',
-                    backdropFilter: 'blur(10px)',
+                    padding: '14px 18px',
+                    borderRadius: '12px',
+                    border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                    background: 'rgba(30, 27, 75, 0.5)',
+                    color: '#e2e8f0',
+                    fontSize: '15px',
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    boxSizing: 'border-box' as const,
                   }}
                   onFocus={e => {
                     const target = e.currentTarget;
-                    target.style.borderColor = 'rgba(139, 92, 246, 0.6)';
-                    target.style.background = 'rgba(15, 23, 42, 0.9)';
+                    target.style.borderColor = 'rgba(139, 92, 246, 1)';
+                    target.style.background = 'rgba(30, 27, 75, 0.8)';
                     target.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
                   }}
                   onBlur={e => {
                     const target = e.currentTarget;
-                    target.style.borderColor = 'rgba(139, 92, 246, 0.3)';
-                    target.style.background = 'rgba(15, 23, 42, 0.7)';
+                    target.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+                    target.style.background = 'rgba(30, 27, 75, 0.5)';
                     target.style.boxShadow = 'none';
                   }}
                 />
               </div>
               <div>
-                <label style={{ display: 'block', color: '#A78BFA', fontSize: '0.85rem', marginBottom: '0.35rem', fontWeight: 600 }}>Ciudad</label>
+                <label style={{ display: 'block', color: '#cbd5e1', fontSize: '13px', marginBottom: '12px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Ciudad</label>
                 <input
                   value={form.city}
                   onChange={e => setForm({ ...form, city: e.target.value })}
                   style={{
                     width: '100%',
-                    padding: '0.75rem 1rem',
-                    borderRadius: '8px',
-                    border: '1px solid rgba(139, 92, 246, 0.3)',
-                    background: 'rgba(15, 23, 42, 0.7)',
-                    color: '#E5E7EB',
-                    fontSize: '0.9rem',
-                    backdropFilter: 'blur(10px)',
+                    padding: '14px 18px',
+                    borderRadius: '12px',
+                    border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                    background: 'rgba(30, 27, 75, 0.5)',
+                    color: '#e2e8f0',
+                    fontSize: '15px',
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    boxSizing: 'border-box' as const,
                   }}
                   onFocus={e => {
                     const target = e.currentTarget;
-                    target.style.borderColor = 'rgba(139, 92, 246, 0.6)';
-                    target.style.background = 'rgba(15, 23, 42, 0.9)';
+                    target.style.borderColor = 'rgba(139, 92, 246, 1)';
+                    target.style.background = 'rgba(30, 27, 75, 0.8)';
                     target.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
                   }}
                   onBlur={e => {
                     const target = e.currentTarget;
-                    target.style.borderColor = 'rgba(139, 92, 246, 0.3)';
-                    target.style.background = 'rgba(15, 23, 42, 0.7)';
+                    target.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+                    target.style.background = 'rgba(30, 27, 75, 0.5)';
                     target.style.boxShadow = 'none';
                   }}
                 />
@@ -154,17 +154,18 @@ export const CheckoutPage = () => {
               <button
                 onClick={() => setStep(1)}
                 style={{
-                  padding: '0.85rem 1.5rem',
-                  borderRadius: '8px',
+                  width: '100%',
+                  padding: '14px 28px',
+                  borderRadius: '12px',
                   border: 'none',
                   background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
                   color: '#fff',
-                  fontSize: '1rem',
+                  fontSize: '15px',
                   fontWeight: 700,
                   cursor: 'pointer',
                   boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)',
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                  marginTop: '0.5rem',
+                  marginTop: '24px',
                 }}
                 onMouseEnter={e => {
                   const target = e.currentTarget;
@@ -186,23 +187,28 @@ export const CheckoutPage = () => {
         {/* PASO 2 - ENVÍO */}
         {step === 1 && (
           <div style={{
-            background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.8) 0%, rgba(45, 27, 105, 0.6) 100%)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(139, 92, 246, 0.2)',
-            borderRadius: '16px',
-            padding: '2rem',
-            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.3)',
+            background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.95) 100%)',
+            border: '1.5px solid rgba(139, 92, 246, 0.2)',
+            borderRadius: '20px',
+            padding: '48px',
+            boxSizing: 'border-box',
           }}>
-            <h2 style={{ color: '#E5E7EB', marginBottom: '1.5rem', fontSize: 'clamp(1.25rem, 4vw, 1.5rem)' }}>Método de envío</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <h2 style={{ 
+              color: '#e2e8f0',
+              margin: 0,
+              marginBottom: '24px',
+              fontSize: 'clamp(20px, 4vw, 28px)',
+              fontWeight: 700,
+            }}>Método de envío</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
               <label style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.75rem',
-                padding: '1rem',
-                borderRadius: '8px',
-                border: `2px solid ${shippingMethod === 'standard' ? 'rgba(139, 92, 246, 0.6)' : 'rgba(139, 92, 246, 0.2)'}`,
-                background: shippingMethod === 'standard' ? 'rgba(139, 92, 246, 0.1)' : 'transparent',
+                gap: '12px',
+                padding: '16px 18px',
+                borderRadius: '12px',
+                border: `1.5px solid ${shippingMethod === 'standard' ? 'rgba(139, 92, 246, 1)' : 'rgba(139, 92, 246, 0.2)'}`,
+                background: shippingMethod === 'standard' ? 'rgba(30, 27, 75, 0.8)' : 'rgba(30, 27, 75, 0.5)',
                 cursor: 'pointer',
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               }}>
@@ -212,7 +218,7 @@ export const CheckoutPage = () => {
                   onChange={() => setShippingMethod('standard')}
                   style={{ cursor: 'pointer', width: '18px', height: '18px', accentColor: '#8b5cf6' }}
                 />
-                <span style={{ color: '#E5E7EB', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ color: '#e2e8f0', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', fontSize: '15px' }}>
                   <Icons.Truck />
                   Envío estándar - $5
                 </span>
@@ -221,11 +227,11 @@ export const CheckoutPage = () => {
               <label style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.75rem',
-                padding: '1rem',
-                borderRadius: '8px',
-                border: `2px solid ${shippingMethod === 'express' ? 'rgba(139, 92, 246, 0.6)' : 'rgba(139, 92, 246, 0.2)'}`,
-                background: shippingMethod === 'express' ? 'rgba(139, 92, 246, 0.1)' : 'transparent',
+                gap: '12px',
+                padding: '16px 18px',
+                borderRadius: '12px',
+                border: `1.5px solid ${shippingMethod === 'express' ? 'rgba(139, 92, 246, 1)' : 'rgba(139, 92, 246, 0.2)'}`,
+                background: shippingMethod === 'express' ? 'rgba(30, 27, 75, 0.8)' : 'rgba(30, 27, 75, 0.5)',
                 cursor: 'pointer',
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               }}>
@@ -235,7 +241,7 @@ export const CheckoutPage = () => {
                   onChange={() => setShippingMethod('express')}
                   style={{ cursor: 'pointer', width: '18px', height: '18px', accentColor: '#8b5cf6' }}
                 />
-                <span style={{ color: '#E5E7EB', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ color: '#e2e8f0', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', fontSize: '15px' }}>
                   <Icons.Zap />
                   Envío express - $15
                 </span>
@@ -244,17 +250,18 @@ export const CheckoutPage = () => {
               <button
                 onClick={() => setStep(2)}
                 style={{
-                  padding: '0.85rem 1.5rem',
-                  borderRadius: '8px',
+                  width: '100%',
+                  padding: '14px 28px',
+                  borderRadius: '12px',
                   border: 'none',
                   background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
                   color: '#fff',
-                  fontSize: '1rem',
+                  fontSize: '15px',
                   fontWeight: 700,
                   cursor: 'pointer',
                   boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)',
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                  marginTop: '1rem',
+                  marginTop: '24px',
                 }}
                 onMouseEnter={e => {
                   const target = e.currentTarget;
@@ -276,15 +283,20 @@ export const CheckoutPage = () => {
         {/* PASO 3 - PAGO */}
         {step === 2 && (
           <div style={{
-            background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.8) 0%, rgba(45, 27, 105, 0.6) 100%)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(139, 92, 246, 0.2)',
-            borderRadius: '16px',
-            padding: '2rem',
-            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.3)',
+            background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.95) 100%)',
+            border: '1.5px solid rgba(139, 92, 246, 0.2)',
+            borderRadius: '20px',
+            padding: '48px',
+            boxSizing: 'border-box',
           }}>
-            <h2 style={{ color: '#E5E7EB', marginBottom: '1.5rem', fontSize: 'clamp(1.25rem, 4vw, 1.5rem)' }}>Método de pago</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <h2 style={{ 
+              color: '#e2e8f0',
+              margin: 0,
+              marginBottom: '24px',
+              fontSize: 'clamp(20px, 4vw, 28px)',
+              fontWeight: 700,
+            }}>Método de pago</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
               {/* TARJETA */}
               <label
                 style={{
@@ -310,127 +322,159 @@ export const CheckoutPage = () => {
                 </div>
 
                 {form.payment === 'card' && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                     <div>
-                      <label style={{ display: 'block', color: '#A78BFA', fontSize: '0.85rem', marginBottom: '0.35rem', fontWeight: 600 }}>Número de tarjeta</label>
+                      <label style={{ 
+                        display: 'block',
+                        color: '#cbd5e1',
+                        fontSize: '13px',
+                        marginBottom: '8px',
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                      }}>Número de tarjeta</label>
                       <input
                         placeholder="1234 5678 9012 3456"
                         value={form.cardNumber}
                         onChange={e => setForm({ ...form, cardNumber: e.target.value })}
                         style={{
                           width: '100%',
-                          padding: '0.75rem 1rem',
-                          borderRadius: '8px',
-                          border: '1px solid rgba(139, 92, 246, 0.3)',
-                          background: 'rgba(15, 23, 42, 0.7)',
-                          color: '#E5E7EB',
-                          fontSize: '0.9rem',
-                          backdropFilter: 'blur(10px)',
+                          padding: '14px 18px',
+                          borderRadius: '12px',
+                          border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                          background: 'rgba(30, 27, 75, 0.5)',
+                          color: '#e2e8f0',
+                          fontSize: '15px',
                           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                          boxSizing: 'border-box',
                         }}
                         onFocus={e => {
                           const target = e.currentTarget;
-                          target.style.borderColor = 'rgba(139, 92, 246, 0.6)';
-                          target.style.background = 'rgba(15, 23, 42, 0.9)';
+                          target.style.borderColor = 'rgba(139, 92, 246, 1)';
+                          target.style.background = 'rgba(30, 27, 75, 0.8)';
                           target.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
                         }}
                         onBlur={e => {
                           const target = e.currentTarget;
-                          target.style.borderColor = 'rgba(139, 92, 246, 0.3)';
-                          target.style.background = 'rgba(15, 23, 42, 0.7)';
+                          target.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+                          target.style.background = 'rgba(30, 27, 75, 0.5)';
                           target.style.boxShadow = 'none';
                         }}
                       />
                     </div>
                     <div>
-                      <label style={{ display: 'block', color: '#A78BFA', fontSize: '0.85rem', marginBottom: '0.35rem', fontWeight: 600 }}>Nombre en la tarjeta</label>
+                      <label style={{ 
+                        display: 'block',
+                        color: '#cbd5e1',
+                        fontSize: '13px',
+                        marginBottom: '8px',
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                      }}>Nombre en la tarjeta</label>
                       <input
                         value={form.cardName}
                         onChange={e => setForm({ ...form, cardName: e.target.value })}
                         style={{
                           width: '100%',
-                          padding: '0.75rem 1rem',
-                          borderRadius: '8px',
-                          border: '1px solid rgba(139, 92, 246, 0.3)',
-                          background: 'rgba(15, 23, 42, 0.7)',
-                          color: '#E5E7EB',
-                          fontSize: '0.9rem',
-                          backdropFilter: 'blur(10px)',
+                          padding: '14px 18px',
+                          borderRadius: '12px',
+                          border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                          background: 'rgba(30, 27, 75, 0.5)',
+                          color: '#e2e8f0',
+                          fontSize: '15px',
                           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                          boxSizing: 'border-box',
                         }}
                         onFocus={e => {
                           const target = e.currentTarget;
-                          target.style.borderColor = 'rgba(139, 92, 246, 0.6)';
-                          target.style.background = 'rgba(15, 23, 42, 0.9)';
+                          target.style.borderColor = 'rgba(139, 92, 246, 1)';
+                          target.style.background = 'rgba(30, 27, 75, 0.8)';
                           target.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
                         }}
                         onBlur={e => {
                           const target = e.currentTarget;
-                          target.style.borderColor = 'rgba(139, 92, 246, 0.3)';
-                          target.style.background = 'rgba(15, 23, 42, 0.7)';
+                          target.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+                          target.style.background = 'rgba(30, 27, 75, 0.5)';
                           target.style.boxShadow = 'none';
                         }}
                       />
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
                       <div>
-                        <label style={{ display: 'block', color: '#A78BFA', fontSize: '0.85rem', marginBottom: '0.35rem', fontWeight: 600 }}>Expiración</label>
+                        <label style={{ 
+                          display: 'block',
+                          color: '#cbd5e1',
+                          fontSize: '13px',
+                          marginBottom: '8px',
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px',
+                        }}>Expiración</label>
                         <input
                           placeholder="MM/AA"
                           value={form.expiry}
                           onChange={e => setForm({ ...form, expiry: e.target.value })}
                           style={{
                             width: '100%',
-                            padding: '0.75rem 1rem',
-                            borderRadius: '8px',
-                            border: '1px solid rgba(139, 92, 246, 0.3)',
-                            background: 'rgba(15, 23, 42, 0.7)',
-                            color: '#E5E7EB',
-                            fontSize: '0.9rem',
-                            backdropFilter: 'blur(10px)',
+                            padding: '14px 18px',
+                            borderRadius: '12px',
+                            border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                            background: 'rgba(30, 27, 75, 0.5)',
+                            color: '#e2e8f0',
+                            fontSize: '15px',
                             transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                            boxSizing: 'border-box',
                           }}
                           onFocus={e => {
                             const target = e.currentTarget;
-                            target.style.borderColor = 'rgba(139, 92, 246, 0.6)';
-                            target.style.background = 'rgba(15, 23, 42, 0.9)';
+                            target.style.borderColor = 'rgba(139, 92, 246, 1)';
+                            target.style.background = 'rgba(30, 27, 75, 0.8)';
                             target.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
                           }}
                           onBlur={e => {
                             const target = e.currentTarget;
-                            target.style.borderColor = 'rgba(139, 92, 246, 0.3)';
-                            target.style.background = 'rgba(15, 23, 42, 0.7)';
+                            target.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+                            target.style.background = 'rgba(30, 27, 75, 0.5)';
                             target.style.boxShadow = 'none';
                           }}
                         />
                       </div>
                       <div>
-                        <label style={{ display: 'block', color: '#A78BFA', fontSize: '0.85rem', marginBottom: '0.35rem', fontWeight: 600 }}>CVV</label>
+                        <label style={{ 
+                          display: 'block',
+                          color: '#cbd5e1',
+                          fontSize: '13px',
+                          marginBottom: '8px',
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px',
+                        }}>CVV</label>
                         <input
                           placeholder="123"
                           value={form.cvv}
                           onChange={e => setForm({ ...form, cvv: e.target.value })}
                           style={{
                             width: '100%',
-                            padding: '0.75rem 1rem',
-                            borderRadius: '8px',
-                            border: '1px solid rgba(139, 92, 246, 0.3)',
-                            background: 'rgba(15, 23, 42, 0.7)',
-                            color: '#E5E7EB',
-                            fontSize: '0.9rem',
-                            backdropFilter: 'blur(10px)',
+                            padding: '14px 18px',
+                            borderRadius: '12px',
+                            border: '1.5px solid rgba(139, 92, 246, 0.2)',
+                            background: 'rgba(30, 27, 75, 0.5)',
+                            color: '#e2e8f0',
+                            fontSize: '15px',
                             transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                            boxSizing: 'border-box',
                           }}
                           onFocus={e => {
                             const target = e.currentTarget;
-                            target.style.borderColor = 'rgba(139, 92, 246, 0.6)';
-                            target.style.background = 'rgba(15, 23, 42, 0.9)';
+                            target.style.borderColor = 'rgba(139, 92, 246, 1)';
+                            target.style.background = 'rgba(30, 27, 75, 0.8)';
                             target.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
                           }}
                           onBlur={e => {
                             const target = e.currentTarget;
-                            target.style.borderColor = 'rgba(139, 92, 246, 0.3)';
-                            target.style.background = 'rgba(15, 23, 42, 0.7)';
+                            target.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+                            target.style.background = 'rgba(30, 27, 75, 0.5)';
                             target.style.boxShadow = 'none';
                           }}
                         />
@@ -496,17 +540,18 @@ export const CheckoutPage = () => {
               <button
                 onClick={() => setStep(3)}
                 style={{
-                  padding: '0.85rem 1.5rem',
-                  borderRadius: '8px',
+                  width: '100%',
+                  padding: '14px 28px',
+                  borderRadius: '12px',
                   border: 'none',
                   background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
                   color: '#fff',
-                  fontSize: '1rem',
+                  fontSize: '15px',
                   fontWeight: 700,
                   cursor: 'pointer',
                   boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)',
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                  marginTop: '1rem',
+                  marginTop: '24px',
                 }}
                 onMouseEnter={e => {
                   const target = e.currentTarget;

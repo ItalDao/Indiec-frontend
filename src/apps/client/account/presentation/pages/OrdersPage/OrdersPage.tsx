@@ -93,72 +93,77 @@ export const OrdersPage = () => {
       background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 12%, #2d1b69 25%, #1a1f3a 40%, #0f172a 60%, #1a0033 75%, #0f172a 100%)',
       padding: '3rem 1rem',
     }}>
-      <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '60px 2rem' }}>
         {/* Header */}
-        <div style={{ marginBottom: '2.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-            <div style={{ color: '#A78BFA', fontSize: '2rem' }}>
-              <Icons.ShoppingCart />
-            </div>
-            <h1 style={{
-              fontSize: 'clamp(1.75rem, 6vw, 2.5rem)',
-              fontWeight: 900,
-              background: 'linear-gradient(135deg, #A78BFA 0%, #C084FC 100%)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              margin: 0,
-            }}>
-              Mis Pedidos
-            </h1>
-          </div>
+        <div style={{ marginBottom: '60px' }}>
+          <h1 style={{
+            fontSize: 'clamp(42px, 7vw, 64px)',
+            fontWeight: '900',
+            marginBottom: '16px',
+            background: 'linear-gradient(135deg, #fff 0%, #8b5cf6 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            margin: 0,
+            letterSpacing: '-2px',
+          }}>
+            Mis Pedidos
+          </h1>
+          <p style={{
+            fontSize: '18px',
+            color: '#cbd5e1',
+            fontWeight: '400',
+            lineHeight: '1.6',
+            maxWidth: '600px',
+          }}>
+            Visualiza, edita y gestiona todos tus pedidos
+          </p>
         </div>
 
         {/* Orders List */}
-        <div style={{ display: 'grid', gap: '1rem' }}>
+        <div style={{ display: 'grid', gap: '16px' }}>
           {orders.map(order => (
             <div
               key={order.id}
               style={{
-                background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.8) 0%, rgba(45, 27, 105, 0.6) 100%)',
+                background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.95) 100%)',
                 backdropFilter: 'blur(20px)',
-                border: '1px solid rgba(139, 92, 246, 0.2)',
+                border: '1.5px solid rgba(139, 92, 246, 0.2)',
                 borderRadius: '16px',
-                padding: '1.5rem',
+                padding: '24px',
                 display: 'grid',
                 gridTemplateColumns: '1fr auto',
-                gap: '2rem',
-                alignItems: 'center',
+                gap: '24px',
+                alignItems: 'flex-start',
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.3)',
               }}
               onMouseEnter={e => {
                 const target = e.currentTarget;
                 target.style.borderColor = 'rgba(139, 92, 246, 0.4)';
-                target.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 24px rgba(139, 92, 246, 0.2)';
+                target.style.boxShadow = '0 8px 24px rgba(139, 92, 246, 0.15)';
               }}
               onMouseLeave={e => {
                 const target = e.currentTarget;
                 target.style.borderColor = 'rgba(139, 92, 246, 0.2)';
-                target.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.3)';
+                target.style.boxShadow = 'none';
               }}
             >
               <div>
-                <h3 style={{ margin: '0 0 0.5rem 0', color: '#E5E7EB', fontSize: '1.1rem', fontWeight: 700 }}>
+                <h3 style={{ margin: '0 0 8px 0', color: '#e2e8f0', fontSize: '16px', fontWeight: '700' }}>
                   Orden #{order.id}
                 </h3>
-                <p style={{ margin: '0.25rem 0', color: '#A78BFA', fontSize: '0.9rem' }}>
+                <p style={{ margin: '0.25rem 0', color: '#cbd5e1', fontSize: '14px' }}>
                   {new Date(order.createdAt).toLocaleString()}
                 </p>
-                <div style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ color: '#CBD5E1', fontSize: '0.85rem' }}>Estado:</span>
+                <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ color: '#cbd5e1', fontSize: '13px' }}>Estado:</span>
                   <span style={{
-                    padding: '0.3rem 0.8rem',
-                    borderRadius: '6px',
-                    background: order.status === 'completed' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(139, 92, 246, 0.2)',
-                    color: order.status === 'completed' ? '#86efac' : '#A78BFA',
-                    fontSize: '0.8rem',
-                    fontWeight: 600,
+                    padding: '6px 12px',
+                    borderRadius: '8px',
+                    background: order.status === 'completed' ? 'rgba(34, 197, 94, 0.15)' : 'rgba(139, 92, 246, 0.15)',
+                    color: order.status === 'completed' ? '#86efac' : '#c084fc',
+                    fontSize: '13px',
+                    fontWeight: '600',
                     border: order.status === 'completed' ? '1px solid rgba(34, 197, 94, 0.3)' : '1px solid rgba(139, 92, 246, 0.3)',
                   }}>
                     {order.status}
@@ -166,13 +171,13 @@ export const OrdersPage = () => {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '1rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '16px' }}>
                 <div style={{ textAlign: 'right' }}>
-                  <p style={{ margin: 0, color: '#CBD5E1', fontSize: '0.9rem' }}>Total</p>
+                  <p style={{ margin: 0, color: '#cbd5e1', fontSize: '14px' }}>Total</p>
                   <h3 style={{
-                    margin: '0.25rem 0 0 0',
-                    fontSize: '1.5rem',
-                    fontWeight: 900,
+                    margin: '4px 0 0 0',
+                    fontSize: '20px',
+                    fontWeight: '900',
                     background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
                     backgroundClip: 'text',
                     WebkitBackgroundClip: 'text',
@@ -181,37 +186,64 @@ export const OrdersPage = () => {
                     ${order.total.toFixed(2)}
                   </h3>
                 </div>
-                <button
-                  onClick={() => navigate(`/client/orders/${order.id}`)}
-                  style={{
-                    padding: '0.6rem 1.25rem',
-                    borderRadius: '8px',
-                    border: '1px solid rgba(139, 92, 246, 0.4)',
-                    background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%)',
-                    color: '#A78BFA',
-                    fontSize: '0.85rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                  }}
-                  onMouseEnter={e => {
-                    const target = e.currentTarget;
-                    target.style.background = 'linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(99, 102, 241, 0.25) 100%)';
-                    target.style.borderColor = 'rgba(139, 92, 246, 0.6)';
-                    target.style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseLeave={e => {
-                    const target = e.currentTarget;
-                    target.style.background = 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%)';
-                    target.style.borderColor = 'rgba(139, 92, 246, 0.4)';
-                    target.style.transform = 'translateY(0)';
-                  }}
-                >
-                  Ver detalle →
-                </button>
+                <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+                  <button
+                    onClick={() => navigate(`/client/orders/${order.id}`)}
+                    style={{
+                      flex: 1,
+                      padding: '8px',
+                      borderRadius: '8px',
+                      border: '1.5px solid rgba(139, 92, 246, 0.3)',
+                      background: 'transparent',
+                      color: '#a78bfa',
+                      cursor: 'pointer',
+                      fontSize: '13px',
+                      fontWeight: '600',
+                      transition: 'all 0.2s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = '#8b5cf6';
+                      e.currentTarget.style.color = '#c4b5fd';
+                      e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                      e.currentTarget.style.color = '#a78bfa';
+                      e.currentTarget.style.background = 'transparent';
+                    }}
+                    title="Ver detalles"
+                  >
+                    <Icons.Music />
+                  </button>
+                  <button
+                    onClick={() => navigate(`/client/orders/${order.id}`)}
+                    style={{
+                      flex: 1,
+                      padding: '8px',
+                      borderRadius: '8px',
+                      border: '1.5px solid rgba(139, 92, 246, 0.3)',
+                      background: 'transparent',
+                      color: '#a78bfa',
+                      cursor: 'pointer',
+                      fontSize: '13px',
+                      fontWeight: '600',
+                      transition: 'all 0.2s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = '#8b5cf6';
+                      e.currentTarget.style.color = '#c4b5fd';
+                      e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                      e.currentTarget.style.color = '#a78bfa';
+                      e.currentTarget.style.background = 'transparent';
+                    }}
+                    title="Descargar factura"
+                  >
+                    <Icons.FileText />
+                  </button>
+                </div>
               </div>
             </div>
           ))}

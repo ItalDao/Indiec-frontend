@@ -21,14 +21,15 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
 
   const inputStyle = {
     width: '100%',
-    padding: '12px 16px',
-    fontSize: '14px',
+    padding: '14px 18px',
+    fontSize: '15px',
     background: 'rgba(30, 27, 75, 0.5)',
-    border: '1px solid rgba(139, 92, 246, 0.3)',
-    borderRadius: '10px',
+    border: '1.5px solid rgba(139, 92, 246, 0.2)',
+    borderRadius: '12px',
     color: '#e2e8f0',
     outline: 'none' as const,
-    transition: 'all 0.2s ease',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    boxSizing: 'border-box' as const,
   };
 
   return (
@@ -42,12 +43,12 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
         paddingBottom: '1rem',
         display: 'flex', 
         flexDirection: 'column', 
-        gap: '16px' 
+        gap: '24px' 
       }}>
         
         {/* TÍTULO */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             Título del Evento
           </label>
           <input 
@@ -57,20 +58,22 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
             required
             style={inputStyle}
             onFocus={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
               e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+              e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
             }}
             onBlur={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
               e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+              e.currentTarget.style.boxShadow = 'none';
             }}
           />
         </div>
 
         {/* LUGAR + FECHA */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               Lugar
             </label>
             <input 
@@ -80,17 +83,19 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
               required
               style={inputStyle}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
                 e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
                 e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             />
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               Fecha
             </label>
             <input 
@@ -100,20 +105,22 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
               required
               style={inputStyle}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
                 e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
                 e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             />
           </div>
         </div>
 
         {/* GÉNERO MUSICAL */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             Género Musical
           </label>
           <input 
@@ -122,19 +129,21 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
             defaultValue={initialData?.generoMusical}
             style={inputStyle}
             onFocus={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
               e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+              e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
             }}
             onBlur={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
               e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+              e.currentTarget.style.boxShadow = 'none';
             }}
           />
         </div>
 
         {/* ESTADO DEL EVENTO (AÑADIDO AQUÍ) */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             Estado del Evento
           </label>
           <select 
@@ -146,12 +155,14 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
               colorScheme: 'dark', // Ayuda a que las opciones en móviles se vean oscuras
             }}
             onFocus={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
               e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+              e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
             }}
             onBlur={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
               e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+              e.currentTarget.style.boxShadow = 'none';
             }}
           >
             <option value="programado" style={{ background: '#1e1b4b' }}>Programado</option>
@@ -161,8 +172,8 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
         </div>
 
         {/* DESCRIPCIÓN */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             Descripción
           </label>
           <textarea 
@@ -175,20 +186,22 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
               fontFamily: 'inherit',
             }}
             onFocus={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
               e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+              e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
             }}
             onBlur={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
               e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+              e.currentTarget.style.boxShadow = 'none';
             }}
           />
         </div>
 
         {/* PRECIO + CAPACIDAD */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               Precio
             </label>
             <input 
@@ -197,17 +210,19 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
               defaultValue={initialData?.precioEntrada}
               style={inputStyle}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
                 e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
                 e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             />
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               Capacidad
             </label>
             <input 
@@ -216,20 +231,22 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
               defaultValue={initialData?.capacidad}
               style={inputStyle}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
                 e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
                 e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             />
           </div>
         </div>
 
         {/* IMAGEN */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <label style={{ fontSize: '12px', fontWeight: '600', color: '#cbd5e1', textTransform: 'uppercase' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <label style={{ fontSize: '13px', fontWeight: '700', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             Imagen Promocional
           </label>
           {initialData?.imagen && (
@@ -238,18 +255,21 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
             </p>
           )}
           <input 
-            //esto es para recibir url y no file
-            type="text"
+            type="file"
             name="imagen"
-            //antes solo estaba type = "file"
-
-            onChange={(e) => setFile(e.target.files?.[0] || null)} 
-            style={{
-              ...inputStyle,
-              padding: '8px 12px',
-              fontSize: '12px',
-            }}
             accept="image/*"
+            onChange={(e) => setFile(e.target.files?.[0] || null)} 
+            style={inputStyle}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
+              e.currentTarget.style.background = 'rgba(30, 27, 75, 0.8)';
+              e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 92, 246, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+              e.currentTarget.style.background = 'rgba(30, 27, 75, 0.5)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
           />
         </div>
       </div>
@@ -258,8 +278,8 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
       <div style={{ 
         display: 'flex', 
         gap: '12px', 
-        marginTop: '16px', 
-        paddingTop: '16px', 
+        marginTop: '24px', 
+        paddingTop: '24px', 
         borderTop: '1px solid rgba(139, 92, 246, 0.2)'
       }}>
         <button
@@ -267,23 +287,25 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
           onClick={onCancel}
           style={{
             flex: 1,
-            padding: '12px 24px',
-            background: 'transparent',
+            padding: '14px 24px',
+            background: 'rgba(30, 27, 75, 0.4)',
             color: '#cbd5e1',
-            border: '1px solid rgba(139, 92, 246, 0.3)',
-            borderRadius: '10px',
+            border: '1.5px solid rgba(139, 92, 246, 0.3)',
+            borderRadius: '12px',
             cursor: 'pointer',
             fontWeight: '600',
-            fontSize: '14px',
-            transition: 'all 0.2s ease',
+            fontSize: '15px',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.borderColor = '#8b5cf6';
             e.currentTarget.style.color = '#8b5cf6';
+            e.currentTarget.style.background = 'rgba(30, 27, 75, 0.6)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
             e.currentTarget.style.color = '#cbd5e1';
+            e.currentTarget.style.background = 'rgba(30, 27, 75, 0.4)';
           }}
         >
           Cancelar
@@ -292,15 +314,15 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
           type="submit"
           style={{
             flex: 1,
-            padding: '12px 24px',
+            padding: '14px 24px',
             background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
             color: '#fff',
             border: 'none',
-            borderRadius: '10px',
+            borderRadius: '12px',
             cursor: 'pointer',
             fontWeight: '600',
-            fontSize: '14px',
-            transition: 'all 0.2s ease',
+            fontSize: '15px',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
             boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)',
           }}
           onMouseEnter={(e) => {

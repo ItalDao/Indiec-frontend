@@ -67,68 +67,73 @@ export const OrderDetailPage = () => {
       background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 12%, #2d1b69 25%, #1a1f3a 40%, #0f172a 60%, #1a0033 75%, #0f172a 100%)',
       padding: '3rem 1rem',
     }}>
-      <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-        {/* Header */}
+      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '60px 2rem' }}>
+        {/* Back Button */}
         <button
           onClick={() => navigate('/client/orders')}
           style={{
-            padding: '0.6rem 1.25rem',
-            borderRadius: '8px',
-            border: '1px solid rgba(139, 92, 246, 0.4)',
-            background: 'transparent',
-            color: '#A78BFA',
-            fontSize: '0.9rem',
-            fontWeight: 600,
+            padding: '12px 20px',
+            borderRadius: '10px',
+            border: '1.5px solid rgba(139, 92, 246, 0.3)',
+            background: 'rgba(30, 27, 75, 0.4)',
+            color: '#c084fc',
+            fontSize: '14px',
+            fontWeight: '600',
             cursor: 'pointer',
-            marginBottom: '2rem',
+            marginBottom: '40px',
             transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
             display: 'flex',
             alignItems: 'center',
-            gap: '0.5rem',
+            gap: '8px',
           }}
           onMouseEnter={e => {
             const target = e.currentTarget;
-            target.style.background = 'rgba(139, 92, 246, 0.1)';
-            target.style.borderColor = 'rgba(139, 92, 246, 0.6)';
+            target.style.background = 'rgba(139, 92, 246, 0.15)';
+            target.style.borderColor = '#8b5cf6';
+            target.style.transform = 'translateY(-2px)';
           }}
           onMouseLeave={e => {
             const target = e.currentTarget;
-            target.style.background = 'transparent';
-            target.style.borderColor = 'rgba(139, 92, 246, 0.4)';
+            target.style.background = 'rgba(30, 27, 75, 0.4)';
+            target.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+            target.style.transform = 'translateY(0)';
           }}
         >
           ← Volver a mis pedidos
         </button>
 
-        <div style={{ marginBottom: '2.5rem' }}>
+        {/* Header */}
+        <div style={{ marginBottom: '40px' }}>
           <h1 style={{
-            fontSize: 'clamp(1.75rem, 6vw, 2.5rem)',
-            fontWeight: 900,
-            background: 'linear-gradient(135deg, #A78BFA 0%, #C084FC 100%)',
-            backgroundClip: 'text',
+            fontSize: 'clamp(42px, 7vw, 64px)',
+            fontWeight: '900',
+            marginBottom: '16px',
+            background: 'linear-gradient(135deg, #fff 0%, #8b5cf6 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
-            margin: '0 0 1rem 0',
+            backgroundClip: 'text',
+            margin: '0 0 16px 0',
+            letterSpacing: '-2px',
           }}>
             Orden #{order.id}
           </h1>
-          <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap' }}>
             <div>
-              <span style={{ color: '#CBD5E1', fontSize: '0.85rem' }}>Creado</span>
-              <p style={{ margin: '0.25rem 0 0 0', color: '#E5E7EB', fontWeight: 500 }}>
+              <span style={{ color: '#cbd5e1', fontSize: '13px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Creado</span>
+              <p style={{ margin: '8px 0 0 0', color: '#e2e8f0', fontWeight: '500', fontSize: '15px' }}>
                 {new Date(order.createdAt).toLocaleString()}
               </p>
             </div>
             <div>
-              <span style={{ color: '#CBD5E1', fontSize: '0.85rem' }}>Estado</span>
+              <span style={{ color: '#cbd5e1', fontSize: '13px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Estado</span>
               <p style={{
-                margin: '0.25rem 0 0 0',
-                padding: '0.3rem 0.8rem',
-                borderRadius: '6px',
-                background: order.status === 'completed' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(139, 92, 246, 0.2)',
-                color: order.status === 'completed' ? '#86efac' : '#A78BFA',
-                fontSize: '0.85rem',
-                fontWeight: 600,
+                margin: '8px 0 0 0',
+                padding: '6px 12px',
+                borderRadius: '8px',
+                background: order.status === 'completed' ? 'rgba(34, 197, 94, 0.15)' : 'rgba(139, 92, 246, 0.15)',
+                color: order.status === 'completed' ? '#86efac' : '#c084fc',
+                fontSize: '13px',
+                fontWeight: '600',
                 border: order.status === 'completed' ? '1px solid rgba(34, 197, 94, 0.3)' : '1px solid rgba(139, 92, 246, 0.3)',
                 display: 'inline-block',
               }}>
@@ -140,40 +145,39 @@ export const OrderDetailPage = () => {
 
         {/* ITEMS */}
         <div style={{
-          background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.8) 0%, rgba(45, 27, 105, 0.6) 100%)',
+          background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.95) 100%)',
           backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(139, 92, 246, 0.2)',
+          border: '1.5px solid rgba(139, 92, 246, 0.2)',
           borderRadius: '16px',
-          padding: '2rem',
-          marginBottom: '2rem',
-          boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.3)',
+          padding: '24px',
+          marginBottom: '24px',
         }}>
-          <h3 style={{ color: '#E5E7EB', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: 'clamp(1.1rem, 4vw, 1.3rem)' }}>
+          <h3 style={{ color: '#e2e8f0', marginBottom: '16px', margin: '0 0 16px 0', display: 'flex', alignItems: 'center', gap: '8px', fontSize: 'clamp(16px, 4vw, 20px)', fontWeight: '700' }}>
             <Icons.ShoppingCart />
             Productos
           </h3>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {order.items.map((it, idx) => (
               <div key={idx} style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr auto',
-                gap: '1rem',
-                paddingBottom: idx !== order.items.length - 1 ? '1rem' : 0,
+                gap: '16px',
+                paddingBottom: idx !== order.items.length - 1 ? '12px' : 0,
                 borderBottom: idx !== order.items.length - 1 ? '1px solid rgba(139, 92, 246, 0.2)' : 'none',
               }}>
                 <div>
-                  <strong style={{ color: '#E5E7EB', fontSize: '1rem' }}>{it.product.name}</strong>
-                  <p style={{ margin: '0.25rem 0 0 0', color: '#A78BFA', fontSize: '0.85rem', fontWeight: 500 }}>
+                  <strong style={{ color: '#e2e8f0', fontSize: '15px' }}>{it.product.name}</strong>
+                  <p style={{ margin: '4px 0 0 0', color: '#c084fc', fontSize: '13px', fontWeight: '500' }}>
                     {it.size} • {it.color}
                   </p>
                 </div>
 
                 <div style={{ textAlign: 'right' }}>
-                  <p style={{ margin: 0, color: '#CBD5E1', fontSize: '0.9rem' }}>
+                  <p style={{ margin: 0, color: '#cbd5e1', fontSize: '14px' }}>
                     {it.quantity} × ${it.product.price.toFixed(2)}
                   </p>
-                  <strong style={{ color: '#8b5cf6', fontSize: '1rem' }}>
+                  <strong style={{ color: '#8b5cf6', fontSize: '15px' }}>
                     ${(it.quantity * it.product.price).toFixed(2)}
                   </strong>
                 </div>
@@ -185,26 +189,25 @@ export const OrderDetailPage = () => {
         {/* ENVÍO */}
         {order.shippingMethod && (
           <div style={{
-            background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.8) 0%, rgba(45, 27, 105, 0.6) 100%)',
+            background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.95) 100%)',
             backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(139, 92, 246, 0.2)',
+            border: '1.5px solid rgba(139, 92, 246, 0.2)',
             borderRadius: '16px',
-            padding: '2rem',
-            marginBottom: '2rem',
-            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.3)',
+            padding: '24px',
+            marginBottom: '24px',
           }}>
-            <h3 style={{ color: '#E5E7EB', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: 'clamp(1.1rem, 4vw, 1.3rem)' }}>
+            <h3 style={{ color: '#e2e8f0', marginBottom: '16px', margin: '0 0 16px 0', display: 'flex', alignItems: 'center', gap: '8px', fontSize: 'clamp(16px, 4vw, 20px)', fontWeight: '700' }}>
               <Icons.Truck />
               Envío
             </h3>
-            <div style={{ display: 'grid', gap: '0.75rem' }}>
+            <div style={{ display: 'grid', gap: '12px' }}>
               <div>
-                <span style={{ color: '#CBD5E1', fontSize: '0.85rem' }}>Método</span>
-                <p style={{ margin: '0.25rem 0 0 0', color: '#E5E7EB', fontWeight: 500 }}>{order.shippingMethod}</p>
+                <span style={{ color: '#cbd5e1', fontSize: '13px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Método</span>
+                <p style={{ margin: '6px 0 0 0', color: '#e2e8f0', fontWeight: '500', fontSize: '15px' }}>{order.shippingMethod}</p>
               </div>
               <div>
-                <span style={{ color: '#CBD5E1', fontSize: '0.85rem' }}>Costo</span>
-                <p style={{ margin: '0.25rem 0 0 0', color: '#E5E7EB', fontWeight: 500 }}>${order.shippingCost?.toFixed(2)}</p>
+                <span style={{ color: '#cbd5e1', fontSize: '13px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Costo</span>
+                <p style={{ margin: '6px 0 0 0', color: '#e2e8f0', fontWeight: '500', fontSize: '15px' }}>${order.shippingCost?.toFixed(2)}</p>
               </div>
             </div>
           </div>
@@ -212,20 +215,19 @@ export const OrderDetailPage = () => {
 
         {/* TOTAL */}
         <div style={{
-          background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.8) 0%, rgba(45, 27, 105, 0.6) 100%)',
+          background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.95) 100%)',
           backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(139, 92, 246, 0.2)',
+          border: '1.5px solid rgba(139, 92, 246, 0.2)',
           borderRadius: '16px',
-          padding: '2rem',
+          padding: '24px',
           textAlign: 'center',
-          marginBottom: '2rem',
-          boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.3)',
+          marginBottom: '24px',
         }}>
-          <p style={{ margin: 0, color: '#CBD5E1', fontSize: '0.9rem', marginBottom: '0.5rem' }}>Total del Pedido</p>
+          <p style={{ margin: 0, color: '#cbd5e1', fontSize: '14px', marginBottom: '8px', fontWeight: '600' }}>Total del Pedido</p>
           <h2 style={{
             margin: 0,
-            fontSize: 'clamp(2rem, 8vw, 3rem)',
-            fontWeight: 900,
+            fontSize: 'clamp(32px, 8vw, 48px)',
+            fontWeight: '900',
             background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
@@ -237,18 +239,17 @@ export const OrderDetailPage = () => {
 
         {/* QR CODE */}
         <div style={{
-          background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.8) 0%, rgba(45, 27, 105, 0.6) 100%)',
+          background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.95) 100%)',
           backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(139, 92, 246, 0.2)',
+          border: '1.5px solid rgba(139, 92, 246, 0.2)',
           borderRadius: '16px',
-          padding: '2rem',
+          padding: '24px',
           textAlign: 'center',
-          boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.3)',
         }}>
-          <h3 style={{ color: '#E5E7EB', marginTop: 0, marginBottom: '1.5rem', fontSize: 'clamp(1.1rem, 4vw, 1.3rem)' }}>
+          <h3 style={{ color: '#e2e8f0', marginTop: 0, marginBottom: '12px', fontSize: 'clamp(16px, 4vw, 20px)', fontWeight: '700' }}>
             Código QR de Confirmación
           </h3>
-          <p style={{ color: '#CBD5E1', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
+          <p style={{ color: '#cbd5e1', fontSize: '14px', marginBottom: '16px' }}>
             Muestra este código al recoger tu pedido o úsalo para rastrear tu orden
           </p>
           <QRCodeComponent

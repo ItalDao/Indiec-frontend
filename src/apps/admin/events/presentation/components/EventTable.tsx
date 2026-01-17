@@ -6,9 +6,10 @@ interface Props {
   events: Event[];
   onViewDetails: (event: Event) => void;
   onEdit: (event: Event) => void;
+  onDelete?: (event: Event) => void;
 }
 
-export const EventTable: React.FC<Props> = ({ events, onViewDetails }) => {
+export const EventTable: React.FC<Props> = ({ events, onViewDetails, onEdit, onDelete }) => {
   return (
     <div style={{
       display: 'grid',
@@ -134,6 +135,7 @@ export const EventTable: React.FC<Props> = ({ events, onViewDetails }) => {
               paddingTop: '12px',
               borderTop: '1px solid rgba(139, 92, 246, 0.1)',
               marginTop: 'auto',
+              marginBottom: '16px',
             }}>
               <span style={{
                 fontSize: '12px',
@@ -151,6 +153,102 @@ export const EventTable: React.FC<Props> = ({ events, onViewDetails }) => {
               }}>
                 ${event.precioEntrada}
               </span>
+            </div>
+
+            {/* ACTION BUTTONS */}
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onViewDetails(event);
+                }}
+                style={{
+                  flex: 1,
+                  padding: '8px',
+                  background: 'transparent',
+                  border: '1px solid rgba(139, 92, 246, 0.3)',
+                  color: '#a78bfa',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#8b5cf6';
+                  e.currentTarget.style.color = '#c4b5fd';
+                  e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                  e.currentTarget.style.color = '#a78bfa';
+                  e.currentTarget.style.background = 'transparent';
+                }}
+              >
+                <Icons.Music />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(event);
+                }}
+                style={{
+                  flex: 1,
+                  padding: '8px',
+                  background: 'transparent',
+                  border: '1px solid rgba(139, 92, 246, 0.3)',
+                  color: '#a78bfa',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#8b5cf6';
+                  e.currentTarget.style.color = '#c4b5fd';
+                  e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                  e.currentTarget.style.color = '#a78bfa';
+                  e.currentTarget.style.background = 'transparent';
+                }}
+              >
+                <Icons.Edit />
+              </button>
+              {onDelete && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete(event);
+                  }}
+                  style={{
+                    flex: 1,
+                    padding: '8px',
+                    background: 'transparent',
+                    border: '1px solid rgba(239, 68, 68, 0.3)',
+                    color: '#fca5a5',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    fontWeight: '600',
+                    transition: 'all 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#ef4444';
+                    e.currentTarget.style.color = '#fecaca';
+                    e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+                    e.currentTarget.style.color = '#fca5a5';
+                    e.currentTarget.style.background = 'transparent';
+                  }}
+                >
+                  <Icons.Trash />
+                </button>
+              )}
             </div>
           </div>
         </div>

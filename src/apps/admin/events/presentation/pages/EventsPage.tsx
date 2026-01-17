@@ -30,12 +30,17 @@ export const EventsPage: React.FC = () => {
   // --- NUEVOS ESTADOS PARA FILTROS ---
   const [filterEstado, setFilterEstado] = useState<string>('todos');
   const [filterFecha, setFilterFecha] = useState<string>('');
+  const [filterBusqueda, setFilterBusqueda] = useState<string>('');
 
   // --- LÓGICA DE FILTRADO ---
   const filteredEvents = events.filter(event => {
     const matchesEstado = filterEstado === 'todos' || event.estado === filterEstado;
     const matchesFecha = !filterFecha || event.fecha.includes(filterFecha);
-    return matchesEstado && matchesFecha;
+    const matchesBusqueda = !filterBusqueda || 
+      event.titulo.toLowerCase().includes(filterBusqueda.toLowerCase()) ||
+      event.lugar.toLowerCase().includes(filterBusqueda.toLowerCase()) ||
+      event.generoMusical.toLowerCase().includes(filterBusqueda.toLowerCase());
+    return matchesEstado && matchesFecha && matchesBusqueda;
   });
   const handleFormSuccess = async (formData: FormData) => {
     if (editingEvent?.idEvento) {
@@ -45,6 +50,12 @@ export const EventsPage: React.FC = () => {
     }
     setIsFormModalOpen(false);
     setEditingEvent(null);
+  };
+
+  const handleDeleteEvent = (event: Event) => {
+    if (window.confirm(`¿Estás seguro de que deseas eliminar el evento "${event.titulo}"?`)) {
+      removeEvent(event.idEvento);
+    }
   };
 
   return (
@@ -90,11 +101,11 @@ export const EventsPage: React.FC = () => {
               background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
               color: '#fff',
               border: 'none',
-              borderRadius: '10px',
+              borderRadius: '12px',
               cursor: 'pointer',
               fontWeight: '600',
               fontSize: '16px',
-              transition: 'all 0.2s ease',
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)',
               display: 'flex',
               alignItems: 'center',
@@ -116,115 +127,139 @@ export const EventsPage: React.FC = () => {
 
         {/* BARRA DE FILTROS MEJORADA */}
 <div style={{ 
-  display: 'flex', 
-  gap: '24px', 
-  marginBottom: '40px', 
-  padding: '24px',
-  background: 'rgba(30, 27, 75, 0.4)',
+  display: 'flex',
+  gap: '16px',
+  marginBottom: '40px',
+  flexWrap: 'wrap',
+  background: 'rgba(30, 41, 59, 0.4)',
   backdropFilter: 'blur(12px)',
+  padding: '24px',
   borderRadius: '20px',
-  border: '1px solid rgba(139, 92, 246, 0.15)',
-  alignItems: 'center',
-  flexWrap: 'wrap'
+  border: '1px solid rgba(139, 92, 246, 0.2)',
+  boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5)',
+  alignItems: 'end'
 }}>
   
-  {/* Filtro Estado */}
-  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: '1', minWidth: '200px' }}>
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-      <div style={{ color: '#8b5cf6', display: 'flex' }}></div>
-      <label style={{ color: '#94a3b8', fontSize: '11px', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '1.5px' }}>
-        Estado del Evento
-      </label>
+  {/* Barra de Búsqueda */}
+  <div style={{ flex: 2 }}>
+    <label style={{ display: 'block', color: '#8b5cf6', fontSize: '11px', fontWeight: '700', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+      Buscar Evento
+    </label>
+    <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+      <span style={{ 
+        position: 'absolute', 
+        left: '16px', 
+        display: 'flex',
+        color: '#8b5cf6',
+        opacity: 0.7,
+        pointerEvents: 'none'
+      }}>
+        <Icons.Search />
+      </span>
+      <input
+        placeholder="Título, lugar, género..."
+        value={filterBusqueda}
+        onChange={(e) => setFilterBusqueda(e.target.value)}
+        style={{
+          width: '100%',
+          padding: '12px 16px 12px 45px',
+          background: 'rgba(30, 27, 75, 0.4)',
+          border: '1px solid rgba(139, 92, 246, 0.3)',
+          borderRadius: '10px',
+          color: '#e2e8f0',
+          fontSize: '14px',
+          outline: 'none',
+          transition: 'all 0.2s ease',
+          boxSizing: 'border-box' as const,
+        }}
+        onFocus={(e) => (e.currentTarget.style.borderColor = '#8b5cf6')}
+        onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)')}
+      />
     </div>
+  </div>
+  
+  {/* Filtro Estado */}
+  <div>
+    <label style={{ display: 'block', color: '#8b5cf6', fontSize: '11px', fontWeight: '700', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+      Estado
+    </label>
     <select
       value={filterEstado}
       onChange={(e) => setFilterEstado(e.target.value)}
       style={{
-        background: '#0f172a',
-        color: '#f8fafc',
-        border: '1px solid rgba(139, 92, 246, 0.3)',
+        width: '100%',
         padding: '12px 16px',
-        borderRadius: '12px',
-        outline: 'none',
-        cursor: 'pointer',
+        background: 'rgba(30, 27, 75, 0.4)',
+        border: '1px solid rgba(139, 92, 246, 0.3)',
+        borderRadius: '10px',
+        color: '#e2e8f0',
         fontSize: '14px',
-        fontWeight: '600',
-        transition: 'all 0.3s ease',
-        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.3)'
+        outline: 'none',
+        transition: 'all 0.2s ease',
+        boxSizing: 'border-box' as const,
+        cursor: 'pointer',
       }}
-      onFocus={(e) => e.currentTarget.style.borderColor = '#8b5cf6'}
-      onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)'}
+      onFocus={(e) => (e.currentTarget.style.borderColor = '#8b5cf6')}
+      onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)')}
     >
-      <option value="todos">🌟 Todos los estados</option>
-      <option value="programado">📅 Programados</option>
-      <option value="finalizado">✅ Finalizados</option>
-      <option value="agotado">🚫 Agotados</option>
+      <option value="todos" style={{ background: '#1e1b4b' }}>Todos los estados</option>
+      <option value="programado" style={{ background: '#1e1b4b' }}>Programados</option>
+      <option value="finalizado" style={{ background: '#1e1b4b' }}>Finalizados</option>
+      <option value="agotado" style={{ background: '#1e1b4b' }}>Agotados</option>
     </select>
   </div>
 
   {/* Filtro Fecha */}
-  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: '1', minWidth: '200px' }}>
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-      <div style={{ color: '#8b5cf6', display: 'flex' }}><Icons.Calendar /></div>
-      <label style={{ color: '#94a3b8', fontSize: '11px', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '1.5px' }}>
-        Fecha Específica
-      </label>
-    </div>
+  <div>
+    <label style={{ display: 'block', color: '#8b5cf6', fontSize: '11px', fontWeight: '700', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+      Fecha
+    </label>
     <input
       type="date"
       value={filterFecha}
       onChange={(e) => setFilterFecha(e.target.value)}
       style={{
-        background: '#0f172a',
-        color: '#f8fafc',
-        border: '1px solid rgba(139, 92, 246, 0.3)',
+        width: '100%',
         padding: '12px 16px',
-        borderRadius: '12px',
-        outline: 'none',
+        background: 'rgba(30, 27, 75, 0.4)',
+        border: '1px solid rgba(139, 92, 246, 0.3)',
+        borderRadius: '10px',
+        color: '#e2e8f0',
         fontSize: '14px',
-        fontWeight: '600',
+        outline: 'none',
+        transition: 'all 0.2s ease',
+        boxSizing: 'border-box' as const,
         colorScheme: 'dark',
-        transition: 'all 0.3s ease',
-        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.3)'
       }}
-      onFocus={(e) => e.currentTarget.style.borderColor = '#8b5cf6'}
-      onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)'}
+      onFocus={(e) => (e.currentTarget.style.borderColor = '#8b5cf6')}
+      onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)')}
     />
   </div>
 
-  {/* Botón Reset con Estilo de Texto Neon */}
-  {(filterEstado !== 'todos' || filterFecha !== '') && (
+  {/* Botón Reset */}
+  {(filterEstado !== 'todos' || filterFecha !== '' || filterBusqueda !== '') && (
     <button
-      onClick={() => { setFilterEstado('todos'); setFilterFecha(''); }}
+      onClick={() => { setFilterEstado('todos'); setFilterFecha(''); setFilterBusqueda(''); }}
       style={{
         background: 'rgba(239, 68, 68, 0.1)',
         color: '#ef4444',
         border: '1px solid rgba(239, 68, 68, 0.2)',
         fontSize: '13px',
         fontWeight: '700',
+        padding: '10px 16px',
+        borderRadius: '10px',
         cursor: 'pointer',
-        padding: '12px 20px',
-        borderRadius: '12px',
-        alignSelf: 'flex-end',
         transition: 'all 0.2s ease',
         textTransform: 'uppercase',
-        letterSpacing: '1px'
+        letterSpacing: '0.5px',
       }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)';
-        e.currentTarget.style.transform = 'scale(1.05)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
-        e.currentTarget.style.transform = 'scale(1)';
-      }}
+      onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)')}
+      onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)')}
     >
       Limpiar Filtros
     </button>
   )}
 </div>
-
-
 
         {/* TABLA DE EVENTOS */}
         <div style={{
@@ -237,15 +272,16 @@ export const EventsPage: React.FC = () => {
           width: '100%',
         }}>
           <EventTable
-            events={filteredEvents} // <-- Cambiado de 'events' a 'filteredEvents'
+            events={filteredEvents}
             onViewDetails={(event) => {
               setSelectedEvent(event);
               setIsViewModalOpen(true);
             }}
             onEdit={(event) => {
-    setEditingEvent(event);
-    setIsFormModalOpen(true);
-  }}
+              setEditingEvent(event);
+              setIsFormModalOpen(true);
+            }}
+            onDelete={handleDeleteEvent}
           />
         </div>
       </div>
@@ -254,7 +290,12 @@ export const EventsPage: React.FC = () => {
       <Modal
         isOpen={isViewModalOpen}
         onClose={() => setIsViewModalOpen(false)}
-        title="Detalles del Evento"
+        title={
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Icons.FileText />
+            Detalles del Evento
+          </div>
+        }
       >
         {selectedEvent && (
           <div style={{ 
@@ -267,11 +308,11 @@ export const EventsPage: React.FC = () => {
           }} className="pr-2">
             <img
               src={
-                selectedEvent?.imagen 
+                selectedEvent?.imagen && typeof selectedEvent.imagen === 'string'
                   ? (selectedEvent.imagen.startsWith('http') 
                       ? selectedEvent.imagen 
                       : `http://localhost:9000/uploads/eventos/${selectedEvent.imagen}`)
-                  : 'https://via.placeholder.com/800x600?text=Sin+Imagen'
+                  : 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%231e1b4b" width="800" height="600"/%3E%3Ctext x="50%25" y="50%25" font-size="24" fill="%23cbd5e1" text-anchor="middle" dy=".3em"%3ESin Imagen%3C/text%3E%3C/svg%3E'
               }
               alt={selectedEvent?.titulo || 'Evento'}
               style={{
@@ -497,7 +538,12 @@ export const EventsPage: React.FC = () => {
       <Modal
         isOpen={isFormModalOpen}
         onClose={() => setIsFormModalOpen(false)}
-        title={editingEvent ? 'Actualizar Evento' : 'Nuevo Evento'}
+        title={
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {editingEvent ? <Icons.Edit /> : <Icons.Plus />}
+            {editingEvent ? 'Actualizar Evento' : 'Nuevo Evento'}
+          </div>
+        }
       >
         <EventForm
           onSuccess={handleFormSuccess}
