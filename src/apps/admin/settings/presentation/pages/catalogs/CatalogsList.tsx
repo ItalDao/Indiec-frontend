@@ -517,85 +517,81 @@ export default function CatalogsList() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          zIndex: 999,
+          zIndex: 10000,
         }}
           onClick={() => setShowDeleteModal(false)}
         >
           <div style={{
-            background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.95) 100%)',
-            border: '1px solid rgba(139, 92, 246, 0.2)',
+            background: 'linear-gradient(135deg, rgba(20, 20, 30, 0.95) 0%, rgba(30, 20, 50, 0.95) 100%)',
+            border: '1px solid rgba(139, 92, 246, 0.3)',
             borderRadius: '16px',
-            padding: '48px',
-            maxWidth: '500px',
-            width: '90%',
-            backdropFilter: 'blur(16px)',
+            padding: '28px',
+            maxWidth: '400px',
+            backdropFilter: 'blur(20px)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 style={{
-              margin: 0,
-              fontSize: '24px',
+            <h3 style={{
+              margin: '0 0 12px 0',
+              color: '#f59e0b',
+              fontSize: '18px',
               fontWeight: '700',
-              color: '#fff',
-              marginBottom: '8px',
+            }}>¿Eliminar elemento?</h3>
+            <p style={{
+              margin: '0 0 24px 0',
+              color: '#cbd5e1',
+              fontSize: '14px',
+              lineHeight: '1.6',
+            }}>Esta acción no se puede deshacer. El elemento será eliminado permanentemente.</p>
+            <div style={{
               display: 'flex',
-              alignItems: 'center',
               gap: '12px',
             }}>
-              <Icons.AlertCircle />
-              Confirmar eliminación
-            </h2>
-            <p style={{ margin: '0 0 32px 0', fontSize: '14px', color: '#cbd5e1' }}>
-              ¿Estás seguro de eliminar este elemento?
-            </p>
-
-            <div style={{ display: 'flex', gap: '12px' }}>
               <button
-                type="button"
                 onClick={cancelDelete}
                 style={{
                   flex: 1,
-                  padding: '12px 24px',
-                  background: 'transparent',
-                  border: '2px solid rgba(139, 92, 246, 0.2)',
+                  padding: '10px 16px',
                   borderRadius: '8px',
-                  color: '#cbd5e1',
-                  fontSize: '16px',
-                  fontWeight: '600',
+                  border: '1px solid rgba(139, 92, 246, 0.3)',
+                  background: 'transparent',
+                  color: '#8b5cf6',
                   cursor: 'pointer',
-                  transition: 'all 0.2s ease',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  transition: 'all 0.3s ease',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.4)';
-                  e.currentTarget.style.background = 'rgba(139, 92, 246, 0.05)';
+                  e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.6)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
                   e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
                 }}
               >
                 Cancelar
               </button>
               <button
-                type="button"
                 onClick={confirmDelete}
                 disabled={loading}
                 style={{
                   flex: 1,
-                  padding: '12px 24px',
-                  background: loading ? 'rgba(239, 68, 68, 0.3)' : 'linear-gradient(135deg, #ef4444, #dc2626)',
-                  border: 'none',
+                  padding: '10px 16px',
                   borderRadius: '8px',
+                  border: 'none',
+                  background: loading ? 'rgba(239, 68, 68, 0.3)' : 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
                   color: '#fff',
-                  fontSize: '16px',
-                  fontWeight: '600',
                   cursor: loading ? 'not-allowed' : 'pointer',
-                  transition: 'all 0.2s ease',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  transition: 'all 0.3s ease',
                 }}
                 onMouseEnter={(e) => {
                   if (!loading) {
                     e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.boxShadow = '0 12px 24px rgba(239, 68, 68, 0.4)';
+                    e.currentTarget.style.boxShadow = '0 8px 16px rgba(239, 68, 68, 0.4)';
                   }
                 }}
                 onMouseLeave={(e) => {
