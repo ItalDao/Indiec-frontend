@@ -53,7 +53,6 @@ export const Modal: React.FC<ModalProps> = ({
               fontSize: 'clamp(20px, 4vw, 28px)',
               fontWeight: 700,
               margin: 0,
-              marginBottom: '24px',
             }}
           >
             {title}

@@ -128,7 +128,6 @@ export const CartPage = () => {
             alignItems: 'center',
             gap: '12px',
             margin: 0,
-            marginBottom: '24px',
             fontSize: '18px',
             fontWeight: 700,
           }}>
