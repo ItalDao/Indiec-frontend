@@ -65,12 +65,15 @@ export default function CatalogsList() {
     setShowModal(false);
   };
 
-  const tabs = [
-    { id: "genres", label: "Géneros Musicales", icon: <Icons.Music2 /> },
-    { id: "countries", label: "Países", icon: <Icons.MapPin /> },
-    { id: "categories", label: "Categorías", icon: <Icons.Layers /> },
-    { id: "sizes", label: "Tallas", icon: <Icons.BarChart3 /> },
-  ];
+  const getTabLabel = (tabId: CatalogType) => {
+    const labels: { [key in CatalogType]: string } = {
+      genres: "Géneros Musicales",
+      countries: "Países",
+      categories: "Categorías",
+      sizes: "Tallas",
+    };
+    return labels[tabId];
+  };
 
   if (loading && items.length === 0) {
     return (
@@ -149,19 +152,19 @@ export default function CatalogsList() {
 
         {/* TABS */}
         <div style={{ marginBottom: '40px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-          {tabs.map((tab) => (
+          {(['genres', 'countries', 'categories', 'sizes'] as CatalogType[]).map((tabId) => (
             <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as CatalogType)}
+              key={tabId}
+              onClick={() => setActiveTab(tabId)}
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
                 padding: '12px 20px',
-                background: activeTab === tab.id 
+                background: activeTab === tabId 
                   ? 'linear-gradient(135deg, #8b5cf6, #6366f1)'
                   : 'transparent',
-                border: activeTab === tab.id
+                border: activeTab === tabId
                   ? 'none'
                   : '1px solid rgba(139, 92, 246, 0.3)',
                 borderRadius: '8px',
@@ -172,20 +175,19 @@ export default function CatalogsList() {
                 transition: 'all 0.3s ease',
               }}
               onMouseEnter={(e) => {
-                if (activeTab !== tab.id) {
+                if (activeTab !== tabId) {
                   e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.6)';
                   e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)';
                 }
               }}
               onMouseLeave={(e) => {
-                if (activeTab !== tab.id) {
+                if (activeTab !== tabId) {
                   e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
                   e.currentTarget.style.background = 'transparent';
                 }
               }}
             >
-              {tab.icon}
-              {tab.label}
+              {getTabLabel(tabId)}
             </button>
           ))}
         </div>
@@ -209,8 +211,7 @@ export default function CatalogsList() {
               margin: 0,
               color: '#fff',
             }}>
-              {tabs.find(t => t.id === activeTab)?.icon}
-              {tabs.find(t => t.id === activeTab)?.label}
+              {getTabLabel(activeTab)}
             </h3>
             <button 
               onClick={handleAdd}
