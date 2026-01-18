@@ -263,40 +263,56 @@ const AdminLayout = () => {
       <div style={{ marginLeft: sidebarOpen ? '280px' : '80px', flex: 1, display: 'flex', flexDirection: 'column', transition: 'margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1)' }}>
         {/* TOPBAR */}
         <header style={{
-          height: '72px',
-          background: 'linear-gradient(90deg, rgba(15, 23, 42, 0.5) 0%, rgba(30, 27, 75, 0.4) 100%)',
-          backdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(139, 92, 246, 0.1)',
+          height: '80px',
+          background: 'linear-gradient(90deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 27, 75, 0.95) 40%, rgba(26, 31, 58, 0.98) 100%)',
+          backdropFilter: 'blur(32px)',
+          borderBottom: '1px solid rgba(139, 92, 246, 0.2)',
           padding: '0 32px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+          boxShadow: '0 8px 32px rgba(139, 92, 246, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
           position: 'sticky',
           top: 0,
           zIndex: 50,
+          transition: 'box-shadow 0.3s ease',
         }}>
           {/* Left side - Page title */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <div style={{
-              width: '4px',
-              height: '32px',
-              background: 'linear-gradient(180deg, #8b5cf6, #6366f1)',
+              width: '3px',
+              height: '40px',
+              background: 'linear-gradient(180deg, #8b5cf6 0%, #6366f1 50%, #a78bfa 100%)',
               borderRadius: '2px',
+              boxShadow: '0 0 16px rgba(139, 92, 246, 0.6)',
             }}></div>
-            <h2 style={{ 
-              fontSize: '20px', 
-              fontWeight: '700', 
-              color: '#e2e8f0',
-              margin: 0,
-              letterSpacing: '-0.3px',
-            }}>
-              {getPageTitle()}
-            </h2>
+            <div>
+              <h2 style={{ 
+                fontSize: 'clamp(18px, 2vw, 24px)', 
+                fontWeight: '800', 
+                color: '#e2e8f0',
+                margin: 0,
+                letterSpacing: '-0.5px',
+                background: 'linear-gradient(135deg, #fff 0%, #c4b5fd 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}>
+                {getPageTitle()}
+              </h2>
+              <p style={{
+                fontSize: '11px',
+                color: '#64748b',
+                margin: '2px 0 0 0',
+                fontWeight: '500',
+                letterSpacing: '0.5px',
+              }}>Panel de Administración</p>
+            </div>
           </div>
 
           {/* Right side - Actions */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {/* Ver sitio Button */}
             <Link
               to="/client/home"
               style={{
@@ -305,52 +321,68 @@ const AdminLayout = () => {
                 gap: '8px',
                 color: '#cbd5e1',
                 textDecoration: 'none',
-                fontSize: '14px',
-                padding: '10px 16px',
-                borderRadius: '8px',
-                border: '1px solid rgba(139, 92, 246, 0.25)',
-                transition: 'all 0.3s ease',
-                fontWeight: '500',
+                fontSize: '13px',
+                padding: '10px 18px',
+                borderRadius: '10px',
+                border: '1.5px solid rgba(139, 92, 246, 0.3)',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                fontWeight: '600',
+                background: 'rgba(139, 92, 246, 0.08)',
+                cursor: 'pointer',
+                position: 'relative',
+                overflow: 'hidden',
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = '#8b5cf6';
                 e.currentTarget.style.borderColor = '#8b5cf6';
-                e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)';
+                e.currentTarget.style.background = 'rgba(139, 92, 246, 0.15)';
+                e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.color = '#cbd5e1';
-                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.25)';
-                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                e.currentTarget.style.background = 'rgba(139, 92, 246, 0.08)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
-              <Icons.ExternalLink />
-              Ver sitio
+              <Icons.ExternalLink style={{ width: '16px', height: '16px' }} />
+              <span>Ver sitio</span>
             </Link>
+
+            {/* Divider */}
+            <div style={{
+              width: '1px',
+              height: '32px',
+              background: 'linear-gradient(180deg, transparent, rgba(139, 92, 246, 0.3), transparent)',
+            }}></div>
 
             {/* User Avatar */}
             <div style={{
-              width: '44px',
-              height: '44px',
-              borderRadius: '10px',
-              background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
+              width: '48px',
+              height: '48px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontWeight: '700',
-              fontSize: '16px',
+              fontSize: '18px',
               color: '#fff',
               cursor: 'pointer',
-              boxShadow: '0 4px 16px rgba(139, 92, 246, 0.3)',
-              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-              border: '2px solid rgba(255, 255, 255, 0.1)',
+              boxShadow: '0 8px 24px rgba(139, 92, 246, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+              transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              border: '2px solid rgba(255, 255, 255, 0.15)',
+              position: 'relative',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.1) translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(139, 92, 246, 0.4)';
+              e.currentTarget.style.transform = 'scale(1.12) translateY(-3px)';
+              e.currentTarget.style.boxShadow = '0 12px 32px rgba(139, 92, 246, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'scale(1) translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 92, 246, 0.3)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(139, 92, 246, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)';
             }}
             >
               A
