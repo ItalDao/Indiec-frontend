@@ -8,7 +8,7 @@ import { AlertContainer } from "../../../../../../shared/ui/AlertContainer";
 export default function StaticPagesList() {
   const navigate = useNavigate();
   const { pages, loading, error, deletePage, toggleVisibility } = useStaticPages();
-  const { alerts, removeAlert, success, error: errorAlert } = useAlert();
+  const { alerts, removeAlert, success, error: errorAlert, info } = useAlert();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [pageToDelete, setPageToDelete] = useState<string | null>(null);
 
@@ -24,10 +24,21 @@ export default function StaticPagesList() {
         setShowDeleteModal(false);
         setPageToDelete(null);
         success('Eliminado', 'Página estática eliminada correctamente');
-      } catch (err) {
+      } catch {
         errorAlert('Error', 'No se pudo eliminar la página');
       }
     }
+  };
+
+  const cancelDelete = () => {
+    info('Cancelado', 'La eliminación ha sido cancelada');
+    setShowDeleteModal(false);
+    setPageToDelete(null);
+  };
+
+  const handleToggleVisibility = async (id: string) => {
+    await toggleVisibility(id);
+    success('Actualizado', 'Visibilidad de la página actualizada');
   };
 
   if (loading && pages.length === 0) {
@@ -281,7 +292,7 @@ export default function StaticPagesList() {
                         <Icons.Edit />
                       </button>
                       <button
-                        onClick={() => toggleVisibility(page.id)}
+                        onClick={() => handleToggleVisibility(page.id)}
                         style={{
                           background: 'transparent',
                           border: '2px solid #3b82f6',
@@ -343,7 +354,7 @@ export default function StaticPagesList() {
             left: 0,
             right: 0,
             bottom: 0,
-            background: 'rgba(0, 0, 0, 0.5)',
+            background: 'rgba(0, 0, 0, 0.6)',
             backdropFilter: 'blur(4px)',
             display: 'flex',
             alignItems: 'center',
@@ -355,36 +366,36 @@ export default function StaticPagesList() {
               border: '1px solid rgba(139, 92, 246, 0.2)',
               borderRadius: '16px',
               padding: '48px',
-              maxWidth: '400px',
+              maxWidth: '500px',
               width: '90%',
               backdropFilter: 'blur(16px)',
             }} onClick={(e) => e.stopPropagation()}>
               <h2 style={{
+                margin: 0,
                 fontSize: '24px',
-                fontWeight: 'bold',
-                margin: '0 0 16px 0',
+                fontWeight: '700',
                 color: '#fff',
+                marginBottom: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
               }}>
-                ⚠️ Confirmar eliminación
+                <Icons.Trash />
+                Confirmar eliminación
               </h2>
-              <div style={{
-                color: '#cbd5e1',
-                fontSize: '16px',
-                marginBottom: '32px',
-                lineHeight: '1.6',
-              }}>
+              <p style={{ margin: '0 0 32px 0', fontSize: '14px', color: '#cbd5e1' }}>
                 ¿Estás seguro de eliminar esta página? Esta acción no se puede deshacer.
-              </div>
+              </p>
               <div style={{
                 display: 'flex',
                 gap: '12px',
                 justifyContent: 'flex-end',
               }}>
                 <button
-                  onClick={() => setShowDeleteModal(false)}
+                  onClick={cancelDelete}
                   style={{
                     background: 'transparent',
-                    border: '2px solid #64748b',
+                    border: '1px solid rgba(139, 92, 246, 0.3)',
                     color: '#cbd5e1',
                     borderRadius: '8px',
                     padding: '12px 24px',
@@ -394,10 +405,12 @@ export default function StaticPagesList() {
                     transition: 'all 0.2s ease',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(100, 116, 139, 0.15)';
+                    e.currentTarget.style.borderColor = '#8b5cf6';
+                    e.currentTarget.style.color = '#8b5cf6';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'transparent';
+                    e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                    e.currentTarget.style.color = '#cbd5e1';
                   }}
                 >
                   Cancelar

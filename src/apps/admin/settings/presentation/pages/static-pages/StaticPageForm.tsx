@@ -1,22 +1,40 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStaticPages } from "../../hooks/useStaticPages";
+import { useAlert } from "../../../../../../shared/hooks/useAlert";
+import { AlertContainer } from "../../../../../../shared/ui/AlertContainer";
 import { Icons } from "../../../../../client/songs/presentation/components/Icons";
 
 export default function StaticPageForm() {
   const navigate = useNavigate();
   const { createPage, loading } = useStaticPages();
+  const { alerts, removeAlert, success, error: errorAlert, info } = useAlert();
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [content, setContent] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
   const [visible, setVisible] = useState(true);
-  const [showModal, setShowModal] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const success = await createPage({
+    // Validaciones
+    if (!title?.trim()) {
+      errorAlert('Error', 'El título es requerido');
+      return;
+    }
+    
+    if (!url?.trim()) {
+      errorAlert('Error', 'La URL es requerida');
+      return;
+    }
+    
+    if (!content?.trim()) {
+      errorAlert('Error', 'El contenido es requerido');
+      return;
+    }
+    
+    const pageSuccess = await createPage({
       titulo: title,
       slug: url,
       contenido: content,
@@ -25,14 +43,12 @@ export default function StaticPageForm() {
       visible: visible,
     });
 
-    if (success) {
-      setShowModal(true);
+    if (pageSuccess) {
+      success('Página creada', `"${title}" ha sido creada exitosamente`);
+      setTimeout(() => navigate("/admin/settings/static-pages"), 1500);
+    } else {
+      errorAlert('Error', 'No se pudo crear la página');
     }
-  };
-
-  const handleConfirm = () => {
-    setShowModal(false);
-    navigate("/admin/settings/static-pages");
   };
 
   const generateUrl = (text: string) => {
@@ -60,6 +76,7 @@ export default function StaticPageForm() {
       minHeight: '100vh',
       padding: '40px 20px',
     }}>
+      <AlertContainer alerts={alerts} onRemove={removeAlert} />
       <div style={{ maxWidth: '900px', margin: '0 auto' }}>
         {/* HEADER */}
         <div style={{ marginBottom: '40px' }}>
@@ -106,7 +123,6 @@ export default function StaticPageForm() {
                 value={title}
                 onChange={(e) => handleTitleChange(e.target.value)}
                 placeholder="Ej: Sobre INDIEC"
-                required
                 style={{
                   width: '100%',
                   padding: '14px 16px',
@@ -150,7 +166,6 @@ export default function StaticPageForm() {
                 value={url}
                 onChange={(e) => setUrl(generateUrl(e.target.value))}
                 placeholder="sobre-indiec"
-                required
                 style={{
                   width: '100%',
                   padding: '14px 16px',
@@ -366,7 +381,10 @@ export default function StaticPageForm() {
               </button>
               <button
                 type="button"
-                onClick={() => navigate("/admin/settings/static-pages")}
+                onClick={() => {
+                  info('Cancelado', 'El formulario no ha sido guardado');
+                  navigate("/admin/settings/static-pages");
+                }}
                 style={{
                   background: 'transparent',
                   border: '2px solid #64748b',
@@ -394,76 +412,6 @@ export default function StaticPageForm() {
             </div>
           </div>
         </form>
-
-        {/* SUCCESS MODAL */}
-        {showModal && (
-          <div style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(0, 0, 0, 0.5)',
-            backdropFilter: 'blur(4px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-          }} onClick={() => setShowModal(false)}>
-            <div style={{
-              background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.95) 100%)',
-              border: '1px solid rgba(139, 92, 246, 0.2)',
-              borderRadius: '16px',
-              padding: '48px',
-              maxWidth: '400px',
-              width: '90%',
-              backdropFilter: 'blur(16px)',
-              textAlign: 'center',
-            }} onClick={(e) => e.stopPropagation()}>
-              <div style={{ fontSize: '48px', marginBottom: '16px' }}>✅</div>
-              <h2 style={{
-                fontSize: '24px',
-                fontWeight: 'bold',
-                margin: '0 0 16px 0',
-                color: '#fff',
-              }}>
-                ¡Página creada!
-              </h2>
-              <div style={{
-                color: '#cbd5e1',
-                fontSize: '16px',
-                marginBottom: '32px',
-                lineHeight: '1.6',
-              }}>
-                La página "{title}" ha sido creada exitosamente.
-              </div>
-              <button
-                onClick={handleConfirm}
-                style={{
-                  background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '8px',
-                  padding: '12px 32px',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(139, 92, 246, 0.4)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              >
-                Aceptar
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
