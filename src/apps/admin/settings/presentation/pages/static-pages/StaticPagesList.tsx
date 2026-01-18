@@ -2,10 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStaticPages } from "../../hooks/useStaticPages";
 import { Icons } from "../../../../../client/songs/presentation/components/Icons";
+import { useAlert } from "../../../../../../shared/hooks/useAlert";
+import { AlertContainer } from "../../../../../../shared/ui/AlertContainer";
 
 export default function StaticPagesList() {
   const navigate = useNavigate();
   const { pages, loading, error, deletePage, toggleVisibility } = useStaticPages();
+  const { alerts, removeAlert, success, error: errorAlert } = useAlert();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [pageToDelete, setPageToDelete] = useState<string | null>(null);
 
@@ -16,9 +19,14 @@ export default function StaticPagesList() {
 
   const confirmDelete = async () => {
     if (pageToDelete) {
-      await deletePage(pageToDelete);
-      setShowDeleteModal(false);
-      setPageToDelete(null);
+      try {
+        await deletePage(pageToDelete);
+        setShowDeleteModal(false);
+        setPageToDelete(null);
+        success('Eliminado', 'Página estática eliminada correctamente');
+      } catch (err) {
+        errorAlert('Error', 'No se pudo eliminar la página');
+      }
     }
   };
 
@@ -66,6 +74,7 @@ export default function StaticPagesList() {
       minHeight: '100vh',
       padding: '40px 20px',
     }}>
+      <AlertContainer alerts={alerts} onRemove={removeAlert} />
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         {/* HEADER */}
         <div style={{ marginBottom: '40px' }}>

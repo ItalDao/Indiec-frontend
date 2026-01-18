@@ -2,9 +2,12 @@ import { useState } from "react";
 import { useProducts } from "../hooks/useProducts";
 import type { Product } from "../../domain/entities/Product";
 import { Icons } from "../../../../client/songs/presentation/components/Icons";
+import { useAlert } from "../../../../../shared/hooks/useAlert";
+import { AlertContainer } from "../../../../../shared/ui/AlertContainer";
 
 export default function StorePage() {
   const { products, loading, createProduct, updateProduct, deleteProduct } = useProducts();
+  const { alerts, removeAlert, success, error: errorAlert } = useAlert();
   
   // Estado para el Modal
   const [showModal, setShowModal] = useState(false);
@@ -54,12 +57,18 @@ export default function StorePage() {
       ...formData,
       sizeId: selectedSizes.join(',')
     };
-    if (isEditing) {
-      await updateProduct(updatedFormData);
-    } else {
-      await createProduct(updatedFormData);
+    try {
+      if (isEditing) {
+        await updateProduct(updatedFormData);
+        success('Actualizado', 'Producto actualizado correctamente');
+      } else {
+        await createProduct(updatedFormData);
+        success('Creado', 'Producto creado correctamente');
+      }
+      setShowModal(false);
+    } catch (err) {
+      errorAlert('Error', 'No se pudo guardar el producto');
     }
-    setShowModal(false);
   };
 
   return (
@@ -69,6 +78,7 @@ export default function StorePage() {
       minHeight: '100vh',
       paddingBottom: '60px',
     }}>
+      <AlertContainer alerts={alerts} onRemove={removeAlert} />
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '60px 2rem' }}>
         
         {/* HEADER */}

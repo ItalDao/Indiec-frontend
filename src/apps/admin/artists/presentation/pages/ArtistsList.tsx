@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { MOCK_ARTISTS } from '../../data/artists.mock';
 import { Icons } from '../../../../client/songs/presentation/components/Icons';
 import { QRCodeComponent } from '../../../../../shared/ui';
+import { useAlert } from '../../../../../shared/hooks/useAlert';
+import { AlertContainer } from '../../../../../shared/ui/AlertContainer';
 import type { Artist } from '../../data/artists.mock';
 
 const Modal: React.FC<{ isOpen: boolean; onClose: () => void; title: string; children: React.ReactNode }> = ({
@@ -71,6 +73,9 @@ export const ArtistsList: React.FC = () => {
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
   const [editingArtist, setEditingArtist] = useState<Artist | null>(null);
+  const [artistIdAEliminar, setArtistIdAEliminar] = useState<number | null>(null);
+  
+  const { alerts, removeAlert, success, error: errorAlert, warning, info } = useAlert();
 
   const [filterName, setFilterName] = useState('');
   const [filterGenero, setFilterGenero] = useState('');
@@ -126,7 +131,7 @@ export const ArtistsList: React.FC = () => {
 
   const handleSaveArtist = () => {
     if (!formData.nombre || !formData.genero || !formData.pais || !formData.email) {
-      alert('Por favor completa todos los campos requeridos');
+      errorAlert('Error', 'Por favor completa todos los campos requeridos');
       return;
     }
 
@@ -148,6 +153,7 @@ export const ArtistsList: React.FC = () => {
             : a
         )
       );
+      success('Actualizado', 'Artista actualizado correctamente');
     } else {
       // Crear nuevo artista
       const newArtist: Artist = {
@@ -162,6 +168,7 @@ export const ArtistsList: React.FC = () => {
         biografia: formData.biografia,
       };
       setArtists([...artists, newArtist]);
+      success('Creado', 'Artista creado correctamente');
     }
 
     setIsFormModalOpen(false);
@@ -178,17 +185,32 @@ export const ArtistsList: React.FC = () => {
   };
 
   const handleDelete = (id: number) => {
-    if (window.confirm('¿Estás seguro de que deseas eliminar este artista?')) {
-      setArtists((prev) => prev.filter((a) => a.id !== id));
+    setArtistIdAEliminar(id);
+    warning('¿Eliminar Artista?', 'Esta acción no se puede deshacer. El artista será eliminado permanentemente.');
+  };
+
+  const confirmarEliminarArtista = () => {
+    if (artistIdAEliminar) {
+      setArtists((prev) => prev.filter((a) => a.id !== artistIdAEliminar));
+      success('Eliminado', 'Artista eliminado correctamente');
+      setArtistIdAEliminar(null);
     }
   };
 
+  const cancelarEliminarArtista = () => {
+    info('Cancelado', 'Eliminación de artista cancelada');
+    setArtistIdAEliminar(null);
+  };
+
   const toggleStatus = (id: number) => {
+    const artist = artists.find(a => a.id === id);
     setArtists((prev) =>
       prev.map((a) =>
         a.id === id ? { ...a, estado: a.estado === 'activo' ? 'inactivo' : 'activo' } : a
       )
     );
+    const nuevoEstado = artist?.estado === 'activo' ? 'inactivo' : 'activo';
+    success('Actualizado', `Artista marcado como ${nuevoEstado}`);
   };
 
   const filteredArtists = artists.filter((artist) => {
@@ -1113,6 +1135,102 @@ export const ArtistsList: React.FC = () => {
           </div>
         </div>
       </Modal>
+
+      {/* Modal de Confirmación de Eliminación */}
+      {artistIdAEliminar && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.6)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10000,
+        }}>
+          <div style={{
+            background: 'linear-gradient(135deg, rgba(20, 20, 30, 0.95) 0%, rgba(30, 20, 50, 0.95) 100%)',
+            border: '1px solid rgba(139, 92, 246, 0.3)',
+            borderRadius: '16px',
+            padding: '28px',
+            maxWidth: '400px',
+            backdropFilter: 'blur(20px)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+          }}>
+            <h3 style={{
+              margin: '0 0 12px 0',
+              color: '#f59e0b',
+              fontSize: '18px',
+              fontWeight: '700',
+            }}>¿Eliminar artista?</h3>
+            <p style={{
+              margin: '0 0 24px 0',
+              color: '#cbd5e1',
+              fontSize: '14px',
+              lineHeight: '1.6',
+            }}>Esta acción no se puede deshacer. El artista será eliminado permanentemente.</p>
+            <div style={{
+              display: 'flex',
+              gap: '12px',
+            }}>
+              <button
+                onClick={cancelarEliminarArtista}
+                style={{
+                  flex: 1,
+                  padding: '10px 16px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(139, 92, 246, 0.3)',
+                  background: 'transparent',
+                  color: '#8b5cf6',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.6)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                }}
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmarEliminarArtista}
+                style={{
+                  flex: 1,
+                  padding: '10px 16px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 8px 16px rgba(239, 68, 68, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <AlertContainer alerts={alerts} onRemove={removeAlert} />
     </div>
   );
 };
