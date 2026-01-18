@@ -79,6 +79,11 @@ const AdminLayout = () => {
           justifyContent: 'space-between',
           paddingBottom: sidebarOpen ? '20px' : '12px',
           borderBottom: sidebarOpen ? '1px solid rgba(139, 92, 246, 0.15)' : 'none',
+          position: 'sticky',
+          top: 0,
+          background: 'linear-gradient(180deg, rgba(15, 23, 42, 0.99) 0%, rgba(20, 28, 60, 0.97) 25%, rgba(25, 20, 55, 0.98) 50%, rgba(20, 28, 60, 0.97) 75%, rgba(15, 23, 42, 0.99) 100%)',
+          backdropFilter: 'blur(32px)',
+          zIndex: 10,
         }}>
           {sidebarOpen && (
             <div>
