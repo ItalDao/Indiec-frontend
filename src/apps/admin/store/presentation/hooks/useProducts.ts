@@ -37,7 +37,6 @@ export const useProducts = () => {
   };
 
   const deleteProduct = async (id: string) => {
-    if (!confirm("¿Seguro que quieres eliminar este producto?")) return;
     setLoading(true);
     await repository.delete(id);
     await loadProducts();

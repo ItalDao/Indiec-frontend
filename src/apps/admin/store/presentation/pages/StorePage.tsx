@@ -7,12 +7,13 @@ import { AlertContainer } from "../../../../../shared/ui/AlertContainer";
 
 export default function StorePage() {
   const { products, loading, createProduct, updateProduct, deleteProduct } = useProducts();
-  const { alerts, removeAlert, success, error: errorAlert } = useAlert();
+  const { alerts, removeAlert, success, error: errorAlert, warning, info } = useAlert();
   
   // Estado para el Modal
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [filterBusqueda, setFilterBusqueda] = useState('');
+  const [productIdAEliminar, setProductIdAEliminar] = useState<string | null>(null);
   
   // Filtrar productos
   const filteredProducts = products.filter(p =>
@@ -53,6 +54,13 @@ export default function StorePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validar campos requeridos
+    if (!formData.name?.trim() || !formData.description?.trim() || !formData.price || formData.price <= 0 || !formData.stock || formData.stock < 0) {
+      errorAlert('Error', 'Por favor completa todos los campos requeridos');
+      return;
+    }
+    
     const updatedFormData = {
       ...formData,
       sizeId: selectedSizes.join(',')
@@ -71,6 +79,28 @@ export default function StorePage() {
     }
   };
 
+  const handleDeleteClick = (productId: string) => {
+    setProductIdAEliminar(productId);
+    warning('¿Eliminar Producto?', 'Esta acción no se puede deshacer. El producto será eliminado permanentemente.');
+  };
+
+  const confirmarEliminarProducto = async () => {
+    if (productIdAEliminar) {
+      try {
+        await deleteProduct(productIdAEliminar);
+        success('Eliminado', 'Producto eliminado correctamente');
+        setProductIdAEliminar(null);
+      } catch (err) {
+        errorAlert('Error', 'No se pudo eliminar el producto');
+      }
+    }
+  };
+
+  const cancelarEliminarProducto = () => {
+    info('Cancelado', 'Eliminación de producto cancelada');
+    setProductIdAEliminar(null);
+  };
+
   return (
     <div style={{ 
       background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 12%, #2d1b69 25%, #1a1f3a 40%, #0f172a 60%, #1a0033 75%, #0f172a 100%)',
@@ -78,6 +108,7 @@ export default function StorePage() {
       minHeight: '100vh',
       paddingBottom: '60px',
     }}>
+      <AlertContainer alerts={alerts} onRemove={removeAlert} />
       <AlertContainer alerts={alerts} onRemove={removeAlert} />
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '60px 2rem' }}>
         
@@ -386,7 +417,7 @@ export default function StorePage() {
                       <Icons.Edit />
                     </button>
                     <button
-                      onClick={() => deleteProduct(product.id)}
+                      onClick={() => handleDeleteClick(product.id)}
                       style={{
                         padding: '10px 16px',
                         background: 'rgba(239, 68, 68, 0.1)',
@@ -471,7 +502,6 @@ export default function StorePage() {
                     value={formData.name}
                     onChange={e => setFormData({...formData, name: e.target.value})}
                     placeholder="Ej: Camiseta Tour 2025"
-                    required
                     style={{
                       width: '100%',
                       padding: '14px 18px',
@@ -545,7 +575,6 @@ export default function StorePage() {
                       value={formData.price}
                       onChange={e => setFormData({...formData, price: Number(e.target.value)})}
                       placeholder="25.00"
-                      required
                       step="0.01"
                       min="0"
                       style={{
@@ -581,7 +610,6 @@ export default function StorePage() {
                       value={formData.stock}
                       onChange={e => setFormData({...formData, stock: Number(e.target.value)})}
                       placeholder="50"
-                      required
                       min="0"
                       style={{
                         width: '100%',
@@ -840,6 +868,100 @@ export default function StorePage() {
             </div>
           </div>
         )}
+
+      {/* Modal de Confirmación de Eliminación */}
+      {productIdAEliminar && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.6)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10000,
+        }}>
+          <div style={{
+            background: 'linear-gradient(135deg, rgba(20, 20, 30, 0.95) 0%, rgba(30, 20, 50, 0.95) 100%)',
+            border: '1px solid rgba(139, 92, 246, 0.3)',
+            borderRadius: '16px',
+            padding: '28px',
+            maxWidth: '400px',
+            backdropFilter: 'blur(20px)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+          }}>
+            <h3 style={{
+              margin: '0 0 12px 0',
+              color: '#f59e0b',
+              fontSize: '18px',
+              fontWeight: '700',
+            }}>¿Eliminar producto?</h3>
+            <p style={{
+              margin: '0 0 24px 0',
+              color: '#cbd5e1',
+              fontSize: '14px',
+              lineHeight: '1.6',
+            }}>Esta acción no se puede deshacer. El producto será eliminado permanentemente.</p>
+            <div style={{
+              display: 'flex',
+              gap: '12px',
+            }}>
+              <button
+                onClick={cancelarEliminarProducto}
+                style={{
+                  flex: 1,
+                  padding: '10px 16px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(139, 92, 246, 0.3)',
+                  background: 'transparent',
+                  color: '#8b5cf6',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.6)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                }}
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmarEliminarProducto}
+                style={{
+                  flex: 1,
+                  padding: '10px 16px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 8px 16px rgba(239, 68, 68, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       </div>
     </div>
   );
