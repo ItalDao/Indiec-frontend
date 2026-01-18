@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useGeneralSettings } from "../../hooks/useGeneralSettings";
 import { Icons } from "../../../../../client/songs/presentation/components/Icons";
+import { useAlert } from "../../../../../../shared/hooks/useAlert";
+import { AlertContainer } from "../../../../../../shared/ui/AlertContainer";
 
 export default function GeneralSettingsPage() {
   const { settings, loading, error, saveSettings } = useGeneralSettings();
-  const [showModal, setShowModal] = useState(false);
+  const { alerts, removeAlert, success, error: errorAlert } = useAlert();
 
   // Estados locales del formulario
   const [platformName, setPlatformName] = useState("");
@@ -33,7 +35,18 @@ export default function GeneralSettingsPage() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const success = await saveSettings({
+    // Validaciones
+    if (!platformName?.trim()) {
+      errorAlert('Error', 'El nombre de la plataforma es requerido');
+      return;
+    }
+    
+    if (!primaryColor || !secondaryColor) {
+      errorAlert('Error', 'Debes seleccionar los colores de marca');
+      return;
+    }
+    
+    const saveSuccess = await saveSettings({
       id: settings?.id || '1',
       platformName,
       primaryColor,
@@ -45,17 +58,28 @@ export default function GeneralSettingsPage() {
       logo,
     });
 
-    if (success) {
-      setShowModal(true);
+    if (saveSuccess) {
+      // Recargar después de guardar exitosamente
+      setTimeout(() => window.location.reload(), 800);
+    } else {
+      errorAlert('Error', 'No se pudo guardar la configuración');
     }
   };
 
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Validar tamaño del archivo (máximo 2MB)
+      const maxSize = 2 * 1024 * 1024; // 2MB
+      if (file.size > maxSize) {
+        errorAlert('Error', 'El archivo es demasiado grande. Máximo 2MB.');
+        return;
+      }
+      
       const reader = new FileReader();
       reader.onloadend = () => {
         setLogo(reader.result as string);
+        success('Logo cargado', 'El logo ha sido subido correctamente');
       };
       reader.readAsDataURL(file);
     }
@@ -63,6 +87,7 @@ export default function GeneralSettingsPage() {
 
   const removeLogo = () => {
     setLogo(null);
+    info('Logo eliminado', 'El logo ha sido removido correctamente');
   };
 
   if (loading && !settings) {
@@ -120,6 +145,7 @@ export default function GeneralSettingsPage() {
       minHeight: '100vh',
       paddingBottom: '60px',
     }}>
+      <AlertContainer alerts={alerts} onRemove={removeAlert} />
       <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '60px 2rem' }}>
         {/* HEADER */}
         <div style={{ marginBottom: '60px' }}>
@@ -168,7 +194,6 @@ export default function GeneralSettingsPage() {
                   value={platformName}
                   onChange={(e) => setPlatformName(e.target.value)}
                   placeholder="Ej: INDIEC"
-                  required
                   style={{
                     width: '100%',
                     padding: '12px 16px',
@@ -497,7 +522,9 @@ export default function GeneralSettingsPage() {
                   </>
                 ) : (
                   <>
-                    <Icons.Settings />
+                    <span style={{ display: 'flex', alignItems: 'center' }}>
+                      <Icons.Settings />
+                    </span>
                     Guardar configuración
                   </>
                 )}
@@ -535,63 +562,7 @@ export default function GeneralSettingsPage() {
           </div>
         </form>
 
-        {/* MODAL ÉXITO */}
-        {showModal && (
-          <div style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(0, 0, 0, 0.8)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-          }}
-          onClick={() => setShowModal(false)}>
-            <div style={{
-              background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.95), rgba(45, 27, 105, 0.7))',
-              backdropFilter: 'blur(10px)',
-              borderRadius: '16px',
-              border: '1px solid rgba(139, 92, 246, 0.3)',
-              padding: '40px',
-              maxWidth: '400px',
-              textAlign: 'center',
-            }}
-            onClick={(e) => e.stopPropagation()}>
-              <div style={{ fontSize: '48px', marginBottom: '16px', color: '#22c55e' }}>
-                <Icons.Check />
-              </div>
-              <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#e2e8f0', marginBottom: '8px' }}>¡Éxito!</h2>
-              <p style={{ color: '#cbd5e1', marginBottom: '24px' }}>
-                Configuración guardada exitosamente.
-              </p>
-              <button 
-                onClick={() => setShowModal(false)}
-                style={{
-                  padding: '12px 32px',
-                  background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '10px',
-                  cursor: 'pointer',
-                  fontWeight: '600',
-                  fontSize: '14px',
-                  transition: 'all 0.2s ease',
-                  boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 8px 20px rgba(139, 92, 246, 0.5)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(139, 92, 246, 0.3)';
-                }}
-              >
-                Aceptar
-              </button>
-            </div>
-          </div>
-        )}
+
       </div>
     </div>
   );
