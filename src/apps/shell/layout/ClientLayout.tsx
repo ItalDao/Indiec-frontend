@@ -266,6 +266,173 @@ const ClientLayout = () => {
       >
         <Outlet />
       </main>
+
+      {/* FOOTER */}
+      <footer
+        style={{
+          background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.85) 100%)',
+          borderTop: `1px solid rgba(139, 92, 246, 0.1)`,
+          color: colors.textPrimary,
+          padding: '3rem 2rem',
+          marginTop: '4rem',
+        }}
+      >
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+              gap: '3rem',
+              marginBottom: '2rem',
+            }}
+          >
+            {/* Columna 1: Sobre INDIEC */}
+            <div>
+              <h4 style={{ marginBottom: '1rem', color: colors.text, fontWeight: '600' }}>
+                INDIEC
+              </h4>
+              <p style={{ fontSize: '0.875rem', color: colors.textMuted, lineHeight: '1.6' }}>
+                Plataforma de música independiente que conecta artistas con su público.
+              </p>
+            </div>
+
+            {/* Columna 2: Enlaces Rápidos */}
+            <div>
+              <h4 style={{ marginBottom: '1rem', color: colors.text, fontWeight: '600' }}>
+                Enlaces
+              </h4>
+              <Link
+                to="/client/about"
+                style={{
+                  display: 'block',
+                  marginBottom: '0.5rem',
+                  fontSize: '0.875rem',
+                  color: colors.textSecondary,
+                  textDecoration: 'none',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = colors.primary)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = colors.textSecondary)}
+              >
+                Sobre INDIEC
+              </Link>
+              <Link
+                to="/client/faq"
+                style={{
+                  display: 'block',
+                  marginBottom: '0.5rem',
+                  fontSize: '0.875rem',
+                  color: colors.textSecondary,
+                  textDecoration: 'none',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = colors.primary)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = colors.textSecondary)}
+              >
+                Preguntas Frecuentes
+              </Link>
+              <Link
+                to="/client/contact"
+                style={{
+                  display: 'block',
+                  fontSize: '0.875rem',
+                  color: colors.textSecondary,
+                  textDecoration: 'none',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = colors.primary)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = colors.textSecondary)}
+              >
+                Contacto
+              </Link>
+            </div>
+
+            {/* Columna 3: Legal */}
+            <div>
+              <h4 style={{ marginBottom: '1rem', color: colors.text, fontWeight: '600' }}>
+                Legal
+              </h4>
+              <Link
+                to="/client/terms"
+                style={{
+                  display: 'block',
+                  marginBottom: '0.5rem',
+                  fontSize: '0.875rem',
+                  color: colors.textSecondary,
+                  textDecoration: 'none',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = colors.primary)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = colors.textSecondary)}
+              >
+                Términos y Condiciones
+              </Link>
+              <Link
+                to="/client/privacy"
+                style={{
+                  display: 'block',
+                  fontSize: '0.875rem',
+                  color: colors.textSecondary,
+                  textDecoration: 'none',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = colors.primary)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = colors.textSecondary)}
+              >
+                Política de Privacidad
+              </Link>
+            </div>
+
+            {/* Columna 4: Cuenta */}
+            <div>
+              <h4 style={{ marginBottom: '1rem', color: colors.text, fontWeight: '600' }}>
+                Cuenta
+              </h4>
+              <Link
+                to="/client/settings"
+                style={{
+                  display: 'block',
+                  marginBottom: '0.5rem',
+                  fontSize: '0.875rem',
+                  color: colors.textSecondary,
+                  textDecoration: 'none',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = colors.primary)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = colors.textSecondary)}
+              >
+                Configuración
+              </Link>
+              <span
+                style={{
+                  display: 'block',
+                  fontSize: '0.875rem',
+                  color: colors.textMuted,
+                  cursor: 'not-allowed',
+                }}
+              >
+                Mi Perfil (Próximamente)
+              </span>
+            </div>
+          </div>
+
+          {/* Copyright */}
+          <div
+            style={{
+              paddingTop: '2rem',
+              borderTop: `1px solid ${colors.border}`,
+              textAlign: 'center',
+            }}
+          >
+            <p style={{ color: colors.textMuted, fontSize: '0.875rem' }}>
+              © 2024 INDIEC. Todos los derechos reservados.
+            </p>
+            <p style={{ color: colors.textMuted, fontSize: '0.75rem', marginTop: '0.5rem' }}>
+              Hecho con 💜 para la comunidad indie
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
