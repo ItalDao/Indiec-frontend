@@ -267,6 +267,7 @@ const availableArtists = Array.from(new Set(songs.map(s => s.artista)));
         fontFamily: 'Inter, system-ui, sans-serif',
       }}
     >
+      <AlertContainer alerts={alerts} onRemove={removeAlert} />
       {/* Header */}
       <div style={{ marginBottom: '40px' }}>
         <h1
@@ -1199,7 +1200,6 @@ const availableArtists = Array.from(new Set(songs.map(s => s.artista)));
         </div>
       )}
 
-      <AlertContainer alerts={alerts} onRemove={removeAlert} />
     </div>
   );
 };

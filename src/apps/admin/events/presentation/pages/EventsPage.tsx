@@ -5,6 +5,8 @@ import { Modal } from '../../../../../shared/ui';
 import { EventTable } from '../components/EventTable';
 import type { Event } from '../../domain/models/Event';
 import { Icons } from '../../../../client/songs/presentation/components/Icons';
+import { useAlert } from '../../../../../shared/hooks/useAlert';
+import { AlertContainer } from '../../../../../shared/ui/AlertContainer';
 
 export const EventsPage: React.FC = () => {
 
@@ -15,6 +17,9 @@ export const EventsPage: React.FC = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [eventIdAEliminar, setEventIdAEliminar] = useState<string | null>(null);
+  
+  const { alerts, removeAlert, success, error: errorAlert, warning, info } = useAlert();
   
   const handleOpenCreate = () => {
     setEditingEvent(null);
@@ -45,17 +50,31 @@ export const EventsPage: React.FC = () => {
   const handleFormSuccess = async (formData: FormData) => {
     if (editingEvent?.idEvento) {
       await updateExistingEvent(editingEvent.idEvento, formData);
+      success('Actualizado', 'Evento actualizado correctamente');
     } else {
       await saveEvent(formData);
+      success('Creado', 'Evento creado correctamente');
     }
     setIsFormModalOpen(false);
     setEditingEvent(null);
   };
 
   const handleDeleteEvent = (event: Event) => {
-    if (window.confirm(`¿Estás seguro de que deseas eliminar el evento "${event.titulo}"?`)) {
-      removeEvent(event.idEvento);
+    setEventIdAEliminar(event.idEvento);
+    warning('¿Eliminar Evento?', `Estás a punto de eliminar "${event.titulo}". Esta acción no se puede deshacer.`);
+  };
+
+  const confirmarEliminarEvento = () => {
+    if (eventIdAEliminar) {
+      removeEvent(eventIdAEliminar);
+      success('Eliminado', 'Evento eliminado correctamente');
+      setEventIdAEliminar(null);
     }
+  };
+
+  const cancelarEliminarEvento = () => {
+    info('Cancelado', 'Eliminación de evento cancelada');
+    setEventIdAEliminar(null);
   };
 
   return (
@@ -65,6 +84,7 @@ export const EventsPage: React.FC = () => {
       minHeight: '100vh',
       paddingBottom: '60px',
     }}>
+      <AlertContainer alerts={alerts} onRemove={removeAlert} />
       <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '60px 2rem' }}>
         {/* HEADER */}
         <div style={{ marginBottom: '60px' }}>
@@ -547,10 +567,106 @@ export const EventsPage: React.FC = () => {
       >
         <EventForm
           onSuccess={handleFormSuccess}
+          onError={(message) => errorAlert('Error', message)}
           onCancel={() => setIsFormModalOpen(false)}
           initialData={editingEvent}
         />
       </Modal>
+
+      {/* Modal de Confirmación de Eliminación */}
+      {eventIdAEliminar && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.6)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10000,
+        }}>
+          <div style={{
+            background: 'linear-gradient(135deg, rgba(20, 20, 30, 0.95) 0%, rgba(30, 20, 50, 0.95) 100%)',
+            border: '1px solid rgba(139, 92, 246, 0.3)',
+            borderRadius: '16px',
+            padding: '28px',
+            maxWidth: '400px',
+            backdropFilter: 'blur(20px)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+          }}>
+            <h3 style={{
+              margin: '0 0 12px 0',
+              color: '#f59e0b',
+              fontSize: '18px',
+              fontWeight: '700',
+            }}>¿Eliminar evento?</h3>
+            <p style={{
+              margin: '0 0 24px 0',
+              color: '#cbd5e1',
+              fontSize: '14px',
+              lineHeight: '1.6',
+            }}>Esta acción no se puede deshacer. El evento será eliminado permanentemente.</p>
+            <div style={{
+              display: 'flex',
+              gap: '12px',
+            }}>
+              <button
+                onClick={cancelarEliminarEvento}
+                style={{
+                  flex: 1,
+                  padding: '10px 16px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(139, 92, 246, 0.3)',
+                  background: 'transparent',
+                  color: '#8b5cf6',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.6)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                }}
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmarEliminarEvento}
+                style={{
+                  flex: 1,
+                  padding: '10px 16px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 8px 16px rgba(239, 68, 68, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

@@ -4,15 +4,28 @@ import type { Event } from '../../domain/models/Event';
 interface Props {
   onSuccess: (data: FormData) => void;
   onCancel: () => void;
+  onError?: (message: string) => void;
   initialData?: Event | null;
 }
 
-export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData }) => {
+export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, onError, initialData }) => {
   const [file, setFile] = useState<File | null>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    
+    const titulo = formData.get('titulo') as string;
+    const lugar = formData.get('lugar') as string;
+    const fecha = formData.get('fecha') as string;
+    
+    if (!titulo?.trim() || !lugar?.trim() || !fecha?.trim()) {
+      if (onError) {
+        onError('Por favor completa los campos requeridos');
+      }
+      return;
+    }
+    
     if (file) formData.append('imagen', file);
     onSuccess(formData);
   };
@@ -55,7 +68,6 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
             type="text"
             name="titulo" 
             defaultValue={initialData?.titulo} 
-            required
             style={inputStyle}
             onFocus={(e) => {
               e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
@@ -79,8 +91,7 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
             <input 
               type="text"
               name="lugar" 
-              defaultValue={initialData?.lugar} 
-              required
+              defaultValue={initialData?.lugar}
               style={inputStyle}
               onFocus={(e) => {
                 e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';
@@ -102,7 +113,6 @@ export const EventForm: React.FC<Props> = ({ onSuccess, onCancel, initialData })
               type="date"
               name="fecha" 
               defaultValue={formattedDate} 
-              required
               style={inputStyle}
               onFocus={(e) => {
                 e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 1)';

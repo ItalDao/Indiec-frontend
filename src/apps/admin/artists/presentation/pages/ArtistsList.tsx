@@ -231,6 +231,7 @@ export const ArtistsList: React.FC = () => {
         paddingBottom: '60px',
       }}
     >
+      <AlertContainer alerts={alerts} onRemove={removeAlert} />
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '60px 2rem' }}>
         {/* HEADER */}
         <div style={{ marginBottom: '60px' }}>
@@ -1230,7 +1231,6 @@ export const ArtistsList: React.FC = () => {
         </div>
       )}
 
-      <AlertContainer alerts={alerts} onRemove={removeAlert} />
     </div>
   );
 };
