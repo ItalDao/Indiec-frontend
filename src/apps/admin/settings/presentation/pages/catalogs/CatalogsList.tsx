@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useCatalogs } from "../../hooks/useCatalogs";
 import { Icons } from "../../../../../client/songs/presentation/components/Icons";
+import { useAlert } from "../../../../../../shared/hooks/useAlert";
+import { AlertContainer } from "../../../../../../shared/ui/AlertContainer";
 import type { CatalogType } from "../../../domain/entities/Catalog";
 
 export default function CatalogsList() {
   const [activeTab, setActiveTab] = useState<CatalogType>("genres");
   const { items, loading, error, createItem, updateItem, deleteItem } = useCatalogs(activeTab);
+  const { alerts, removeAlert, success, error: errorAlert, warning, info } = useAlert();
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState<"add" | "edit" | "delete">("add");
   const [currentItem, setCurrentItem] = useState({ id: "", name: "", code: "" });
@@ -27,22 +30,37 @@ export default function CatalogsList() {
   const handleDelete = (id: string) => {
     setItemToDelete(id);
     setShowDeleteModal(true);
+    warning('¿Eliminar elemento?', 'Esta acción no se puede deshacer. El elemento será eliminado permanentemente.');
   };
 
   const confirmDelete = async () => {
     if (itemToDelete) {
       await deleteItem(itemToDelete);
+      success('Eliminado', 'Elemento eliminado correctamente');
       setShowDeleteModal(false);
       setItemToDelete(null);
     }
   };
 
+  const cancelDelete = () => {
+    info('Cancelado', 'Eliminación cancelada');
+    setShowDeleteModal(false);
+    setItemToDelete(null);
+  };
+
   const handleSave = async () => {
+    if (!currentItem.name?.trim() || !currentItem.code?.trim()) {
+      errorAlert('Error', 'Por favor completa todos los campos');
+      return;
+    }
+    
     if (modalType === "add") {
       const { id, ...itemData } = currentItem;
       await createItem(itemData);
+      success('Creado', 'Elemento creado correctamente');
     } else if (modalType === "edit") {
       await updateItem(currentItem);
+      success('Actualizado', 'Elemento actualizado correctamente');
     }
     setShowModal(false);
   };
@@ -99,6 +117,7 @@ export default function CatalogsList() {
       minHeight: '100vh',
       paddingBottom: '60px',
     }}>
+      <AlertContainer alerts={alerts} onRemove={removeAlert} />
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '60px 2rem' }}>
         
         {/* HEADER */}
@@ -533,7 +552,7 @@ export default function CatalogsList() {
             <div style={{ display: 'flex', gap: '12px' }}>
               <button
                 type="button"
-                onClick={() => setShowDeleteModal(false)}
+                onClick={cancelDelete}
                 style={{
                   flex: 1,
                   padding: '12px 24px',
