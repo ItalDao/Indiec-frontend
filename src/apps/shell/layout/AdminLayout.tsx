@@ -7,6 +7,24 @@ const AdminLayout = () => {
   const [showSettingsMenu, setShowSettingsMenu] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
+  // Agregar estilos CSS para el scrollbar personalizado
+  const scrollbarStyles = `
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(139, 92, 246, 0.25);
+      border-radius: 3px;
+      transition: background 0.3s ease;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(139, 92, 246, 0.4);
+    }
+  `;
+
   const menuItems = [
     { path: '/admin/dashboard', label: 'Panel', Icon: Icons.BarChart3 },
     { path: '/admin/artists', label: 'Artistas', Icon: Icons.Mic2 },
@@ -36,7 +54,9 @@ const AdminLayout = () => {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#0f172a' }}>
+    <div style={{ minHeight: '100vh', background: '#0f172a' }}>
+      <style>{scrollbarStyles}</style>
+      <div style={{ display: 'flex', minHeight: '100vh', background: '#0f172a' }}>
       {/* SIDEBAR */}
       <aside style={{
         width: sidebarOpen ? '290px' : '88px',
@@ -441,6 +461,7 @@ const AdminLayout = () => {
         <main style={{ flex: 1, overflow: 'auto' }}>
           <Outlet />
         </main>
+      </div>
       </div>
     </div>
   );
