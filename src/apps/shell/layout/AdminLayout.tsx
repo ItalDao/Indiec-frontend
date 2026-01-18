@@ -40,15 +40,15 @@ const AdminLayout = () => {
       {/* SIDEBAR */}
       <aside style={{
         width: sidebarOpen ? '290px' : '88px',
-        background: 'linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 27, 75, 0.92) 30%, rgba(26, 31, 58, 0.95) 70%, rgba(15, 23, 42, 0.98) 100%)',
-        backdropFilter: 'blur(24px)',
-        borderRight: '1.5px solid rgba(139, 92, 246, 0.25)',
+        background: 'linear-gradient(180deg, rgba(15, 23, 42, 0.99) 0%, rgba(20, 28, 60, 0.97) 25%, rgba(25, 20, 55, 0.98) 50%, rgba(20, 28, 60, 0.97) 75%, rgba(15, 23, 42, 0.99) 100%)',
+        backdropFilter: 'blur(32px)',
+        borderRight: '1px solid rgba(139, 92, 246, 0.15)',
         padding: sidebarOpen ? '28px 20px' : '16px 12px',
         position: 'fixed',
         height: '100vh',
         overflowY: 'auto',
-        boxShadow: '0 12px 48px rgba(139, 92, 246, 0.25), inset -1px 0 rgba(255, 255, 255, 0.05)',
-        transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        boxShadow: '12px 0 48px rgba(139, 92, 246, 0.1), inset 1px 0 rgba(200, 150, 255, 0.08)',
+        transition: 'all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
         zIndex: 100,
       }}>
         {/* Header */}
@@ -80,29 +80,31 @@ const AdminLayout = () => {
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             style={{
-              background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(99, 102, 241, 0.1))',
-              border: '1.5px solid rgba(139, 92, 246, 0.3)',
-              borderRadius: '10px',
+              background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(99, 102, 241, 0.05))',
+              border: '1px solid rgba(139, 92, 246, 0.2)',
+              borderRadius: '12px',
               padding: '10px',
-              color: '#a78bfa',
+              color: '#9d8bde',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
               transform: sidebarOpen ? 'scaleX(-1)' : 'scaleX(1)',
-              boxShadow: '0 2px 8px rgba(139, 92, 246, 0.15)',
+              boxShadow: 'inset 0 1px 2px rgba(255, 255, 255, 0.05)',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(99, 102, 241, 0.15))';
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(139, 92, 246, 0.18), rgba(99, 102, 241, 0.12))';
               e.currentTarget.style.color = '#c4b5fd';
-              e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 92, 246, 0.3)';
-              e.currentTarget.style.transform = sidebarOpen ? 'scaleX(-1) scale(1.05)' : 'scaleX(1) scale(1.05)';
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.4)';
+              e.currentTarget.style.boxShadow = '0 4px 20px rgba(139, 92, 246, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.08)';
+              e.currentTarget.style.transform = sidebarOpen ? 'scaleX(-1) scale(1.08)' : 'scaleX(1) scale(1.08)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(99, 102, 241, 0.1))';
-              e.currentTarget.style.color = '#a78bfa';
-              e.currentTarget.style.boxShadow = '0 2px 8px rgba(139, 92, 246, 0.15)';
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(99, 102, 241, 0.05))';
+              e.currentTarget.style.color = '#9d8bde';
+              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+              e.currentTarget.style.boxShadow = 'inset 0 1px 2px rgba(255, 255, 255, 0.05)';
               e.currentTarget.style.transform = sidebarOpen ? 'scaleX(-1)' : 'scaleX(1)';
             }}
           >
@@ -111,7 +113,7 @@ const AdminLayout = () => {
         </div>
 
         {/* Navigation */}
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {menuItems.map((item) => {
             const active = isActive(item.path);
             return (
@@ -123,54 +125,54 @@ const AdminLayout = () => {
                   display: 'flex',
                   alignItems: 'center',
                   gap: sidebarOpen ? '14px' : '0',
-                  padding: sidebarOpen ? '14px 16px' : '14px 10px',
-                  borderRadius: '12px',
+                  padding: sidebarOpen ? '13px 15px' : '13px 10px',
+                  borderRadius: '10px',
                   textDecoration: 'none',
-                  color: active ? '#fff' : '#cbd5e1',
+                  color: active ? '#e9d5ff' : '#9d8bde',
                   background: active 
-                    ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(99, 102, 241, 0.2))'
+                    ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(99, 102, 241, 0.12))'
                     : 'transparent',
-                  border: active ? '1.5px solid rgba(139, 92, 246, 0.5)' : '1.5px solid transparent',
-                  transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  border: active ? '1px solid rgba(139, 92, 246, 0.35)' : '1px solid transparent',
+                  transition: 'all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                   fontWeight: active ? '700' : '600',
                   fontSize: sidebarOpen ? '15px' : '0',
                   cursor: 'pointer',
                   justifyContent: sidebarOpen ? 'flex-start' : 'center',
                   position: 'relative',
                   overflow: 'hidden',
-                  boxShadow: active ? '0 4px 16px rgba(139, 92, 246, 0.25)' : 'none',
+                  boxShadow: active ? 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 16px rgba(139, 92, 246, 0.15)' : 'none',
                 }}
                 onMouseEnter={(e) => {
                   if (!active) {
-                    e.currentTarget.style.background = 'rgba(139, 92, 246, 0.15)';
-                    e.currentTarget.style.color = '#e2e8f0';
-                    e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                    e.currentTarget.style.background = 'rgba(139, 92, 246, 0.12)';
+                    e.currentTarget.style.color = '#c4b5fd';
+                    e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.25)';
                     if (sidebarOpen) {
-                      e.currentTarget.style.transform = 'translateX(6px)';
-                      e.currentTarget.style.boxShadow = '0 2px 12px rgba(139, 92, 246, 0.15)';
+                      e.currentTarget.style.transform = 'translateX(4px)';
+                      e.currentTarget.style.boxShadow = '0 2px 12px rgba(139, 92, 246, 0.1)';
                     }
                   } else {
-                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(139, 92, 246, 0.35)';
+                    e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 6px 20px rgba(139, 92, 246, 0.25)';
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!active) {
                     e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.color = '#cbd5e1';
+                    e.currentTarget.style.color = '#9d8bde';
                     e.currentTarget.style.borderColor = 'transparent';
                     if (sidebarOpen) {
                       e.currentTarget.style.transform = 'translateX(0)';
                       e.currentTarget.style.boxShadow = 'none';
                     }
                   } else {
-                    e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 92, 246, 0.25)';
+                    e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 16px rgba(139, 92, 246, 0.15)';
                   }
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', color: 'currentColor', minWidth: '24px', justifyContent: 'center' }}>
                   <item.Icon />
                 </div>
-                {sidebarOpen && <span>{item.label}</span>}
+                {sidebarOpen && <span style={{ letterSpacing: '-0.3px' }}>{item.label}</span>}
               </Link>
             );
           })}
@@ -185,43 +187,43 @@ const AdminLayout = () => {
                 alignItems: 'center',
                 justifyContent: sidebarOpen ? 'space-between' : 'center',
                 gap: '14px',
-                padding: sidebarOpen ? '14px 16px' : '14px 10px',
-                borderRadius: '12px',
-                color: isSettingsActive ? '#fff' : '#cbd5e1',
+                padding: sidebarOpen ? '13px 15px' : '13px 10px',
+                borderRadius: '10px',
+                color: isSettingsActive ? '#e9d5ff' : '#9d8bde',
                 background: isSettingsActive 
-                  ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(99, 102, 241, 0.2))'
+                  ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(99, 102, 241, 0.12))'
                   : 'transparent',
-                border: isSettingsActive ? '1.5px solid rgba(139, 92, 246, 0.5)' : '1.5px solid transparent',
-                transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                border: isSettingsActive ? '1px solid rgba(139, 92, 246, 0.35)' : '1px solid transparent',
+                transition: 'all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                 fontWeight: isSettingsActive ? '700' : '600',
                 fontSize: sidebarOpen ? '15px' : '0',
                 cursor: 'pointer',
-                boxShadow: isSettingsActive ? '0 4px 16px rgba(139, 92, 246, 0.25)' : 'none',
+                boxShadow: isSettingsActive ? 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 16px rgba(139, 92, 246, 0.15)' : 'none',
               }}
               onMouseEnter={(e) => {
                 if (!isSettingsActive) {
-                  e.currentTarget.style.background = 'rgba(139, 92, 246, 0.15)';
-                  e.currentTarget.style.color = '#e2e8f0';
-                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                  e.currentTarget.style.background = 'rgba(139, 92, 246, 0.12)';
+                  e.currentTarget.style.color = '#c4b5fd';
+                  e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.25)';
                   if (sidebarOpen) {
-                    e.currentTarget.style.transform = 'translateX(6px)';
-                    e.currentTarget.style.boxShadow = '0 2px 12px rgba(139, 92, 246, 0.15)';
+                    e.currentTarget.style.transform = 'translateX(4px)';
+                    e.currentTarget.style.boxShadow = '0 2px 12px rgba(139, 92, 246, 0.1)';
                   }
                 } else {
-                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(139, 92, 246, 0.35)';
+                  e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 6px 20px rgba(139, 92, 246, 0.25)';
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isSettingsActive) {
                   e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = '#cbd5e1';
+                  e.currentTarget.style.color = '#9d8bde';
                   e.currentTarget.style.borderColor = 'transparent';
                   if (sidebarOpen) {
                     e.currentTarget.style.transform = 'translateX(0)';
                     e.currentTarget.style.boxShadow = 'none';
                   }
                 } else {
-                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 92, 246, 0.25)';
+                  e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 16px rgba(139, 92, 246, 0.15)';
                 }
               }}
               title={!sidebarOpen ? 'Configuración' : ''}
@@ -230,11 +232,11 @@ const AdminLayout = () => {
                 <div style={{ display: 'flex', alignItems: 'center', color: 'currentColor' }}>
                   <Icons.Settings />
                 </div>
-                {sidebarOpen && <span>Configuración</span>}
+                {sidebarOpen && <span style={{ letterSpacing: '-0.3px' }}>Configuración</span>}
               </div>
               {sidebarOpen && (
                 <div style={{ 
-                  transition: 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)', 
+                  transition: 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)', 
                   transform: showSettingsMenu ? 'rotate(180deg)' : 'rotate(0deg)',
                   display: 'flex',
                   alignItems: 'center',
@@ -246,7 +248,7 @@ const AdminLayout = () => {
             </button>
 
             {showSettingsMenu && sidebarOpen && (
-              <div style={{ marginLeft: '12px', marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '4px', animation: 'fadeIn 0.3s ease' }}>
+              <div style={{ marginLeft: '12px', marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                 {settingsSubMenu.map((item) => {
                   const active = isActive(item.path);
                   return (
@@ -257,44 +259,44 @@ const AdminLayout = () => {
                         display: 'flex',
                         alignItems: 'center',
                         gap: '12px',
-                        padding: '12px 14px',
-                        borderRadius: '10px',
+                        padding: '11px 14px',
+                        borderRadius: '9px',
                         textDecoration: 'none',
-                        color: active ? '#c4b5fd' : '#94a3b8',
-                        background: active ? 'rgba(139, 92, 246, 0.2)' : 'transparent',
-                        transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                        color: active ? '#c4b5fd' : '#7c7084',
+                        background: active ? 'rgba(139, 92, 246, 0.15)' : 'transparent',
+                        transition: 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                         fontSize: '13px',
                         fontWeight: active ? '600' : '500',
-                        borderLeft: active ? '2.5px solid #8b5cf6' : '2.5px solid transparent',
-                        paddingLeft: active ? '11.5px' : '14px',
+                        borderLeft: active ? '2px solid #9d8bde' : '2px solid transparent',
+                        paddingLeft: active ? '12px' : '14px',
                         cursor: 'pointer',
-                        boxShadow: active ? '0 2px 8px rgba(139, 92, 246, 0.15)' : 'none',
+                        boxShadow: active ? 'inset 0 1px 0 rgba(255, 255, 255, 0.05)' : 'none',
                       }}
                       onMouseEnter={(e) => {
                         if (!active) {
-                          e.currentTarget.style.color = '#e2e8f0';
-                          e.currentTarget.style.transform = 'translateX(4px)';
-                          e.currentTarget.style.background = 'rgba(139, 92, 246, 0.12)';
-                          e.currentTarget.style.borderLeftColor = 'rgba(139, 92, 246, 0.3)';
+                          e.currentTarget.style.color = '#9d8bde';
+                          e.currentTarget.style.transform = 'translateX(3px)';
+                          e.currentTarget.style.background = 'rgba(139, 92, 246, 0.08)';
+                          e.currentTarget.style.borderLeftColor = 'rgba(139, 92, 246, 0.2)';
                         } else {
-                          e.currentTarget.style.boxShadow = '0 4px 12px rgba(139, 92, 246, 0.25)';
+                          e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 8px rgba(139, 92, 246, 0.12)';
                         }
                       }}
                       onMouseLeave={(e) => {
                         if (!active) {
-                          e.currentTarget.style.color = '#94a3b8';
+                          e.currentTarget.style.color = '#7c7084';
                           e.currentTarget.style.transform = 'translateX(0)';
                           e.currentTarget.style.background = 'transparent';
                           e.currentTarget.style.borderLeftColor = 'transparent';
                         } else {
-                          e.currentTarget.style.boxShadow = '0 2px 8px rgba(139, 92, 246, 0.15)';
+                          e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.05)';
                         }
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', fontSize: '14px', color: 'currentColor' }}>
                         <item.Icon />
                       </div>
-                      <span>{item.label}</span>
+                      <span style={{ letterSpacing: '-0.2px' }}>{item.label}</span>
                     </Link>
                   );
                 })}
