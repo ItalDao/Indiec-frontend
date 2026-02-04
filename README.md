@@ -1,4 +1,4 @@
-# 🎵 INDIEC - Plataforma de Música Independiente
+# INDIEC - Plataforma de Música Independiente
 
 Frontend del proyecto INDIEC, diseñado bajo una **arquitectura avanzada de Micro-Frontends**, aplicando **Clean Architecture** como patrón de organización interna en cada módulo.
 
@@ -13,7 +13,7 @@ de organización del código, sin afectar la arquitectura general del sistema.
 
 ---
 
-## 🏗️ Arquitectura
+##  Arquitectura
 
 ### Micro-Frontends
 
@@ -40,7 +40,7 @@ songs/
 
 ---
 
-## 📁 Estructura del Proyecto
+##  Estructura del Proyecto
 
 ```
 indiec-frontend/
@@ -69,7 +69,7 @@ indiec-frontend/
 
 ---
 
-## 🚀 Instalación y Ejecución
+##  Instalación y Ejecución
 
 ### Requisitos previos
 - Node.js 18+
@@ -111,7 +111,7 @@ VITE_API_URL=http://localhost:9000
 
 ---
 
-## 🔌 Conectar con el Backend
+##  Conectar con el Backend
 
 El frontend consume el backend de INDIEC que debe estar corriendo en `http://localhost:9000`.
 
@@ -121,7 +121,7 @@ El frontend consume el backend de INDIEC que debe estar corriendo en `http://loc
 node root/index.js
 ```
 
-Deberías ver: `🚀 API escuchando en http://localhost:9000`
+Deberías ver: ` API escuchando en http://localhost:9000`
 
 ### Endpoints Disponibles
 
@@ -175,25 +175,10 @@ await api.delete('/cancion/123');
 - Tokens de autenticación (si existen en `localStorage`)
 - Manejo de errores centralizado
 
-## 👥 División de Módulos
-
-| Integrante | Módulo | Ruta |
-|------------|--------|------|
-| Ariana Villegas | Gestión de Artistas (Admin) | `/admin/artists` |
-| Jean Carlos Coavoy | Gestión de Canciones (Admin) | `/admin/songs` |
-| Josue Guallisaca | Gestión de Eventos (Admin) | `/admin/events` |
-| Dillan Alvarez | Gestión de Tienda + Catálogos (Admin) | `/admin/store`, `/admin/catalogs` |
-| Michael Sarche | Usuarios y Roles (Admin) | `/admin/users` |
-| Jhonatan Valencia | Dashboard (Admin) | `/admin/dashboard` |
-| Dennis Villacis | Configuraciones (Admin) | `/admin/settings` |
-| Jorge Minda | Home + Búsqueda (Cliente) | `/client/home`, `/client/search` |
-| Jonathan Chicaiza | Artistas (Cliente) | `/client/artists` |
-| Matías Alcívar | Canciones (Cliente) | `/client/songs` |
-| Santiago Alomoto | Tienda (Cliente) | `/client/store` |
 
 ---
 
-## 🔀 Flujo de Trabajo con Git
+##  Flujo de Trabajo con Git
 
 ### Crear tu rama
 
@@ -228,17 +213,7 @@ git push origin feature/songs-client-matias
 
 ---
 
-## 🎨 Guía de Diseño
 
-### Paleta de Colores
-
-```typescript
-primary: '#8B5CF6'      // Púrpura vibrante
-secondary: '#EC4899'    // Rosa indie
-accent: '#10B981'       // Verde
-background: '#0F172A'   // Fondo oscuro
-text: '#F1F5F9'         // Texto claro
-```
 
 ### Componentes Compartidos
 
@@ -253,7 +228,7 @@ import { Button, Card, Input, Modal } from '@/shared/ui';
 
 ---
 
-## 📦 Tecnologías
+## Tecnologías
 
 - **React 18** + TypeScript
 - **Vite** (build tool)
@@ -263,7 +238,7 @@ import { Button, Card, Input, Modal } from '@/shared/ui';
 
 ---
 
-## 📖 Recursos
+## Recursos
 
 - [Documentación de React](https://react.dev)
 - [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
@@ -271,7 +246,7 @@ import { Button, Card, Input, Modal } from '@/shared/ui';
 
 ---
 
-## 🤝 Contribuir
+##  Contribuir
 
 1. Crea tu rama desde `main`
 2. Desarrolla tu módulo siguiendo Clean Architecture
@@ -281,13 +256,13 @@ import { Button, Card, Input, Modal } from '@/shared/ui';
 
 ---
 
-## 📝 Notas Importantes
+## Notas Importantes
 
-- ⚠️ **NO modificar** carpetas de otros módulos
-- ⚠️ **Usar componentes compartidos** de `shared/ui`
-- ⚠️ **Seguir la paleta de colores** definida
-- ⚠️ **Aplicar Clean Architecture** en tu módulo
-- ⚠️ **Probar localmente** antes de hacer push
+- **NO modificar** carpetas de otros módulos
+- **Usar componentes compartidos** de `shared/ui`
+- **Seguir la paleta de colores** definida
+- **Aplicar Clean Architecture** en tu módulo
+- **Probar localmente** antes de hacer push
 
 ---
 
